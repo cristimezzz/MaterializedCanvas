@@ -257,7 +257,19 @@ html[data-mc-theme] body.files {
     min-width: 0;
     padding-block: 8px;
   }
+  /* Folders wrap icon + name in an extra span; give it the same layout so names line up */
+  & .ef-name-col__click-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-width: 0;
+  }
+  & .ef-name-col__link .ef-big-icon-container,
+  & .ef-name-col__link .ef-name-col__text {
+    margin: 0;
+  }
   & .ef-name-col__text {
+    padding: 0;
     color: var(--md-sys-color-on-surface);
     font-size: 0.9375rem;
     font-weight: 500;
