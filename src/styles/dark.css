@@ -1,0 +1,46 @@
+/* Dark-mode-only patches. Most colors already flow from the recolor engine + M3 variables. */
+html[data-mc-theme="dark"] {
+  --mc-elev-1: 0 1px 2px rgb(0 0 0 / 0.5), 0 1px 3px 1px rgb(0 0 0 / 0.3);
+  --mc-elev-2: 0 1px 2px rgb(0 0 0 / 0.5), 0 2px 6px 2px rgb(0 0 0 / 0.3);
+  --mc-elev-3: 0 1px 3px rgb(0 0 0 / 0.5), 0 4px 8px 3px rgb(0 0 0 / 0.3);
+
+  /* Elevated surfaces read via tone in dark mode */
+  & .ic-DashboardCard { background: var(--md-sys-color-surface-container); }
+  /* Tone down saturated course colors so they don't glare on dark surfaces */
+  & .ic-DashboardCard__header_hero,
+  & .planner-grouping a[class*="hero"] {
+    filter: brightness(0.78) saturate(0.85);
+  }
+
+  /* Images with transparent backgrounds and dark ink (logos, formulas, diagrams) */
+  & .user_content img[src$=".svg"],
+  & .user_content img.equation_image,
+  & img.equation_image {
+    background: #fff;
+    border-radius: var(--mc-shape-xs);
+    padding: 2px;
+  }
+  & .MathJax, & mjx-container { color: var(--md-sys-color-on-surface); }
+
+  /* Canvas icon fonts default to dark grey */
+  & [class^="icon-"]::before,
+  & [class*=" icon-"]::before {
+    color: inherit;
+  }
+
+  /* Planner illustration */
+  & .planner-empty-days svg,
+  & .EmptyDays-styles__nothingPlanned svg {
+    filter: brightness(0.75) saturate(0.8);
+  }
+
+  /* Embedded documents & media keep their own colors */
+  & iframe,
+  & video,
+  & .ef-file-preview-frame {
+    color-scheme: light;
+  }
+
+  /* Native widgets */
+  & select option { background: var(--md-sys-color-surface-container); color: var(--md-sys-color-on-surface); }
+}

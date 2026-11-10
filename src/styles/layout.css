@@ -1,0 +1,262 @@
+/* App chrome: global navigation rail, trays, header/breadcrumbs, course menu, right sidebar. */
+html[data-mc-theme] {
+  /* ------------------------------------------------------------------ Global nav → Navigation Rail */
+  & .ic-app-header {
+    background: var(--md-sys-color-surface-container);
+    box-shadow: none;
+    border-right: none;
+  }
+  & .ic-app-header__logomark-container {
+    background: transparent;
+  }
+  & .ic-app-header__logomark {
+    border-radius: var(--mc-shape-lg);
+    margin: 8px;
+    transition: background-color var(--mc-dur) var(--mc-ease);
+  }
+  /* The school logo is drawn white for Canvas' dark nav; ink it to match the light rail. */
+  &[data-mc-theme="light"] .ic-app-header__logomark {
+    filter: brightness(0);
+    opacity: 0.72;
+  }
+  & .ic-app-header__logomark:hover {
+    opacity: 1;
+  }
+
+  & .ic-app-header__menu-list-item {
+    background: transparent;
+  }
+  & .ic-app-header__menu-list-link {
+    background: transparent !important;
+    color: var(--md-sys-color-on-surface-variant);
+    padding-block: 6px;
+    box-shadow: none;
+  }
+  & .ic-app-header__menu-list-link .menu-item-icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 32px;
+    margin: 0 auto 4px;
+    border-radius: var(--mc-shape-full);
+    transition: background-color var(--mc-dur) var(--mc-ease);
+    position: relative;
+  }
+  & .ic-app-header__menu-list-link:hover .menu-item-icon-container {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) var(--mc-hover), transparent);
+  }
+  & .ic-app-header__menu-list-link .ic-icon-svg,
+  & .ic-app-header__menu-list-link svg {
+    fill: var(--md-sys-color-on-surface-variant);
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  & .ic-app-header__menu-list-link .menu-item__text {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  /* Active destination: secondary-container pill around the icon */
+  & .ic-app-header__menu-list-item--active .ic-app-header__menu-list-link,
+  & .ic-app-header__menu-list-item--active .ic-app-header__menu-list-link:hover {
+    background: transparent !important;
+  }
+  & .ic-app-header__menu-list-item--active .menu-item-icon-container {
+    background: var(--md-sys-color-secondary-container) !important;
+  }
+  & .ic-app-header__menu-list-item--active .ic-icon-svg,
+  & .ic-app-header__menu-list-item--active svg {
+    fill: var(--md-sys-color-on-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+  }
+  & .ic-app-header__menu-list-item--active .menu-item__text {
+    color: var(--md-sys-color-on-surface);
+    font-weight: 700;
+  }
+  & .ic-app-header__menu-list-link .menu-item__badge:empty {
+    display: none;
+  }
+  & .ic-app-header__menu-list-link .menu-item__badge {
+    position: absolute;
+    top: -2px;
+    left: auto;
+    right: 6px;
+    min-width: 16px;
+    height: 16px;
+    line-height: 16px;
+    padding: 0 4px;
+    font-size: 0.6875rem;
+    background: var(--md-sys-color-error);
+    color: var(--md-sys-color-on-error);
+  }
+  & .ic-app-header__menu-list-link .ic-avatar {
+    border: 2px solid var(--md-sys-color-outline-variant);
+    width: 28px;
+    height: 28px;
+  }
+
+  /* Collapsed rail (primary-nav not expanded): keep pills compact */
+  & body:not(.primary-nav-expanded) .ic-app-header__menu-list-link .menu-item-icon-container {
+    width: 48px;
+  }
+
+  /* Global nav trays (Courses / Account / Help …) → navigation drawer */
+  & #nav-tray-portal [role="dialog"],
+  & .navigation-tray-container {
+    background: var(--md-sys-color-surface-container-low) !important;
+    color: var(--md-sys-color-on-surface);
+    border-radius: 0 var(--mc-shape-lg) var(--mc-shape-lg) 0;
+    box-shadow: var(--mc-elev-1);
+  }
+  & #nav-tray-portal [role="dialog"] > div,
+  & .navigation-tray-container > div {
+    background: transparent !important;
+  }
+  & #nav-tray-portal a,
+  & .navigation-tray-container a {
+    color: var(--md-sys-color-primary);
+  }
+  & #nav-tray-portal li a,
+  & .navigation-tray-container li a {
+    display: inline-block;
+    border-radius: var(--mc-shape-full);
+    padding: 6px 12px;
+    margin-inline-start: -12px;
+    transition: background-color var(--mc-dur) var(--mc-ease);
+  }
+  & #nav-tray-portal li a:hover,
+  & .navigation-tray-container li a:hover {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) var(--mc-hover), transparent);
+    text-decoration: none;
+  }
+
+  /* ------------------------------------------------------------------ Mobile header */
+  & .mobile-header {
+    background: var(--md-sys-color-surface-container);
+    color: var(--md-sys-color-on-surface);
+    box-shadow: none;
+  }
+  & .mobile-header .mobile-header-title,
+  & .mobile-header button { color: var(--md-sys-color-on-surface); }
+  & .mobile-header-hamburger .icon-hamburger::before { color: var(--md-sys-color-on-surface); }
+
+  /* ------------------------------------------------------------------ Breadcrumb bar → Top app bar */
+  & .ic-app-nav-toggle-and-crumbs {
+    border-bottom: none;
+    background: var(--md-sys-color-surface);
+    min-height: 64px;
+  }
+  & .ic-app-course-nav-toggle,
+  & #courseMenuToggle {
+    border-radius: var(--mc-shape-full);
+    width: 40px;
+    height: 40px;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  & .ic-app-course-nav-toggle:hover,
+  & #courseMenuToggle:hover {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) var(--mc-hover), transparent);
+  }
+  & .ic-app-course-nav-toggle i::before,
+  & #courseMenuToggle i::before { color: var(--md-sys-color-on-surface-variant); }
+
+  & #breadcrumbs,
+  & .ic-app-crumbs {
+    background: transparent;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  & #breadcrumbs > ul > li {
+    font-size: 1.125rem;
+  }
+  & #breadcrumbs > ul > li + li::before {
+    color: var(--md-sys-color-outline);
+  }
+  & #breadcrumbs > ul > li a {
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  & #breadcrumbs > ul > li:last-child,
+  & #breadcrumbs > ul > li:last-child a {
+    color: var(--md-sys-color-on-surface);
+    font-weight: 500;
+  }
+  & #breadcrumbs .home .icon-home::before { color: var(--md-sys-color-on-surface-variant); }
+
+  /* ------------------------------------------------------------------ Course menu → Navigation drawer */
+  & #left-side,
+  & .ic-app-course-menu {
+    background: var(--md-sys-color-surface);
+  }
+  & #section-tabs-header-subtitle {
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding-inline: 16px;
+  }
+  & #section-tabs {
+    margin: 0 8px 0 0;
+  }
+  & #section-tabs li.section a,
+  & #section-tabs li.section .section-hidden {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 16px;
+    margin-block: 1px;
+    border: none;
+    border-radius: var(--mc-shape-full);
+    color: var(--md-sys-color-on-surface-variant);
+    font-weight: 500;
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: background-color var(--mc-dur) var(--mc-ease);
+  }
+  & #section-tabs li.section a:hover {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) var(--mc-hover), transparent);
+    color: var(--md-sys-color-on-surface);
+    text-decoration: none;
+  }
+  & #section-tabs li.section a.active,
+  & #section-tabs li.section a[aria-current="page"] {
+    background: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+    border: none;
+    font-weight: 700;
+  }
+  & #section-tabs li.section a.active::before { display: none; }
+
+  /* ------------------------------------------------------------------ Right sidebar */
+  & #right-side-wrapper,
+  & .ic-app-main-content__secondary,
+  & #right-side {
+    background: transparent;
+  }
+  & #right-side .button-sidebar-wide,
+  & #right-side .btn.button-sidebar-wide {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: flex-start;
+    margin-bottom: 8px;
+    text-align: start;
+  }
+  & #right-side .button-sidebar-wide img.icon { width: 18px; height: 18px; margin: 0; }
+  & #right-side h2,
+  & .todo-list-header,
+  & .Sidebar__TodoListContainer h2 {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--md-sys-color-on-surface);
+    border-bottom: none;
+  }
+  & .ToDoSidebarItem {
+    border-radius: var(--mc-shape-sm);
+  }
+
+  /* ------------------------------------------------------------------ Footer */
+  & .ic-app-footer {
+    border-top: 1px solid var(--md-sys-color-outline-variant);
+    background: transparent;
+  }
+  & .ic-app-footer a { color: var(--md-sys-color-on-surface-variant); }
+}

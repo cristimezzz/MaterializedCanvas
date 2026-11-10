@@ -1,0 +1,130 @@
+/* Dashboard: header, course cards, planner (list view), recent activity. */
+html[data-mc-theme] {
+  & .ic-Dashboard-header__layout {
+    border-bottom: none;
+    padding-block: 8px;
+  }
+  & .ic-Dashboard-header__title {
+    font-size: 2rem;
+    font-weight: 400;
+    color: var(--md-sys-color-on-surface);
+  }
+
+  /* ---- Course cards → M3 elevated cards */
+  & .ic-DashboardCard__box {
+    gap: 16px;
+  }
+  & .ic-DashboardCard {
+    background: var(--md-sys-color-surface-container-low);
+    border: none;
+    border-radius: var(--mc-shape-md);
+    box-shadow: var(--mc-elev-1);
+    overflow: hidden;
+    transition: box-shadow var(--mc-dur) var(--mc-ease);
+  }
+  & .ic-DashboardCard:hover {
+    box-shadow: var(--mc-elev-2);
+  }
+  & .ic-DashboardCard__header_hero {
+    border-radius: 0;
+  }
+  & .ic-DashboardCard__header_content {
+    background: transparent;
+    padding: 16px 16px 8px;
+  }
+  & .ic-DashboardCard__header-title {
+    color: var(--md-sys-color-on-surface) !important;
+    font-weight: 500;
+    font-size: 1rem;
+  }
+  & .ic-DashboardCard__header-subtitle,
+  & .ic-DashboardCard__header-term {
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  & .ic-DashboardCard__action-container {
+    padding: 4px 8px 8px;
+    border: none;
+  }
+  & .ic-DashboardCard__action {
+    border-radius: var(--mc-shape-full);
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  & .ic-DashboardCard__action:hover {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) var(--mc-hover), transparent);
+  }
+  & .ic-DashboardCard__action-badge {
+    background: var(--md-sys-color-error);
+    color: var(--md-sys-color-on-error);
+  }
+  & .ic-DashboardCard__header-button-bg {
+    border-radius: var(--mc-shape-full);
+  }
+
+  /* ---- Planner (list view) */
+  & .planner-day h2 {
+    color: var(--md-sys-color-on-surface);
+  }
+  & .planner-day,
+  & .planner-empty-days {
+    border-color: var(--md-sys-color-outline-variant);
+  }
+  & .planner-grouping {
+    background: var(--md-sys-color-surface-container-lowest);
+    border: 1px solid var(--md-sys-color-outline-variant) !important;
+    border-radius: var(--mc-shape-md);
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  & .planner-grouping > a:first-child {
+    border-radius: 0;
+    background: var(--md-sys-color-surface-container);
+  }
+  & .planner-grouping a[class*="hero"] span[class*="title"] {
+    background: transparent;
+    color: var(--md-sys-color-on-surface);
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  & .planner-item {
+    border-color: var(--md-sys-color-outline-variant);
+  }
+  & .planner-completed-items button {
+    border-radius: var(--mc-shape-full);
+  }
+  & .planner-empty-days img,
+  & .planner-empty-days svg {
+    opacity: 0.9;
+  }
+
+  & .StickyButton-styles__root {
+    border-radius: 0 0 var(--mc-shape-md) var(--mc-shape-md);
+    background: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+    box-shadow: var(--mc-elev-2);
+  }
+
+  /* ---- Recent activity stream */
+  & .ic-Dashboard-Activity .stream_header,
+  & .recent-activity-header {
+    background: var(--md-sys-color-surface-container);
+    border-radius: var(--mc-shape-md);
+    border: none;
+  }
+  & .stream-category {
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-radius: var(--mc-shape-md);
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  & .stream-category .details_container {
+    background: transparent;
+  }
+
+  /* Global announcements */
+  & .ic-notification {
+    border-radius: var(--mc-shape-md);
+    overflow: hidden;
+  }
+}

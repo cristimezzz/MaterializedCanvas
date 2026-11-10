@@ -1,0 +1,233 @@
+/* Course content pages: home, modules, assignments, quizzes, pages, syllabus, announcements, discussions. */
+html[data-mc-theme] {
+  /* ---- Page headers & toolbars */
+  & .header-bar,
+  & .page-toolbar,
+  & .ic-Action-header {
+    border-bottom: none;
+    background: transparent;
+  }
+  & .page-title,
+  & .ic-Action-header__Heading,
+  & h1.title,
+  & .show-content h1,
+  & #content > h1:first-child {
+    font-size: 1.75rem;
+    font-weight: 400;
+    color: var(--md-sys-color-on-surface);
+  }
+  & .header-bar-outer-container,
+  & .sticky-toolbar {
+    background: var(--md-sys-color-surface);
+  }
+
+  /* ---- Modules */
+  & #context_modules .context_module {
+    margin-bottom: 16px;
+  }
+  & .context_module .ig-header .collapse_module_link i::before,
+  & .context_module .ig-header .expand_module_link i::before {
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  & .context_module_item .ig-type-icon,
+  & .ig-type-icon {
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  & .context_module_item .item_name a,
+  & .module-item-title a {
+    color: var(--md-sys-color-on-surface);
+    font-weight: 500;
+  }
+  & .context_module_item .item_name a:hover { color: var(--md-sys-color-primary); }
+  & .context_module .footer,
+  & .context_module .progression_container {
+    background: transparent;
+    border-color: var(--md-sys-color-outline-variant);
+  }
+  & .module_item_icons .requirement-description,
+  & .requirement-description .pill {
+    border-radius: var(--mc-shape-sm);
+  }
+  & .context_module_item.context_module_item_hover .ig-row,
+  & .context_module_item.selected .ig-row {
+    background: color-mix(in srgb, var(--md-sys-color-primary) 6%, transparent);
+  }
+  & .module-sequence-footer .module-sequence-footer-content {
+    background: var(--md-sys-color-surface-container);
+    border: none;
+    border-radius: var(--mc-shape-lg);
+    padding: 8px 12px;
+  }
+
+  /* ---- Assignments list (student view) */
+  & #ag-list .ig-header,
+  & .assignment_group .ig-header {
+    border-radius: 0;
+  }
+  & .ig-row .ig-type-icon i::before { color: var(--md-sys-color-primary); }
+  & .assignment-date-due,
+  & .assignment-date-available,
+  & .score-display {
+    color: var(--md-sys-color-on-surface-variant);
+  }
+
+  /* ---- Assignment / quiz details */
+  & .assignment-title .title,
+  & .quiz-header h1 {
+    font-weight: 400;
+  }
+  & .student-assignment-overview,
+  & .assignment_dates,
+  & .ic-Table--condensed,
+  & .quiz-details,
+  & #quiz_details_wrapper {
+    border-color: var(--md-sys-color-outline-variant);
+  }
+  & .student-assignment-overview {
+    background: var(--md-sys-color-surface-container-low);
+    border-radius: var(--mc-shape-md);
+    padding: 12px 16px;
+    border: none;
+  }
+  & .details .content,
+  & #sidebar_content .details,
+  & .rubric_container,
+  & .rubric_summary {
+    border-radius: var(--mc-shape-md);
+  }
+  & .rubric_container .rubric_table,
+  & table.rubric_table {
+    border-radius: var(--mc-shape-md);
+    overflow: hidden;
+    border-color: var(--md-sys-color-outline-variant);
+  }
+  & .rubric_table th,
+  & .rubric_table td {
+    border-color: var(--md-sys-color-outline-variant);
+  }
+  & .rubric_table thead th { background: var(--md-sys-color-surface-container); }
+
+  & #submit_assignment,
+  & .submit_assignment_link {
+    border-radius: var(--mc-shape-full);
+  }
+  & #submit_assignment {
+    background: var(--md-sys-color-surface-container-low);
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-radius: var(--mc-shape-lg);
+  }
+
+  /* Classic quizzes */
+  & .question,
+  & .display_question {
+    background: var(--md-sys-color-surface-container-lowest);
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-radius: var(--mc-shape-md);
+    overflow: hidden;
+    box-shadow: none;
+  }
+  & .question .header,
+  & .display_question .header {
+    background: var(--md-sys-color-surface-container);
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+    color: var(--md-sys-color-on-surface);
+  }
+  & .question .answers .answer,
+  & .display_question .answer {
+    border-color: var(--md-sys-color-outline-variant);
+  }
+  & .question .answers .answer:hover { background: color-mix(in srgb, var(--md-sys-color-on-surface) 4%, transparent); }
+  & .display_question .answer.selected_answer,
+  & .display_question .answer.correct_answer {
+    background: var(--mc-success-container);
+    color: var(--mc-on-success-container);
+  }
+  & .display_question .answer.wrong_answer {
+    background: var(--md-sys-color-error-container);
+    color: var(--md-sys-color-on-error-container);
+  }
+  & #question_list .list_question {
+    border-radius: var(--mc-shape-sm);
+  }
+  & #quiz-submission-version-table,
+  & .quiz-submission {
+    border-radius: var(--mc-shape-md);
+  }
+
+  /* ---- Discussions & announcements index */
+  & .ic-item-row,
+  & .discussion-topic,
+  & .announcements-v2__wrapper .ic-item-row {
+    border-color: var(--md-sys-color-outline-variant);
+    background: transparent;
+  }
+  & .discussions-v2__wrapper .ic-item-row:hover,
+  & .announcements-v2__wrapper .ic-item-row:hover {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) 4%, transparent);
+  }
+  & .discussions-container__wrapper,
+  & .discussions-v2__container-image,
+  & .announcements-v2__wrapper {
+    border-radius: var(--mc-shape-md);
+  }
+  & .ic-unread-badge__total-count,
+  & .ic-unread-badge__unread-count {
+    border-radius: var(--mc-shape-full);
+  }
+  & .ic-unread-badge__unread-count {
+    background: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+  }
+
+  /* Discussion topic (redesign) cards */
+  & [data-testid="discussion-root-entry-container"],
+  & [data-testid="discussion-topic-container"] {
+    border-radius: var(--mc-shape-md);
+  }
+
+  /* ---- Wiki pages / syllabus / rich content */
+  & .user_content,
+  & .show-content {
+    color: var(--md-sys-color-on-surface);
+    line-height: 1.6;
+  }
+  & .user_content table {
+    border-color: var(--md-sys-color-outline-variant);
+  }
+  & .user_content blockquote {
+    border-left: 4px solid var(--md-sys-color-primary);
+    background: var(--md-sys-color-surface-container-low);
+    border-radius: 0 var(--mc-shape-sm) var(--mc-shape-sm) 0;
+    padding: 8px 16px;
+  }
+  & .user_content img { border-radius: var(--mc-shape-xs); }
+  & #syllabus,
+  & #course_syllabus {
+    color: var(--md-sys-color-on-surface);
+  }
+  & #syllabus .detail_list,
+  & #syllabusContainer table {
+    border-radius: var(--mc-shape-md);
+    overflow: hidden;
+  }
+  & #syllabus tr.date,
+  & #syllabus .day_date {
+    color: var(--md-sys-color-on-surface-variant);
+  }
+
+  /* Course home "course activity" feed & stream */
+  & #course_home_content .stream-category,
+  & #course_activity_stream {
+    border-radius: var(--mc-shape-md);
+  }
+
+  /* Course home page "recent feedback" & coming up */
+  & .events_list .event,
+  & .recent_feedback .event {
+    border-radius: var(--mc-shape-sm);
+  }
+  & .events_list .event:hover,
+  & .recent_feedback .event:hover {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) 4%, transparent);
+  }
+}

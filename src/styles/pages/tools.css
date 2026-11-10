@@ -1,0 +1,226 @@
+/* Grades, files, calendar, inbox, people, profile/settings, login. */
+html[data-mc-theme] {
+  /* ---- Grades (student) */
+  & #grades_summary {
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-radius: var(--mc-shape-md);
+    overflow: hidden;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+  & #grades_summary th {
+    background: var(--md-sys-color-surface-container);
+    color: var(--md-sys-color-on-surface-variant);
+    font-weight: 500;
+  }
+  & #grades_summary tr.student_assignment td,
+  & #grades_summary tr.student_assignment th {
+    border-color: var(--md-sys-color-outline-variant);
+    background: transparent;
+  }
+  & #grades_summary tr.student_assignment:hover td,
+  & #grades_summary tr.student_assignment:hover th {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) 4%, transparent);
+  }
+  & #grades_summary tr.group_total td,
+  & #grades_summary tr.group_total th,
+  & #grades_summary tr.final_grade td,
+  & #grades_summary tr.final_grade th {
+    background: var(--md-sys-color-surface-container-low);
+    font-weight: 500;
+  }
+  & #grades_summary .assignment_score .grade { color: var(--md-sys-color-on-surface); }
+  & .student_grades .comments,
+  & #grades_summary tr.comments td,
+  & #grades_summary tr.rubric_assessments td {
+    background: var(--md-sys-color-surface-container-low);
+  }
+  & #student-grades-right-content,
+  & #student-grades-final,
+  & .student_assignment.editable .grade {
+    color: var(--md-sys-color-on-surface);
+  }
+  & #student-grades-right-content .student_assignment,
+  & #assignments-not-weighted table,
+  & #assignments-weighted table,
+  & .summary {
+    border-radius: var(--mc-shape-md);
+  }
+
+  /* ---- Files */
+  & .ef-main,
+  & .ef-folder-content,
+  & .ef-directory {
+    border-color: var(--md-sys-color-outline-variant);
+    background: transparent;
+  }
+  & .ef-header {
+    border-bottom: none;
+  }
+  & .ef-directory-header {
+    background: var(--md-sys-color-surface-container);
+    color: var(--md-sys-color-on-surface-variant);
+    border-color: var(--md-sys-color-outline-variant);
+    border-radius: var(--mc-shape-md) var(--mc-shape-md) 0 0;
+  }
+  & .ef-item-row {
+    border-color: var(--md-sys-color-outline-variant);
+  }
+  & .ef-item-row:hover {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) var(--mc-hover), transparent);
+  }
+  & .ef-item-row.ef-item-selected {
+    background: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+  }
+  & .ef-folder-list {
+    border-color: var(--md-sys-color-outline-variant);
+  }
+  & .ef-folder-list .treeLabel,
+  & .ef-folder-list a {
+    border-radius: var(--mc-shape-full);
+  }
+  & .ef-folder-list [aria-selected="true"] > .treeLabel,
+  & .ef-folder-list [aria-selected="true"] > a {
+    background: var(--md-sys-color-secondary-container) !important;
+    color: var(--md-sys-color-on-secondary-container) !important;
+  }
+  & .ef-footer {
+    border-color: var(--md-sys-color-outline-variant);
+    background: transparent;
+  }
+  & .ef-file-preview-overlay,
+  & .ef-file-preview-header,
+  & .ef-file-preview-information {
+    background: var(--md-sys-color-surface-container-highest);
+    color: var(--md-sys-color-on-surface);
+  }
+
+  /* ---- Calendar (FullCalendar) */
+  & #calendar-app,
+  & .calendar_header,
+  & #calendar_header {
+    background: transparent;
+  }
+  & .fc,
+  & .fc-view,
+  & .fc table {
+    border-color: var(--md-sys-color-outline-variant);
+  }
+  & .fc td,
+  & .fc th,
+  & .fc-unthemed td,
+  & .fc-unthemed th,
+  & .fc-unthemed .fc-divider,
+  & .fc-unthemed .fc-row,
+  & .fc-unthemed thead,
+  & .fc-unthemed tbody,
+  & .fc-unthemed .fc-content,
+  & .fc-unthemed .fc-popover {
+    border-color: var(--md-sys-color-outline-variant);
+  }
+  & .fc-day-header,
+  & .fc-unthemed th.fc-day-header {
+    background: var(--md-sys-color-surface-container);
+    color: var(--md-sys-color-on-surface-variant);
+    font-weight: 500;
+  }
+  & .fc-unthemed td.fc-today,
+  & .fc .fc-today,
+  & .fc-state-highlight {
+    background: color-mix(in srgb, var(--md-sys-color-primary) 10%, transparent);
+  }
+  & .fc-event {
+    border-radius: var(--mc-shape-xs);
+  }
+  & .fc-unthemed .fc-popover {
+    background: var(--md-sys-color-surface-container);
+    border-radius: var(--mc-shape-md);
+    box-shadow: var(--mc-elev-2);
+  }
+  & .mini_calendar,
+  & #minical {
+    border-radius: var(--mc-shape-md);
+    overflow: hidden;
+  }
+  & .mini_calendar .fc-today .fc-day-number,
+  & #minical .fc-today .fc-day-number {
+    background: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+    border-radius: var(--mc-shape-full);
+  }
+  & .calendar_view_buttons .btn,
+  & #calendar_header .btn-group .btn {
+    min-height: 36px;
+  }
+  & .calendar_view_buttons .btn.active,
+  & .calendar_view_buttons .btn[aria-selected="true"] {
+    background: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+  }
+  & #calendar-list-holder,
+  & #other-calendars-list-holder,
+  & #undated-events {
+    border-color: var(--md-sys-color-outline-variant);
+  }
+  & .event-details,
+  & .event-details-header,
+  & .event-details-content,
+  & .event-details-footer {
+    background: var(--md-sys-color-surface-container);
+    color: var(--md-sys-color-on-surface);
+    border-color: var(--md-sys-color-outline-variant);
+  }
+
+  /* ---- Inbox (conversations) */
+  & #content.ic-Layout-contentMain .conversations,
+  & .messages,
+  & .message-detail {
+    border-color: var(--md-sys-color-outline-variant);
+  }
+  & [data-testid="conversation"],
+  & [data-testid="conversationListItem-Item"] {
+    border-color: var(--md-sys-color-outline-variant);
+  }
+
+  /* ---- People / roster */
+  & .roster,
+  & table.roster {
+    border-radius: var(--mc-shape-md);
+    overflow: hidden;
+  }
+  & .roster tbody tr:hover td {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) 4%, transparent);
+  }
+  & .ic-avatar,
+  & .avatar {
+    border-color: var(--md-sys-color-outline-variant);
+  }
+
+  /* ---- Profile & settings */
+  & .ic-Profile-layout,
+  & #profile_table,
+  & .profile_table,
+  & #content .ic-Table.profile_table {
+    border-radius: var(--mc-shape-md);
+  }
+  & .profileContent__Block,
+  & .profile_table th {
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  & .notification-preferences [role="table"],
+  & #notification-preferences {
+    border-radius: var(--mc-shape-md);
+  }
+
+  /* ---- Login (rarely seen at SJTU since jAccount handles auth) */
+  & .ic-Login {
+    background: var(--md-sys-color-surface-container);
+  }
+  & .ic-Login__content,
+  & .ic-Login-content__inner {
+    background: var(--md-sys-color-surface-container-low);
+    border-radius: var(--mc-shape-xl);
+    box-shadow: var(--mc-elev-1);
+  }
+}

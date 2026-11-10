@@ -1,0 +1,64 @@
+/* Material 3 tokens + bridging Canvas' own brand variables to M3 roles. */
+html[data-mc-theme] {
+  --mc-font: "Roboto", "Segoe UI Variable Text", "Segoe UI", "Noto Sans SC", "PingFang SC", "Microsoft YaHei UI",
+    "Microsoft YaHei", system-ui, sans-serif;
+
+  /* Shape */
+  --mc-shape-xs: 4px;
+  --mc-shape-sm: 8px;
+  --mc-shape-md: 12px;
+  --mc-shape-lg: 16px;
+  --mc-shape-xl: 28px;
+  --mc-shape-full: 999px;
+
+  /* Elevation (M3 light shadows; dark mode leans on tonal surfaces instead) */
+  --mc-elev-1: 0 1px 2px rgb(0 0 0 / 0.3), 0 1px 3px 1px rgb(0 0 0 / 0.15);
+  --mc-elev-2: 0 1px 2px rgb(0 0 0 / 0.3), 0 2px 6px 2px rgb(0 0 0 / 0.15);
+  --mc-elev-3: 0 1px 3px rgb(0 0 0 / 0.3), 0 4px 8px 3px rgb(0 0 0 / 0.15);
+  --mc-elev-4: 0 2px 3px rgb(0 0 0 / 0.3), 0 6px 10px 4px rgb(0 0 0 / 0.15);
+
+  /* State layers */
+  --mc-hover: 8%;
+  --mc-focus: 10%;
+  --mc-press: 10%;
+
+  /* Motion */
+  --mc-ease: cubic-bezier(0.2, 0, 0, 1);
+  --mc-dur: 200ms;
+
+  /* ---- Canvas brand variables → M3 roles ---- */
+  --ic-brand-primary: var(--md-sys-color-primary);
+  --ic-brand-primary-darkened-5: color-mix(in srgb, var(--md-sys-color-primary) 92%, var(--md-sys-color-on-surface));
+  --ic-brand-primary-darkened-10: color-mix(in srgb, var(--md-sys-color-primary) 88%, var(--md-sys-color-on-surface));
+  --ic-brand-primary-darkened-15: color-mix(in srgb, var(--md-sys-color-primary) 84%, var(--md-sys-color-on-surface));
+  --ic-brand-primary-lightened-5: color-mix(in srgb, var(--md-sys-color-primary) 92%, var(--md-sys-color-surface));
+  --ic-brand-primary-lightened-10: color-mix(in srgb, var(--md-sys-color-primary) 88%, var(--md-sys-color-surface));
+  --ic-brand-primary-lightened-15: color-mix(in srgb, var(--md-sys-color-primary) 84%, var(--md-sys-color-surface));
+  --ic-link-color: var(--md-sys-color-primary);
+  --ic-link-color-darkened-10: color-mix(in srgb, var(--md-sys-color-primary) 85%, var(--md-sys-color-on-surface));
+  --ic-link-color-lightened-10: color-mix(in srgb, var(--md-sys-color-primary) 85%, var(--md-sys-color-surface));
+  --ic-brand-font-color-dark: var(--md-sys-color-on-surface);
+  --ic-brand-font-color-dark-lightened-15: var(--md-sys-color-on-surface-variant);
+  --ic-brand-font-color-dark-lightened-28: var(--md-sys-color-on-surface-variant);
+  --ic-brand-button--primary-bgd: var(--md-sys-color-primary);
+  --ic-brand-button--primary-bgd-darkened-5: color-mix(in srgb, var(--md-sys-color-primary) 92%, var(--md-sys-color-on-primary));
+  --ic-brand-button--primary-bgd-darkened-15: color-mix(in srgb, var(--md-sys-color-primary) 88%, var(--md-sys-color-on-primary));
+  --ic-brand-button--primary-text: var(--md-sys-color-on-primary);
+  --ic-brand-button--secondary-bgd: var(--md-sys-color-secondary-container);
+  --ic-brand-button--secondary-bgd-darkened-5: color-mix(in srgb, var(--md-sys-color-secondary-container) 92%, var(--md-sys-color-on-secondary-container));
+  --ic-brand-button--secondary-bgd-darkened-15: color-mix(in srgb, var(--md-sys-color-secondary-container) 88%, var(--md-sys-color-on-secondary-container));
+  --ic-brand-button--secondary-text: var(--md-sys-color-on-secondary-container);
+  --ic-brand-global-nav-bgd: var(--md-sys-color-surface-container);
+  --ic-brand-global-nav-logo-bgd: var(--md-sys-color-surface-container);
+  --ic-brand-global-nav-ic-icon-svg-fill: var(--md-sys-color-on-surface-variant);
+  --ic-brand-global-nav-ic-icon-svg-fill--active: var(--md-sys-color-on-secondary-container);
+  --ic-brand-global-nav-menu-item__text-color: var(--md-sys-color-on-surface-variant);
+  --ic-brand-global-nav-menu-item__text-color--active: var(--md-sys-color-on-surface);
+  --ic-brand-global-nav-avatar-border: var(--md-sys-color-outline-variant);
+  --ic-brand-global-nav-menu-item__badge-bgd: var(--md-sys-color-error);
+  --ic-brand-global-nav-menu-item__badge-bgd--active: var(--md-sys-color-error);
+  --ic-brand-global-nav-menu-item__badge-text: var(--md-sys-color-on-error);
+  --ic-brand-global-nav-menu-item__badge-text--active: var(--md-sys-color-on-error);
+  --ic-brand-Login-body-bgd-color: var(--md-sys-color-surface-container);
+  --ic-brand-msapplication-tile-color: var(--md-sys-color-primary);
+}

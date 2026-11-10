@@ -1,0 +1,85 @@
+/* Page-level basics: background, type, links, scrollbars, focus. */
+html[data-mc-theme] {
+  background: var(--md-sys-color-surface);
+  accent-color: var(--md-sys-color-primary);
+
+  & body {
+    background: var(--md-sys-color-surface);
+    color: var(--md-sys-color-on-surface);
+    font-family: var(--mc-font);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  & body,
+  & button,
+  & input,
+  & select,
+  & textarea,
+  & .ui-widget,
+  & .ui-widget button,
+  & .ui-widget input,
+  & .ui-widget select,
+  & .ui-widget textarea {
+    font-family: var(--mc-font);
+  }
+
+  & ::selection {
+    background: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+  }
+
+  & a,
+  & .btn-link {
+    color: var(--md-sys-color-primary);
+  }
+
+  & h1, & h2, & h3, & h4, & h5, & h6 {
+    color: var(--md-sys-color-on-surface);
+  }
+  & h1 { font-weight: 400; letter-spacing: 0; }
+  & h2 { font-weight: 400; }
+  & h3, & h4 { font-weight: 500; }
+
+  & hr {
+    border-color: var(--md-sys-color-outline-variant);
+  }
+
+  & code, & pre {
+    background: var(--md-sys-color-surface-container-high);
+    color: var(--md-sys-color-on-surface);
+    border-color: var(--md-sys-color-outline-variant);
+    border-radius: var(--mc-shape-xs);
+  }
+
+  /* Focus ring: M3 uses a 3px secondary ring offset from the component */
+  & :focus-visible {
+    outline: 3px solid var(--md-sys-color-secondary) !important;
+    outline-offset: 2px;
+  }
+
+  /* Scrollbars */
+  scrollbar-color: var(--md-sys-color-outline-variant) transparent;
+  & ::-webkit-scrollbar { width: 12px; height: 12px; }
+  & ::-webkit-scrollbar-track { background: transparent; }
+  & ::-webkit-scrollbar-thumb {
+    background: var(--md-sys-color-outline-variant);
+    border: 3px solid transparent;
+    background-clip: content-box;
+    border-radius: var(--mc-shape-full);
+  }
+  & ::-webkit-scrollbar-thumb:hover { background-color: var(--md-sys-color-outline); }
+
+  & .ic-Layout-wrapper,
+  & #main,
+  & .ic-app-main-content,
+  & #content,
+  & .ic-Layout-contentMain {
+    background: transparent;
+  }
+
+  & .text-muted, & .muted, & .text-info {
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  & .text-error, & .error-text { color: var(--md-sys-color-error); }
+  & .text-success { color: var(--mc-success); }
+}
