@@ -88,6 +88,26 @@ if (isTop) {
     li.querySelector('button')!.addEventListener('click', open);
     list.prepend(li);
   };
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mountNavButton);
-  else mountNavButton();
+  // External-tool nav items (e.g. 视频空间) ship a white PNG <img> instead of an SVG icon,
+  // which vanishes on the light rail. Re-draw it as a mask filled with the theme icon color.
+  const upgradeToolIcons = () => {
+    for (const img of document.querySelectorAll<HTMLImageElement>('.ic-app-header__menu-list-link > img')) {
+      const link = img.parentElement!;
+      if (link.querySelector('.mc-nav-icon-wrap')) continue;
+      const wrap = document.createElement('div');
+      wrap.className = 'menu-item-icon-container mc-nav-icon-wrap';
+      wrap.setAttribute('aria-hidden', 'true');
+      const icon = document.createElement('span');
+      icon.className = 'mc-nav-img-icon';
+      icon.style.setProperty('--mc-icon', `url("${img.src.replace(/"/g, '%22')}")`);
+      wrap.append(icon);
+      img.after(wrap);
+    }
+  };
+  const onReady = () => {
+    mountNavButton();
+    upgradeToolIcons();
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', onReady);
+  else onReady();
 }

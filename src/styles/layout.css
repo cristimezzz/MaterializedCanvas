@@ -74,6 +74,21 @@ html[data-mc-theme] {
     color: var(--md-sys-color-on-surface);
     font-weight: 700;
   }
+
+  /* External-tool items: the original white PNG is replaced by a themed mask (see main.ts) */
+  & .ic-app-header__menu-list-link > img:has(+ .mc-nav-icon-wrap) {
+    display: none;
+  }
+  & .mc-nav-img-icon {
+    width: 24px;
+    height: 24px;
+    background: var(--md-sys-color-on-surface-variant);
+    -webkit-mask: var(--mc-icon) center / contain no-repeat;
+    mask: var(--mc-icon) center / contain no-repeat;
+  }
+  & .ic-app-header__menu-list-item--active .mc-nav-img-icon {
+    background: var(--md-sys-color-on-secondary-container);
+  }
   & .ic-app-header__menu-list-link .menu-item__badge:empty {
     display: none;
   }
