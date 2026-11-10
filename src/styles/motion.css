@@ -80,9 +80,7 @@ html.mc-leaving .mc-progress::after {
 @keyframes mc-tray-content-in {
   from { opacity: 0; transform: translateX(-12px); }
 }
-@keyframes mc-content-shift {
-  from { opacity: 0.6; }
-}
+
 
 /* ------------------------------------------------------------------ Component motion */
 html[data-mc-theme] {
@@ -180,18 +178,17 @@ html[data-mc-theme] {
   /* Nav trays slide via InstUI's own transition (timing remapped to M3 in recolor.ts);
      their contents follow slightly behind for a layered feel. */
   & #nav-tray-portal .navigation-tray-container > * {
-    animation: mc-tray-content-in var(--mc-dur-long) var(--mc-ease-decel) 60ms backwards;
+    animation: mc-tray-content-in 500ms var(--mc-ease-decel) 100ms backwards;
   }
 
-  /* Course menu (hamburger): expanding slides it in; motion.ts flags the toggle so ordinary
-     page loads don't animate it. */
-  &.mc-menu-toggling body.course-menu-expanded #left-side {
-    animation: mc-slide-in-left 350ms var(--mc-ease-decel) backwards;
+  /* Course menu (hamburger) open/close is animated in motion.ts (Web Animations + FLIP). */
+
+  /* Nav trays: InstUI times its states off a 300 ms duration, so the slide itself is lengthened
+     on the element. Exits are cut at 300 ms, by which point this curve is ~90% done. */
+  & #nav-tray-portal > span > span {
+    transition: opacity 500ms cubic-bezier(0.2, 0, 0, 1), transform 500ms cubic-bezier(0.2, 0, 0, 1) !important;
   }
-  &.mc-menu-toggling body.course-menu-expanded #content-wrapper,
-  &.mc-menu-toggling body:not(.course-menu-expanded) #content-wrapper {
-    animation: mc-content-shift 350ms var(--mc-ease) backwards;
-  }
+
   & #flash_message_holder li {
     animation: mc-drop-in var(--mc-dur-medium) var(--mc-ease-decel);
   }

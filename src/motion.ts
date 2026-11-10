@@ -161,19 +161,84 @@ function watchNavigation(): void {
   window.addEventListener('pageshow', () => setLeaving(false));
 }
 
+// ---------------------------------------------------------------------------- course menu toggle
+const MENU_IN = { duration: 500, easing: 'cubic-bezier(0.05, 0.7, 0.1, 1)' }; // emphasized decelerate
+const MENU_OUT = { duration: 380, easing: 'cubic-bezier(0.3, 0, 0.8, 0.15)' }; // emphasized accelerate
+const CONTENT_SHIFT = { duration: 500, easing: 'cubic-bezier(0.2, 0, 0, 1)' };
+
+const menuExpanded = () => document.body.classList.contains('course-menu-expanded');
+const contentEl = () => document.querySelector<HTMLElement>('#content-wrapper');
+
+/** FLIP: content jumped horizontally when the menu toggled; glide it from where it was. */
+function glideContent(beforeLeft: number | undefined): void {
+  const el = contentEl();
+  if (!el || beforeLeft === undefined) return;
+  const dx = beforeLeft - el.getBoundingClientRect().left;
+  if (Math.abs(dx) < 1) return;
+  el.animate([{ transform: `translateX(${dx}px)` }, { transform: 'none' }], CONTENT_SHIFT);
+}
+
+/**
+ * Canvas toggles the course menu synchronously (body.course-menu-expanded + display:none), so:
+ *  - expanding: let Canvas show it, then slide the menu in and glide the content over;
+ *  - collapsing: hold the click, slide the menu out, then replay the click so Canvas hides it.
+ */
 function watchCourseMenuToggle(): void {
-  let t = 0;
-  document.addEventListener(
+  let replaying = false;
+  let busy = false;
+
+  window.addEventListener(
     'click',
     (e) => {
-      if (!(e.target as Element | null)?.closest('#courseMenuToggle')) return;
-      const html = document.documentElement;
-      // Restart the animation even on rapid repeated toggles.
-      html.classList.remove('mc-menu-toggling');
-      void html.offsetWidth;
-      html.classList.add('mc-menu-toggling');
-      clearTimeout(t);
-      t = window.setTimeout(() => html.classList.remove('mc-menu-toggling'), 450);
+      const btn = (e.target as Element | null)?.closest<HTMLElement>('#courseMenuToggle');
+      if (!btn || replaying) return;
+      if (!document.documentElement.hasAttribute('data-mc-theme') || reduceMotion()) return;
+      const menu = document.querySelector<HTMLElement>('#left-side');
+      if (!menu) return;
+      if (busy) {
+        // A toggle is mid-animation: ignore the extra click rather than desync with Canvas.
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        return;
+      }
+      const beforeLeft = contentEl()?.getBoundingClientRect().left;
+
+      if (!menuExpanded()) {
+        // Expanding: Canvas' handlers run after this one; animate on the next frame.
+        busy = true;
+        requestAnimationFrame(() => {
+          if (menuExpanded()) {
+            menu.animate(
+              [{ opacity: 0, transform: 'translateX(-32px)' }, { opacity: 1, transform: 'none' }],
+              MENU_IN,
+            );
+            glideContent(beforeLeft);
+          }
+          setTimeout(() => (busy = false), MENU_IN.duration);
+        });
+        return;
+      }
+
+      // Collapsing: play the exit first, then let Canvas hide the menu.
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      busy = true;
+      const out = menu.animate(
+        [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateX(-32px)' }],
+        { ...MENU_OUT, fill: 'forwards' },
+      );
+      const finish = () => {
+        replaying = true;
+        try {
+          btn.click();
+        } finally {
+          replaying = false;
+        }
+        out.cancel(); // menu is display:none now; drop the held end state
+        glideContent(beforeLeft);
+        setTimeout(() => (busy = false), CONTENT_SHIFT.duration);
+      };
+      out.finished.then(finish, finish);
     },
     true,
   );
