@@ -17,5 +17,9 @@
   },
   "dependencies": {
     "@material/material-color-utilities": "^0.4.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cristimezzz/MaterializedCanvas.git"
   }
 }

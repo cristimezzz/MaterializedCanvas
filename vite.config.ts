@@ -7,7 +7,9 @@ export default defineConfig({
       entry: 'src/main.ts',
       userscript: {
         name: 'Materialized Canvas',
-        namespace: 'https://github.com/materialized-canvas',
+        namespace: 'https://github.com/cristimezzz/MaterializedCanvas',
+        homepageURL: 'https://github.com/cristimezzz/MaterializedCanvas',
+        supportURL: 'https://github.com/cristimezzz/MaterializedCanvas/issues',
         description: '为上海交通大学 Canvas (oc.sjtu.edu.cn) 换上 Material Design 3 外观，支持自选主色与深色模式',
         version: '0.7.1',
         license: 'MIT',
