@@ -1,0 +1,273 @@
+/* People (course roster) redesign: M3 toolbar, outlined list card, role chips, loading motion. */
+html[data-mc-theme] body.people {
+  /* Header row only holds the ⋮ menu: float it next to the tabs instead of taking a row */
+  & .ic-Action-header {
+    position: relative;
+    z-index: 1;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+  }
+  & .ic-Action-header__Secondary {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  & #people-options .al-trigger {
+    min-width: 48px;
+    min-height: 48px;
+    border-radius: var(--mc-shape-full);
+  }
+
+  /* ------------------------------------------------------------------ Toolbar */
+  & .roster-tab {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    padding-top: 20px;
+  }
+  & .roster-tab > .v-gutter,
+  & .roster-tab > form.form-dialog { flex: 0 0 100%; }
+  & .roster-tab > form.form-dialog:empty { display: none; }
+
+  /* Search: InstUI TextInput → pill search bar */
+  & #search_input_container {
+    display: block;
+    flex: 0 1 360px;
+  }
+  & #search_input_container label { display: block; width: 100%; }
+  & #search_input_container label > span > span {
+    display: flex;
+    align-items: center;
+    height: 48px;
+    border-radius: var(--mc-shape-full);
+    background: var(--md-sys-color-surface-container-high);
+    transition: background-color var(--mc-dur) var(--mc-ease), box-shadow var(--mc-dur) var(--mc-ease);
+  }
+  & #search_input_container label > span > span:hover {
+    background: color-mix(in srgb, var(--md-sys-color-surface-container-high), var(--md-sys-color-on-surface) var(--mc-hover));
+  }
+  & #search_input_container label > span > span:focus-within {
+    background: var(--md-sys-color-surface-container-highest);
+    box-shadow: 0 0 0 2px var(--md-sys-color-primary);
+  }
+  & #search_input_container label > span > span *,
+  & #search_input_container label > span > span *::before,
+  & #search_input_container label > span > span *::after {
+    border-color: transparent !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+  & #search_input_container label > span > span > span { width: 100%; }
+  & #search_input_container input {
+    height: 48px;
+    font-size: 1rem;
+    color: var(--md-sys-color-on-surface);
+    border: none !important;
+    outline: none !important;
+  }
+  & #search_input_container svg {
+    fill: var(--md-sys-color-on-surface-variant);
+    color: var(--md-sys-color-on-surface-variant);
+  }
+
+  /* Role filter: filled pill dropdown */
+  & .roster-tab > select {
+    height: 48px;
+    min-width: 180px;
+    margin: 0;
+    padding: 0 40px 0 20px;
+    border: none;
+    border-radius: var(--mc-shape-full);
+    background-color: var(--md-sys-color-surface-container-high);
+    color: var(--md-sys-color-on-surface);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+      linear-gradient(135deg, currentColor 50%, transparent 50%);
+    background-position: right 22px center, right 17px center;
+    background-size: 5px 5px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+  }
+  & .roster-tab > select:hover {
+    background-color: color-mix(in srgb, var(--md-sys-color-surface-container-high), var(--md-sys-color-on-surface) var(--mc-hover));
+  }
+  & .roster-tab > select:focus {
+    box-shadow: 0 0 0 2px var(--md-sys-color-primary);
+    border: none;
+  }
+
+  & .v-gutter { margin-top: 8px; }
+
+  /* ------------------------------------------------------------------ Roster card */
+  & table.roster {
+    width: 100%;
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-radius: var(--mc-shape-lg);
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: clip;
+    background: transparent;
+  }
+  & table.roster thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    height: 48px;
+    padding: 0 16px;
+    background: var(--md-sys-color-surface-container);
+    border: none;
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-align: start;
+  }
+  & table.roster tbody td {
+    height: 64px;
+    padding: 0 16px;
+    vertical-align: middle;
+    border: none;
+    border-bottom: 1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 70%, transparent);
+    background: transparent !important;
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 0.875rem;
+  }
+  & table.roster tbody tr:last-child td { border-bottom: none; }
+  & table.roster tbody tr {
+    background: transparent !important; /* drop Canvas' zebra striping */
+    transition: background-color var(--mc-dur) var(--mc-ease);
+  }
+  & table.roster tbody tr:hover {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) 5%, transparent) !important;
+  }
+  & table.roster tbody tr:hover td { background: transparent !important; }
+
+  /* Avatar column */
+  & table.roster th:first-child,
+  & table.roster td:first-child {
+    width: 56px;
+    padding-inline: 16px 0;
+  }
+  & table.roster td:first-child [role="img"] {
+    width: 40px;
+    height: 40px;
+    border: none;
+    box-shadow: 0 0 0 1px var(--md-sys-color-outline-variant);
+    background-color: var(--md-sys-color-surface-container-highest);
+    transition: transform var(--mc-dur) var(--mc-ease-spring), box-shadow var(--mc-dur) var(--mc-ease);
+  }
+  & table.roster tbody tr:hover td:first-child [role="img"] {
+    transform: scale(1.08);
+    box-shadow: 0 0 0 2px var(--md-sys-color-primary);
+  }
+
+  /* Name */
+  & .roster_user_name {
+    color: var(--md-sys-color-on-surface);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  & .roster_user_name:hover {
+    color: var(--md-sys-color-primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  & .rosterUser .section { color: var(--md-sys-color-on-surface-variant); }
+
+  /* Role → M3 chip, tone by enrollment type */
+  & .rosterUser td:nth-child(4) > div {
+    display: inline-flex;
+    align-items: center;
+    height: 28px;
+    padding: 0 12px;
+    border-radius: var(--mc-shape-sm);
+    border: 1px solid var(--md-sys-color-outline-variant);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--md-sys-color-on-surface-variant);
+    background: transparent;
+  }
+  & .TeacherEnrollment td:nth-child(4) > div {
+    border-color: transparent;
+    background: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+  }
+  & .TaEnrollment td:nth-child(4) > div {
+    border-color: transparent;
+    background: var(--md-sys-color-tertiary-container);
+    color: var(--md-sys-color-on-tertiary-container);
+  }
+  & .DesignerEnrollment td:nth-child(4) > div,
+  & .ObserverEnrollment td:nth-child(4) > div {
+    border-color: transparent;
+    background: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+  }
+
+  & table.roster td.right .al-trigger {
+    min-width: 40px;
+    min-height: 40px;
+    border-radius: var(--mc-shape-full);
+  }
+
+  /* ------------------------------------------------------------------ Loading motion */
+  /* Rows rise in as each page of people arrives. The stagger repeats every 50 rows
+     (Canvas' page size), so later pages animate where you are scrolling. */
+  & tr.rosterUser {
+    animation: mc-roster-in 360ms var(--mc-ease-decel) backwards;
+  }
+  & tr.rosterUser:nth-child(50n + 2) { animation-delay: 30ms; }
+  & tr.rosterUser:nth-child(50n + 3) { animation-delay: 60ms; }
+  & tr.rosterUser:nth-child(50n + 4) { animation-delay: 90ms; }
+  & tr.rosterUser:nth-child(50n + 5) { animation-delay: 120ms; }
+  & tr.rosterUser:nth-child(50n + 6) { animation-delay: 150ms; }
+  & tr.rosterUser:nth-child(50n + 7) { animation-delay: 180ms; }
+  & tr.rosterUser:nth-child(50n + 8) { animation-delay: 210ms; }
+  & tr.rosterUser:nth-child(50n + 9) { animation-delay: 240ms; }
+  & tr.rosterUser:nth-child(50n + 10) { animation-delay: 270ms; }
+  & tr.rosterUser:nth-child(50n + 11) { animation-delay: 300ms; }
+  & tr.rosterUser:nth-child(50n + 12) { animation-delay: 330ms; }
+  & tr.rosterUser:nth-child(50n + 13) { animation-delay: 360ms; }
+
+  /* While Canvas fetches the next page: shimmering skeleton rows instead of a blank gap */
+  & .paginatedLoadingIndicator {
+    height: 192px;
+    margin-top: 8px;
+    border-radius: var(--mc-shape-lg);
+    border: 1px solid var(--md-sys-color-outline-variant);
+    --sk: var(--md-sys-color-surface-container-highest);
+    background:
+      linear-gradient(100deg, transparent 30%, color-mix(in srgb, var(--md-sys-color-surface) 70%, transparent) 50%, transparent 70%) 0 0 / 200% 100%,
+      radial-gradient(circle 20px at 36px 32px, var(--sk) 99%, transparent) 0 0 / 100% 64px repeat-y,
+      /* each layer is one 64px row tile with a bar painted inside it, repeated down */
+      linear-gradient(transparent 26px, var(--sk) 26px 38px, transparent 38px) 72px 0 / 22% 64px repeat-y,
+      linear-gradient(transparent 26px, var(--sk) 26px 38px, transparent 38px) 60% 0 / 12% 64px repeat-y,
+      linear-gradient(transparent 22px, var(--sk) 22px 42px, transparent 42px) 82% 0 / 64px 64px repeat-y;
+    background-color: transparent;
+    animation: mc-shimmer 1.4s linear infinite;
+  }
+  & .paginatedLoadingIndicator > * { display: none; }
+}
+
+@keyframes mc-roster-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+@keyframes mc-shimmer {
+  from { background-position: 150% 0, 0 0, 72px 0, 60% 0, 82% 0; }
+  to { background-position: -50% 0, 0 0, 72px 0, 60% 0, 82% 0; }
+}
+
+@media (max-width: 900px) {
+  html[data-mc-theme] body.people table.roster td:nth-child(3),
+  html[data-mc-theme] body.people table.roster th:nth-child(3) { display: none; }
+}

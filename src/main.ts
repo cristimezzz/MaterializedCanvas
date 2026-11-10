@@ -15,6 +15,7 @@ import dashboard from './styles/pages/dashboard.css?inline';
 import course from './styles/pages/course.css?inline';
 import tools from './styles/pages/tools.css?inline';
 import files from './styles/pages/files.css?inline';
+import people from './styles/pages/people.css?inline';
 import dark from './styles/dark.css?inline';
 import motion from './styles/motion.css?inline';
 
@@ -57,7 +58,7 @@ function apply(s: Settings): void {
 
 // Order matters: theme vars first, then hand-written styles (they must beat recolor output).
 applyTheme(settings);
-addFixedStyle('styles', [tokens, base, components, layout, dashboard, course, tools, files, dark, motion].join('\n'));
+addFixedStyle('styles', [tokens, base, components, layout, dashboard, course, tools, files, people, dark, motion].join('\n'));
 if (settings.enabled) {
   primeLogo();
   primeFromCache();
