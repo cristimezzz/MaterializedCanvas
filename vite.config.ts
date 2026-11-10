@@ -13,7 +13,7 @@ export default defineConfig({
         homepageURL: 'https://github.com/cristimezzz/MaterializedCanvas',
         supportURL: 'https://github.com/cristimezzz/MaterializedCanvas/issues',
         description: '为上海交通大学 Canvas (oc.sjtu.edu.cn) 换上 Material Design 3 外观，支持自选主色与深色模式',
-        version: '0.7.2',
+        version: '0.7.3',
         license: 'MIT',
         icon: 'https://oc.sjtu.edu.cn/favicon.ico',
         match: ['https://oc.sjtu.edu.cn/*'],

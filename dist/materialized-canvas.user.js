@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Materialized Canvas
 // @namespace    https://github.com/cristimezzz/MaterializedCanvas
-// @version      0.7.2
+// @version      0.7.3
 // @description  为上海交通大学 Canvas (oc.sjtu.edu.cn) 换上 Material Design 3 外观，支持自选主色与深色模式
 // @license      MIT
 // @icon         https://oc.sjtu.edu.cn/favicon.ico
@@ -6728,16 +6728,97 @@ html[data-mc-theme] .fc-unthemed .fc-popover {
 html[data-mc-theme] .fc-day-header,
 html[data-mc-theme] .fc-unthemed th.fc-day-header {
   background:var(--md-sys-color-surface-container);
-  color:var(--md-sys-color-on-surface-variant);
+  color:var(--md-sys-color-on-surface);
   font-weight:500
 }
 html[data-mc-theme] .fc-unthemed td.fc-today,
 html[data-mc-theme] .fc .fc-today,
-html[data-mc-theme] .fc-state-highlight {
+html[data-mc-theme] .fc-state-highlight,
+html[data-mc-theme] #calendar-app .fc-month-view .fc-today {
   background:color-mix(in srgb, var(--md-sys-color-primary) 10%, transparent)
 }
 html[data-mc-theme] .fc-event {
   border-radius:var(--mc-shape-xs)
+}
+html[data-mc-theme] .calendar_navigator {
+  align-items:center;
+  gap:8px;
+  display:flex
+}
+html[data-mc-theme] .navigation_buttons.ui-buttonset {
+  gap:4px;
+  margin:0;
+  display:inline-flex
+}
+html[data-mc-theme] .navigation_buttons .btn.ui-button {
+  border-radius:var(--mc-shape-full);
+  width:40px;
+  min-width:40px;
+  height:40px;
+  min-height:40px;
+  color:var(--md-sys-color-on-surface-variant);
+  background:0 0;
+  border:0;
+  justify-content:center;
+  align-items:center;
+  margin:0;
+  padding:0;
+  display:inline-flex
+}
+html[data-mc-theme] .navigation_buttons .btn.ui-button:hover {
+  background:color-mix(in srgb, var(--md-sys-color-on-surface) var(--mc-hover), transparent);
+  color:var(--md-sys-color-on-surface)
+}
+html[data-mc-theme] .navigation_buttons .ui-button-text {
+  padding:0;
+  display:contents
+}
+html[data-mc-theme] .navigation_buttons .ui-button-text i {
+  color:inherit;
+  margin:0
+}
+html[data-mc-theme] .navigation_title_text {
+  color:var(--md-sys-color-on-surface);
+  font-weight:500;
+  text-decoration:none
+}
+html[data-mc-theme] .navigation_title_text:hover {
+  text-decoration:underline
+}
+html[data-mc-theme] #calendar-app .fc-day-number {
+  color:var(--md-sys-color-on-surface)
+}
+html[data-mc-theme] #calendar-app .fc-day-number.fc-other-month,
+html[data-mc-theme] #calendar-app .fc-other-month .fc-day-number {
+  color:var(--md-sys-color-outline)
+}
+html[data-mc-theme] #calendar-app .fc-month-view .fc-day-number.fc-today {
+  color:var(--md-sys-color-primary);
+  background:0 0;
+  font-weight:700
+}
+html[data-mc-theme] #calendar-app .fc-event,
+html[data-mc-theme] #calendar-drag-and-drop-container .fc-event,
+html[data-mc-theme] #calendar-app .fc-event.assignment {
+  background-color:var(--md-sys-color-surface-container-highest);
+  color:var(--md-sys-color-on-surface);
+  border-radius:var(--mc-shape-xs);
+  border-style:solid;
+  border-width:0 0 0 4px;
+  padding:2px 6px
+}
+html[data-mc-theme] #calendar-app .fc-event:hover,
+html[data-mc-theme] #calendar-drag-and-drop-container .fc-event:hover {
+  background-color:color-mix(in srgb, var(--md-sys-color-surface-container-highest), var(--md-sys-color-on-surface) var(--mc-hover));
+  color:var(--md-sys-color-on-surface)
+}
+html[data-mc-theme] #calendar-app .fc-event :is(.fc-content,.fc-title,.fc-time,i),
+html[data-mc-theme] #calendar-drag-and-drop-container .fc-event :is(.fc-content,.fc-title,.fc-time,i) {
+  color:inherit
+}
+html[data-mc-theme] #calendar-app .fc-event .calendar__event--completed {
+  opacity:1;
+  color:var(--md-sys-color-on-surface-variant)
 }
 html[data-mc-theme] .fc-unthemed .fc-popover {
   background:var(--md-sys-color-surface-container);

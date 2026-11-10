@@ -28,16 +28,104 @@ html[data-mc-theme] {
   & .fc-day-header,
   & .fc-unthemed th.fc-day-header {
     background: var(--md-sys-color-surface-container);
-    color: var(--md-sys-color-on-surface-variant);
+    color: var(--md-sys-color-on-surface);
     font-weight: 500;
   }
   & .fc-unthemed td.fc-today,
   & .fc .fc-today,
-  & .fc-state-highlight {
+  & .fc-state-highlight,
+  & #calendar-app .fc-month-view .fc-today {
     background: color-mix(in srgb, var(--md-sys-color-primary) 10%, transparent);
   }
   & .fc-event {
     border-radius: var(--mc-shape-xs);
+  }
+
+  /* Header: prev/next are a jQuery UI buttonset, not a .btn-group → round icon buttons */
+  & .calendar_navigator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  & .navigation_buttons.ui-buttonset {
+    display: inline-flex;
+    gap: 4px;
+    margin: 0;
+  }
+  & .navigation_buttons .btn.ui-button {
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    min-height: 40px;
+    padding: 0;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: var(--mc-shape-full);
+    background: transparent;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  & .navigation_buttons .btn.ui-button:hover {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) var(--mc-hover), transparent);
+    color: var(--md-sys-color-on-surface);
+  }
+  & .navigation_buttons .ui-button-text {
+    display: contents;
+    padding: 0;
+  }
+  & .navigation_buttons .ui-button-text i {
+    color: inherit;
+    margin: 0;
+  }
+  & .navigation_title_text {
+    color: var(--md-sys-color-on-surface);
+    font-weight: 500;
+    text-decoration: none;
+  }
+  & .navigation_title_text:hover {
+    text-decoration: underline;
+  }
+
+  /* Grid text */
+  & #calendar-app .fc-day-number {
+    color: var(--md-sys-color-on-surface);
+  }
+  & #calendar-app .fc-day-number.fc-other-month,
+  & #calendar-app .fc-other-month .fc-day-number {
+    color: var(--md-sys-color-outline);
+  }
+  & #calendar-app .fc-month-view .fc-day-number.fc-today {
+    background: transparent;
+    color: var(--md-sys-color-primary);
+    font-weight: 700;
+  }
+
+  /* Events: Canvas forces a white chip and the recolor engine skips .fc-event (course colors),
+     so paint a tonal chip ourselves; border-color still comes from .group_course_* */
+  & #calendar-app .fc-event,
+  & #calendar-drag-and-drop-container .fc-event,
+  & #calendar-app .fc-event.assignment {
+    background-color: var(--md-sys-color-surface-container-highest);
+    color: var(--md-sys-color-on-surface);
+    border-style: solid;
+    border-width: 0 0 0 4px;
+    border-radius: var(--mc-shape-xs);
+    padding: 2px 6px;
+  }
+  & #calendar-app .fc-event:hover,
+  & #calendar-drag-and-drop-container .fc-event:hover {
+    background-color: color-mix(in srgb, var(--md-sys-color-surface-container-highest), var(--md-sys-color-on-surface) var(--mc-hover));
+    color: var(--md-sys-color-on-surface);
+  }
+  & #calendar-app .fc-event :is(.fc-content, .fc-title, .fc-time, i),
+  & #calendar-drag-and-drop-container .fc-event :is(.fc-content, .fc-title, .fc-time, i) {
+    color: inherit;
+  }
+  & #calendar-app .fc-event .calendar__event--completed {
+    opacity: 1;
+    color: var(--md-sys-color-on-surface-variant);
   }
   & .fc-unthemed .fc-popover {
     background: var(--md-sys-color-surface-container);
