@@ -15,8 +15,14 @@ html[data-mc-theme] body.grades {
     color: var(--md-sys-color-on-surface);
   }
   & #print-grades-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: auto;
     min-height: 40px;
     padding: 0 20px;
+    line-height: 1.25rem;
     border: none;
     border-radius: var(--mc-shape-full);
     background: var(--md-sys-color-secondary-container);
@@ -59,8 +65,23 @@ html[data-mc-theme] body.grades {
     color: var(--md-sys-color-on-surface);
   }
   & #apply_select_menus {
+    display: inline-flex;
+    align-items: stretch;
     min-height: 48px;
     border-radius: var(--mc-shape-full);
+  }
+  /* InstUI paints the button on its inner span; make it fill the 48px and center the label */
+  & #apply_select_menus > span {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding-inline: 20px;
+    border-radius: var(--mc-shape-full);
+  }
+  & #apply_select_menus > span > span {
+    padding-block: 0;
   }
 
   /* ------------------------------------------------------------------ Grade card */

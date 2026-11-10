@@ -8148,12 +8148,18 @@ html[data-mc-theme] body.grades #print-grades-container .ic-Action-header__Headi
 html[data-mc-theme] body.grades #print-grades-button {
   border-radius:var(--mc-shape-full);
   background:var(--md-sys-color-secondary-container);
+  height:auto;
   min-height:40px;
   color:var(--md-sys-color-on-secondary-container);
   box-shadow:none;
   border:none;
+  justify-content:center;
+  align-items:center;
+  gap:8px;
   padding:0 20px;
-  font-weight:500
+  font-weight:500;
+  line-height:1.25rem;
+  display:inline-flex
 }
 html[data-mc-theme] body.grades #print-grades-button:hover {
   background:color-mix(in srgb, var(--md-sys-color-secondary-container), var(--md-sys-color-on-secondary-container) var(--mc-hover))
@@ -8191,7 +8197,21 @@ html[data-mc-theme] body.grades #GradeSummarySelectMenuGroup input {
 }
 html[data-mc-theme] body.grades #apply_select_menus {
   border-radius:var(--mc-shape-full);
-  min-height:48px
+  align-items:stretch;
+  min-height:48px;
+  display:inline-flex
+}
+html[data-mc-theme] body.grades #apply_select_menus>span {
+  border-radius:var(--mc-shape-full);
+  flex:1;
+  justify-content:center;
+  align-items:center;
+  min-height:48px;
+  padding-inline:20px;
+  display:flex
+}
+html[data-mc-theme] body.grades #apply_select_menus>span>span {
+  padding-block:0
 }
 html[data-mc-theme] body.grades #grades_summary {
   border:1px solid var(--md-sys-color-outline-variant);
