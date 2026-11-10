@@ -120,7 +120,7 @@ html[data-mc-theme] {
   /* Classic quizzes */
   & .question,
   & .display_question {
-    background: var(--md-sys-color-surface-container-lowest);
+    background: transparent;
     border: 1px solid var(--md-sys-color-outline-variant);
     border-radius: var(--mc-shape-md);
     overflow: hidden;

@@ -69,7 +69,7 @@ html[data-mc-theme] {
     border-color: var(--md-sys-color-outline-variant);
   }
   & .planner-grouping {
-    background: var(--md-sys-color-surface-container-lowest);
+    background: transparent;
     border: 1px solid var(--md-sys-color-outline-variant) !important;
     border-radius: var(--mc-shape-md);
     overflow: hidden;

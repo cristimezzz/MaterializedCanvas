@@ -206,7 +206,7 @@ html[data-mc-theme] {
   & .ic-Table,
   & table.summary,
   & table.ic-Table {
-    background: var(--md-sys-color-surface-container-lowest);
+    background: transparent;
     border-collapse: separate;
     border-spacing: 0;
     border: 1px solid var(--md-sys-color-outline-variant);
@@ -439,7 +439,10 @@ html[data-mc-theme] {
   /* ------------------------------------------------------------------ Item groups (ig-*) used across modules / assignments / quizzes */
   & .item-group-condensed,
   & .item-group-container .item-group-condensed {
-    background: var(--md-sys-color-surface-container-lowest);
+    /* Same tone as the page; the outline + tonal header carry the grouping. */
+    background: transparent;
+    padding: 0;
+    margin-bottom: 16px;
     border: 1px solid var(--md-sys-color-outline-variant);
     border-radius: var(--mc-shape-md);
     overflow: hidden;
