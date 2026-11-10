@@ -47,54 +47,7 @@ html[data-mc-theme] {
     border-radius: var(--mc-shape-md);
   }
 
-  /* ---- Files */
-  & .ef-main,
-  & .ef-folder-content,
-  & .ef-directory {
-    border-color: var(--md-sys-color-outline-variant);
-    background: transparent;
-  }
-  & .ef-header {
-    border-bottom: none;
-  }
-  & .ef-directory-header {
-    background: var(--md-sys-color-surface-container);
-    color: var(--md-sys-color-on-surface-variant);
-    border-color: var(--md-sys-color-outline-variant);
-    border-radius: var(--mc-shape-md) var(--mc-shape-md) 0 0;
-  }
-  & .ef-item-row {
-    border-color: var(--md-sys-color-outline-variant);
-  }
-  & .ef-item-row:hover {
-    background: color-mix(in srgb, var(--md-sys-color-on-surface) var(--mc-hover), transparent);
-  }
-  & .ef-item-row.ef-item-selected {
-    background: var(--md-sys-color-secondary-container);
-    color: var(--md-sys-color-on-secondary-container);
-  }
-  & .ef-folder-list {
-    border-color: var(--md-sys-color-outline-variant);
-  }
-  & .ef-folder-list .treeLabel,
-  & .ef-folder-list a {
-    border-radius: var(--mc-shape-full);
-  }
-  & .ef-folder-list [aria-selected="true"] > .treeLabel,
-  & .ef-folder-list [aria-selected="true"] > a {
-    background: var(--md-sys-color-secondary-container) !important;
-    color: var(--md-sys-color-on-secondary-container) !important;
-  }
-  & .ef-footer {
-    border-color: var(--md-sys-color-outline-variant);
-    background: transparent;
-  }
-  & .ef-file-preview-overlay,
-  & .ef-file-preview-header,
-  & .ef-file-preview-information {
-    background: var(--md-sys-color-surface-container-highest);
-    color: var(--md-sys-color-on-surface);
-  }
+  /* ---- Files: see files.css */
 
   /* ---- Calendar (FullCalendar) */
   & #calendar-app,
