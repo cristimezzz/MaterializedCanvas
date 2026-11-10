@@ -1,8 +1,10 @@
 import { defineConfig } from 'vite';
 import monkey from 'vite-plugin-monkey';
+import { readableStrings } from './scripts/readable-strings';
 
 export default defineConfig({
   plugins: [
+    readableStrings(),
     monkey({
       entry: 'src/main.ts',
       userscript: {
@@ -11,7 +13,7 @@ export default defineConfig({
         homepageURL: 'https://github.com/cristimezzz/MaterializedCanvas',
         supportURL: 'https://github.com/cristimezzz/MaterializedCanvas/issues',
         description: '为上海交通大学 Canvas (oc.sjtu.edu.cn) 换上 Material Design 3 外观，支持自选主色与深色模式',
-        version: '0.7.1',
+        version: '0.7.2',
         license: 'MIT',
         icon: 'https://oc.sjtu.edu.cn/favicon.ico',
         match: ['https://oc.sjtu.edu.cn/*'],
@@ -26,4 +28,10 @@ export default defineConfig({
       },
     }),
   ],
+  build: {
+    // Keep esbuild's CSS pass (it flattens nesting, which is what was tested); readableStrings then
+    // re-indents the result, because GreasyFork rejects minified-looking code.
+    minify: false,
+    cssMinify: true,
+  },
 });
