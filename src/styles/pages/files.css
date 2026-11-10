@@ -189,6 +189,21 @@ html[data-mc-theme] body.files {
     color: var(--md-sys-color-on-surface);
   }
 
+  /* Folders first, then files. Done with flex `order` so React's DOM is untouched, rows loaded
+     by infinite scroll slot in automatically, and the chosen sort column still applies within
+     each group. */
+  & .ef-directory [role="grid"] {
+    display: flex;
+    flex-direction: column;
+  }
+  & .ef-directory [role="grid"] > .ef-directory-header { order: -2; }
+  & .ef-directory [role="grid"] > .ef-item-row:has(.mimeClass-folder, .mimeClass-folder-locked) { order: -1; }
+  & .ef-directory [role="grid"] > .paginatedView-loading { order: 1; }
+  /* A faint primary tint sets the folder group apart from the files below it */
+  & .ef-directory [role="grid"] > .ef-item-row:has(.mimeClass-folder, .mimeClass-folder-locked) {
+    background: color-mix(in srgb, var(--md-sys-color-primary) 3%, transparent);
+  }
+
   /* The selection column only holds a visually hidden checkbox */
   & .ef-select-col {
     flex: 0 0 16px !important;
