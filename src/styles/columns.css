@@ -1,0 +1,103 @@
+/* Resizable course menu / right sidebar, and nav trays that push the page (logic in layout.ts).
+   Canvas sizes these in _ic_app_layout.scss: #left-side is absolutely positioned (192px) beside a
+   matching margin on .ic-Layout-columns; the right sidebar (288px) sits in a flex row from 992px,
+   or from 1140px while the course menu is open. Overrides only apply once a width was chosen. */
+
+/* Handles stay hidden (and out of the tab order) unless a rule below shows them:
+   phones, theme off, a column Canvas isn't showing beside the content. */
+.mc-resizer {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  html[data-mc-theme] {
+    /* ------------------------------------------------------------------ Left column */
+    &[data-mc-left-w] body.course-menu-expanded:not(.ic-no-flex-layout):not(.embedded):not(.is-inside-submission-frame):not(.content-only) {
+      & .ic-Layout-columns { margin-inline-start: var(--mc-left-w); }
+      & .ic-Layout-watermark { inset-inline-start: calc(-1 * var(--mc-left-w)); }
+      & #left-side { width: var(--mc-left-w); }
+    }
+
+    /* ------------------------------------------------------------------ Nav tray pushes the page */
+    & #wrapper {
+      padding-inline-start: var(--mc-tray-w, 0px);
+    }
+    /* Opening is tracked frame by frame (layout.ts). Canvas unmounts the tray at once on close,
+       so ease the page back instead of snapping. */
+    &:not([data-mc-tray-open]) #wrapper {
+      transition: padding-inline-start 400ms var(--mc-ease-decel);
+    }
+    &[data-mc-tray-open] #nav-tray-portal [role="dialog"] {
+      box-shadow: none;
+      border-inline-end: 1px solid var(--md-sys-color-outline-variant);
+    }
+
+    /* ------------------------------------------------------------------ Drag handles */
+    & .mc-resizer {
+      display: none;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 12px;
+      z-index: 20;
+      cursor: col-resize;
+      touch-action: none;
+      outline: none;
+    }
+    & body.course-menu-expanded #left-side > .mc-resizer {
+      display: block;
+      inset-inline-end: -6px;
+    }
+    & #right-side-wrapper > .mc-resizer {
+      inset-inline-start: 6px; /* inside the sidebar's 24px leading padding (the gutter) */
+    }
+    & .mc-resizer::after {
+      content: "";
+      position: absolute;
+      top: 8px;
+      bottom: 8px;
+      inset-inline-start: 50%;
+      width: 2px;
+      margin-inline-start: -1px;
+      border-radius: var(--mc-shape-full);
+      background: var(--md-sys-color-outline-variant);
+      opacity: 0;
+      transition: opacity var(--mc-dur) var(--mc-ease), background-color var(--mc-dur) var(--mc-ease),
+        width var(--mc-dur) var(--mc-ease), margin var(--mc-dur) var(--mc-ease);
+    }
+    & .mc-resizer:hover::after { opacity: 1; }
+    & .mc-resizer:focus-visible::after,
+    & .mc-resizer--active::after {
+      opacity: 1;
+      width: 4px;
+      margin-inline-start: -2px;
+      background: var(--md-sys-color-primary);
+    }
+
+    /* While dragging: no transitions fighting the pointer, no text selection, one cursor. */
+    &[data-mc-resizing],
+    &[data-mc-resizing] * {
+      cursor: col-resize !important;
+      user-select: none !important;
+    }
+    &[data-mc-resizing] :is(#left-side, #right-side-wrapper, #content-wrapper, .ic-Layout-columns) {
+      transition: none !important;
+    }
+  }
+}
+
+/* Right sidebar: only resizable where Canvas lays it out as a column beside the content. */
+@media (min-width: 992px) {
+  html[data-mc-theme] body:not(.course-menu-expanded) #right-side-wrapper > .mc-resizer { display: block; }
+  html[data-mc-theme][data-mc-right-w] body:not(.course-menu-expanded) .ic-app-main-content__secondary {
+    flex: 0 0 var(--mc-right-w);
+    width: var(--mc-right-w);
+  }
+}
+@media (min-width: 1140px) {
+  html[data-mc-theme] body.course-menu-expanded #right-side-wrapper > .mc-resizer { display: block; }
+  html[data-mc-theme][data-mc-right-w] body.course-menu-expanded .ic-app-main-content__secondary {
+    flex: 0 0 var(--mc-right-w);
+    width: var(--mc-right-w);
+  }
+}

@@ -43,3 +43,12 @@
   `table#syllabus` with `table-layout: fixed`, size it via `thead th`), modules, feed
   (`.recent_activity`), or assignments. Sidebar: `#course_show_secondary`, InstUI to-do
   `.ToDoSidebarItem` (its SVG icon is sized 1em by InstUI), `.events_list`, `.mini_month`.
+- Column sizes (Canvas `_ic_app_layout.scss`): `#left-side` is `position: absolute` (192px) next to a
+  matching `margin-left` on `.ic-Layout-columns` (≥768px, `body.course-menu-expanded`); the right
+  sidebar `#right-side-wrapper.ic-app-main-content__secondary` (288px, 24px leading padding) is a flex
+  column from 992px, or 1140px with the course menu open. `src/layout.ts` stores user widths under
+  GM key `layout` and exposes them as `--mc-left-w` / `--mc-right-w` (+ `data-mc-left-w` /
+  `data-mc-right-w` on `<html>`); `.mc-resizer` handles live inside both columns.
+- Global nav trays render in `#nav-tray-portal`; `layout.ts` tracks the tray's right edge each frame
+  while it moves and pads `#wrapper` by `--mc-tray-w` (`html[data-mc-tray-open]`), so the page is
+  pushed instead of covered.

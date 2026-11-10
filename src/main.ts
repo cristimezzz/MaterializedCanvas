@@ -6,11 +6,13 @@ import { openPanel } from './panel/panel';
 import { setDarkContent } from './darkContent';
 import { initMotion } from './motion';
 import { primeLogo, refreshLogo } from './logo';
+import { initLayout } from './layout';
 
 import tokens from './styles/tokens.css?inline';
 import base from './styles/base.css?inline';
 import components from './styles/components.css?inline';
 import layout from './styles/layout.css?inline';
+import columns from './styles/columns.css?inline';
 import dashboard from './styles/pages/dashboard.css?inline';
 import course from './styles/pages/course.css?inline';
 import tools from './styles/pages/tools.css?inline';
@@ -88,7 +90,7 @@ function apply(s: Settings): void {
 
 // Order matters: theme vars first, then hand-written styles (they must beat recolor output).
 applyTheme(settings);
-addFixedStyle('styles', [tokens, base, components, layout, dashboard, course, tools, lists, assignments, grades, discussions, home, files, people, mobile, dark, motion].join('\n'));
+addFixedStyle('styles', [tokens, base, components, layout, columns, dashboard, course, tools, lists, assignments, grades, discussions, home, files, people, mobile, dark, motion].join('\n'));
 if (settings.enabled) {
   primeLogo();
   primeFromCache();
@@ -225,6 +227,7 @@ if (isTop) {
     upgradeToolIcons();
     syncThemeColor(settings.enabled);
     watchMobile();
+    initLayout();
   };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', onReady);
   else onReady();

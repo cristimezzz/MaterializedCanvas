@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Materialized Canvas
 // @namespace    https://github.com/cristimezzz/MaterializedCanvas
-// @version      0.7.4
+// @version      0.7.5
 // @description  为上海交通大学 Canvas (oc.sjtu.edu.cn) 换上 Material Design 3 外观，支持自选主色与深色模式
 // @license      MIT
 // @icon         https://oc.sjtu.edu.cn/favicon.ico
@@ -28,7 +28,7 @@
 	var _GM_setValue = (() => typeof GM_setValue != "undefined" ? GM_setValue : void 0)();
 	var _GM_xmlhttpRequest = (() => typeof GM_xmlhttpRequest != "undefined" ? GM_xmlhttpRequest : void 0)();
 	var _unsafeWindow = (() => typeof unsafeWindow != "undefined" ? unsafeWindow : void 0)();
-	var DEFAULTS = {
+	var DEFAULTS$1 = {
 		enabled: true,
 		seed: "#C8161E",
 		mode: "system",
@@ -69,16 +69,16 @@
 			color: "#5B5F63"
 		}
 	];
-	var KEY$1 = "settings";
+	var KEY$2 = "settings";
 	function loadSettings() {
-		const saved = _GM_getValue(KEY$1, {});
+		const saved = _GM_getValue(KEY$2, {});
 		return {
-			...DEFAULTS,
+			...DEFAULTS$1,
 			...saved
 		};
 	}
 	function saveSettings(s) {
-		_GM_setValue(KEY$1, s);
+		_GM_setValue(KEY$2, s);
 	}
 	function signum(num) {
 		if (num < 0) return -1;
@@ -4761,7 +4761,7 @@ button:focus-visible {
   }
 }
 `;
-	var host = null;
+	var host$1 = null;
 	function h(tag, attrs = {}, ...children) {
 		const el = document.createElement(tag);
 		for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
@@ -4769,7 +4769,7 @@ button:focus-visible {
 		return el;
 	}
 	function openPanel(current, apply) {
-		if (host) return;
+		if (host$1) return;
 		let s = { ...current };
 		const update = (patch) => {
 			s = {
@@ -4779,16 +4779,16 @@ button:focus-visible {
 			apply(s);
 			render();
 		};
-		host = h("div", { id: "mc-settings-host" });
-		const shadow = host.attachShadow({ mode: "open" });
+		host$1 = h("div", { id: "mc-settings-host" });
+		const shadow = host$1.attachShadow({ mode: "open" });
 		const style = h("style");
 		style.textContent = panel_default;
 		const body = h("div");
 		shadow.append(style, body);
-		document.body.appendChild(host);
+		document.body.appendChild(host$1);
 		const close = () => {
-			host?.remove();
-			host = null;
+			host$1?.remove();
+			host$1 = null;
 			document.removeEventListener("keydown", onKey, true);
 		};
 		const onKey = (e) => {
@@ -4945,7 +4945,7 @@ button:focus-visible {
 				class: "btn",
 				type: "button"
 			}, "恢复默认");
-			reset.addEventListener("click", () => update({ ...DEFAULTS }));
+			reset.addEventListener("click", () => update({ ...DEFAULTS$1 }));
 			const done = h("button", {
 				class: "btn filled",
 				type: "button"
@@ -5319,7 +5319,7 @@ table, td, th { border-color: var(--md-sys-color-outline-variant) !important; }
 			window.addEventListener("load", retry, { once: true });
 		}
 	}
-	var KEY = "logoCache";
+	var KEY$1 = "logoCache";
 	var MAX_BYTES = 524288;
 	var styleEl = null;
 	function apply$1(data) {
@@ -5331,7 +5331,7 @@ table, td, th { border-color: var(--md-sys-color-outline-variant) !important; }
 		styleEl.textContent = `html:root { --ic-brand-header-image: url("${data}"); }`;
 	}
 	function primeLogo() {
-		const c = _GM_getValue(KEY, null);
+		const c = _GM_getValue(KEY$1, null);
 		if (c?.data) apply$1(c.data);
 	}
 	function canvasLogoUrl() {
@@ -5356,7 +5356,7 @@ table, td, th { border-color: var(--md-sys-color-outline-variant) !important; }
 		if (refreshing) return;
 		const src = canvasLogoUrl();
 		if (!src) return;
-		const cached = _GM_getValue(KEY, null);
+		const cached = _GM_getValue(KEY$1, null);
 		if (cached?.src === src && cached.data) {
 			if (styleEl && styleEl.parentNode !== document.head) document.head.appendChild(styleEl);
 			return;
@@ -5375,7 +5375,7 @@ table, td, th { border-color: var(--md-sys-color-outline-variant) !important; }
 				const reader = new FileReader();
 				reader.onload = () => {
 					const data = String(reader.result);
-					_GM_setValue(KEY, {
+					_GM_setValue(KEY$1, {
 						src,
 						data
 					});
@@ -5388,6 +5388,211 @@ table, td, th { border-color: var(--md-sys-color-outline-variant) !important; }
 			onerror: () => refreshing = false,
 			ontimeout: () => refreshing = false
 		});
+	}
+	var KEY = "layout";
+	var html$1 = document.documentElement;
+	var desktop = window.matchMedia("(min-width: 768px)");
+	var LIMITS = {
+		left: [160, 400],
+		right: [200, 480]
+	};
+	var DEFAULTS = {
+		left: 192,
+		right: 288
+	};
+	var MIN_CONTENT = 400;
+	var widths = {};
+	var host = (side) => document.querySelector(side === "left" ? "#left-side" : "#right-side-wrapper");
+	var currentWidth = (side) => widths[side] ?? (host(side)?.getBoundingClientRect().width || DEFAULTS[side]);
+	function applyWidth(side, w) {
+		const v = `--mc-${side}-w`;
+		if (w === void 0) {
+			html$1.style.removeProperty(v);
+			html$1.removeAttribute(`data-mc-${side}-w`);
+		} else {
+			html$1.style.setProperty(v, `${w}px`);
+			html$1.setAttribute(`data-mc-${side}-w`, "");
+		}
+		document.querySelector(`.mc-resizer[data-side="${side}"]`)?.setAttribute("aria-valuenow", String(Math.round(w ?? currentWidth(side))));
+	}
+	function save() {
+		_GM_setValue(KEY, widths);
+	}
+	function clamp(side, w) {
+		const [lo, hi] = LIMITS[side];
+		let max = hi;
+		const content = document.querySelector("#content-wrapper");
+		if (content) {
+			const room = content.getBoundingClientRect().width + currentWidth(side) - MIN_CONTENT;
+			max = Math.min(max, Math.max(lo, room));
+		}
+		return Math.round(Math.min(max, Math.max(lo, w)));
+	}
+	function setWidth(side, w, persist) {
+		widths[side] = clamp(side, w);
+		applyWidth(side, widths[side]);
+		if (persist) save();
+	}
+	function resetWidth(side) {
+		delete widths[side];
+		applyWidth(side, void 0);
+		save();
+	}
+	function makeHandle(side) {
+		const el = document.createElement("div");
+		el.className = "mc-resizer";
+		el.dataset.side = side;
+		el.tabIndex = 0;
+		el.setAttribute("role", "separator");
+		el.setAttribute("aria-orientation", "vertical");
+		el.setAttribute("aria-label", side === "left" ? "调整课程菜单宽度" : "调整侧栏宽度");
+		el.setAttribute("aria-valuemin", String(LIMITS[side][0]));
+		el.setAttribute("aria-valuemax", String(LIMITS[side][1]));
+		el.title = "拖动调整宽度，双击恢复默认";
+		const dir = side === "left" ? 1 : -1;
+		el.addEventListener("pointerdown", (e) => {
+			if (e.button !== 0) return;
+			e.preventDefault();
+			el.setPointerCapture(e.pointerId);
+			const startX = e.clientX;
+			const startW = currentWidth(side);
+			let frame = 0;
+			let lastX = startX;
+			html$1.setAttribute("data-mc-resizing", "");
+			el.classList.add("mc-resizer--active");
+			const move = (ev) => {
+				lastX = ev.clientX;
+				if (frame) return;
+				frame = requestAnimationFrame(() => {
+					frame = 0;
+					setWidth(side, startW + dir * (lastX - startX), false);
+				});
+			};
+			const end = () => {
+				cancelAnimationFrame(frame);
+				frame = 0;
+				if (lastX !== startX) setWidth(side, startW + dir * (lastX - startX), true);
+				html$1.removeAttribute("data-mc-resizing");
+				el.classList.remove("mc-resizer--active");
+				el.removeEventListener("pointermove", move);
+				el.removeEventListener("pointerup", end);
+				el.removeEventListener("pointercancel", end);
+			};
+			el.addEventListener("pointermove", move);
+			el.addEventListener("pointerup", end);
+			el.addEventListener("pointercancel", end);
+		});
+		el.addEventListener("dblclick", () => resetWidth(side));
+		el.addEventListener("keydown", (e) => {
+			const step = e.shiftKey ? 48 : 16;
+			let delta = 0;
+			if (e.key === "ArrowRight") delta = step * dir;
+			else if (e.key === "ArrowLeft") delta = -step * dir;
+			else if (e.key === "Home" || e.key === "Escape") {
+				e.preventDefault();
+				resetWidth(side);
+				return;
+			} else return;
+			e.preventDefault();
+			setWidth(side, currentWidth(side) + delta, true);
+		});
+		return el;
+	}
+	function mountHandles() {
+		for (const side of ["left", "right"]) {
+			const parent = host(side);
+			if (!parent || parent.querySelector(":scope > .mc-resizer")) continue;
+			const handle = makeHandle(side);
+			parent.append(handle);
+			handle.setAttribute("aria-valuenow", String(Math.round(currentWidth(side))));
+		}
+	}
+	function watchTray() {
+		let portal = null;
+		let frame = 0;
+		let still = 0;
+		let last = -1;
+		const set = (push) => {
+			if (push === last) return;
+			last = push;
+			if (push > 0) {
+				html$1.style.setProperty("--mc-tray-w", `${push}px`);
+				html$1.setAttribute("data-mc-tray-open", "");
+			} else {
+				html$1.style.removeProperty("--mc-tray-w");
+				html$1.removeAttribute("data-mc-tray-open");
+			}
+		};
+		const measure = () => {
+			if (!desktop.matches || !html$1.hasAttribute("data-mc-theme")) return 0;
+			const dialog = portal?.querySelector("[role=\"dialog\"]");
+			if (!dialog) return 0;
+			const tray = dialog.getBoundingClientRect();
+			const railRight = document.getElementById("header")?.getBoundingClientRect().right ?? 0;
+			return Math.max(0, Math.round(tray.right - railRight));
+		};
+		const tick = () => {
+			frame = 0;
+			const push = measure();
+			still = push === last ? still + 1 : 0;
+			set(push);
+			if (still < 8) frame = requestAnimationFrame(tick);
+		};
+		const wake = () => {
+			still = 0;
+			if (last > 0 && !portal?.querySelector("[role=\"dialog\"]")) set(0);
+			if (!frame) frame = requestAnimationFrame(tick);
+		};
+		const attach = () => {
+			const p = document.getElementById("nav-tray-portal");
+			if (!p || p === portal) return;
+			portal = p;
+			new MutationObserver(wake).observe(p, {
+				childList: true,
+				subtree: true,
+				attributes: true,
+				attributeFilter: ["class", "style"]
+			});
+			p.addEventListener("transitionrun", wake, true);
+			p.addEventListener("transitionend", wake, true);
+			wake();
+		};
+		attach();
+		if (!portal) {
+			const mo = new MutationObserver(() => {
+				attach();
+				if (portal) mo.disconnect();
+			});
+			mo.observe(document.body, { childList: true });
+		}
+		desktop.addEventListener("change", wake);
+		window.addEventListener("resize", wake);
+		new MutationObserver(wake).observe(html$1, {
+			attributes: true,
+			attributeFilter: ["data-mc-theme"]
+		});
+	}
+	function initLayout() {
+		widths = _GM_getValue(KEY, {}) ?? {};
+		for (const side of ["left", "right"]) {
+			const w = widths[side];
+			if (typeof w === "number" && w >= LIMITS[side][0] && w <= LIMITS[side][1]) applyWidth(side, w);
+			else delete widths[side];
+		}
+		mountHandles();
+		let pending = false;
+		new MutationObserver(() => {
+			if (pending) return;
+			pending = true;
+			requestAnimationFrame(() => {
+				pending = false;
+				mountHandles();
+			});
+		}).observe(document.getElementById("main") ?? document.body, {
+			childList: true,
+			subtree: true
+		});
+		watchTray();
 	}
 	var tokens_default = `
 html[data-mc-theme] {
@@ -6338,6 +6543,98 @@ html[data-mc-theme] .ic-app-footer {
 }
 html[data-mc-theme] .ic-app-footer a {
   color:var(--md-sys-color-on-surface-variant)
+}
+`;
+	var columns_default = `
+.mc-resizer {
+  display:none
+}
+@media (width>=768px) {
+  html[data-mc-theme][data-mc-left-w] body.course-menu-expanded:not(.ic-no-flex-layout):not(.embedded):not(.is-inside-submission-frame):not(.content-only) .ic-Layout-columns {
+    margin-inline-start:var(--mc-left-w)
+  }
+  html[data-mc-theme][data-mc-left-w] body.course-menu-expanded:not(.ic-no-flex-layout):not(.embedded):not(.is-inside-submission-frame):not(.content-only) .ic-Layout-watermark {
+    inset-inline-start:calc(-1 * var(--mc-left-w))
+  }
+  html[data-mc-theme][data-mc-left-w] body.course-menu-expanded:not(.ic-no-flex-layout):not(.embedded):not(.is-inside-submission-frame):not(.content-only) #left-side {
+    width:var(--mc-left-w)
+  }
+  html[data-mc-theme] #wrapper {
+    padding-inline-start:var(--mc-tray-w,0px)
+  }
+  html[data-mc-theme]:not([data-mc-tray-open]) #wrapper {
+    transition:padding-inline-start .4s var(--mc-ease-decel)
+  }
+  html[data-mc-theme][data-mc-tray-open] #nav-tray-portal [role=dialog] {
+    box-shadow:none;
+    border-inline-end:1px solid var(--md-sys-color-outline-variant)
+  }
+  html[data-mc-theme] .mc-resizer {
+    z-index:20;
+    cursor:col-resize;
+    touch-action:none;
+    outline:none;
+    width:12px;
+    display:none;
+    position:absolute;
+    top:0;
+    bottom:0
+  }
+  html[data-mc-theme] body.course-menu-expanded #left-side>.mc-resizer {
+    display:block;
+    inset-inline-end:-6px
+  }
+  html[data-mc-theme] #right-side-wrapper>.mc-resizer {
+    inset-inline-start:6px
+  }
+  html[data-mc-theme] .mc-resizer:after {
+    content:"";
+    top:8px;
+    bottom:8px;
+    border-radius:var(--mc-shape-full);
+    background:var(--md-sys-color-outline-variant);
+    opacity:0;
+    width:2px;
+    transition:opacity var(--mc-dur) var(--mc-ease), background-color var(--mc-dur) var(--mc-ease), width var(--mc-dur) var(--mc-ease), margin var(--mc-dur) var(--mc-ease);
+    margin-inline-start:-1px;
+    position:absolute;
+    inset-inline-start:50%
+  }
+  html[data-mc-theme] .mc-resizer:hover:after {
+    opacity:1
+  }
+  html[data-mc-theme] .mc-resizer:focus-visible:after,html[data-mc-theme] .mc-resizer--active:after {
+    opacity:1;
+    background:var(--md-sys-color-primary);
+    width:4px;
+    margin-inline-start:-2px
+  }
+  html[data-mc-theme][data-mc-resizing],html[data-mc-theme][data-mc-resizing] * {
+    cursor:col-resize!important;
+    -webkit-user-select:none!important;
+    user-select:none!important
+  }
+  html[data-mc-theme][data-mc-resizing] :is(#left-side,#right-side-wrapper,#content-wrapper,.ic-Layout-columns) {
+    transition:none!important
+  }
+}
+@media (width>=992px) {
+  html[data-mc-theme] body:not(.course-menu-expanded) #right-side-wrapper>.mc-resizer {
+    display:block
+  }
+  html[data-mc-theme][data-mc-right-w] body:not(.course-menu-expanded) .ic-app-main-content__secondary {
+    flex:0 0 var(--mc-right-w);
+    width:var(--mc-right-w)
+  }
+}
+@media (width>=1140px) {
+  html[data-mc-theme] body.course-menu-expanded #right-side-wrapper>.mc-resizer {
+    display:block
+  }
+  html[data-mc-theme][data-mc-right-w] body.course-menu-expanded .ic-app-main-content__secondary {
+    flex:0 0 var(--mc-right-w);
+    width:var(--mc-right-w)
+  }
 }
 `;
 	var dashboard_default = `
@@ -9906,6 +10203,7 @@ html[data-mc-theme] .mc-ripple {
 		base_default,
 		components_default,
 		layout_default,
+		columns_default,
 		dashboard_default,
 		course_default,
 		tools_default,
@@ -10040,6 +10338,7 @@ html[data-mc-theme] .mc-ripple {
 			upgradeToolIcons();
 			syncThemeColor(settings.enabled);
 			watchMobile();
+			initLayout();
 		};
 		if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", onReady);
 		else onReady();
