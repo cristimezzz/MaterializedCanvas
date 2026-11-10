@@ -1,5 +1,12 @@
 /* App chrome: global navigation rail, trays, header/breadcrumbs, course menu, right sidebar. */
 html[data-mc-theme] {
+  /* ------------------------------------------------------------------ Page width */
+  /* Canvas caps #wrapper at 1366px; let every page use the full window width. */
+  & #wrapper.ic-Layout-wrapper,
+  & .ic-Layout-wrapper {
+    max-width: none;
+  }
+
   /* ------------------------------------------------------------------ Global nav → Navigation Rail */
   & .ic-app-header {
     background: var(--md-sys-color-surface-container);

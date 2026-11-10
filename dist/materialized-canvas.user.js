@@ -6073,6 +6073,10 @@ html[data-mc-theme] .pagination ul {
 }
 `;
 	var layout_default = `
+html[data-mc-theme] #wrapper.ic-Layout-wrapper,
+html[data-mc-theme] .ic-Layout-wrapper {
+  max-width:none
+}
 html[data-mc-theme] .ic-app-header {
   background:var(--md-sys-color-surface-container);
   box-shadow:none;
