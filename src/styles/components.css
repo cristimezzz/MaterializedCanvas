@@ -413,18 +413,37 @@ html[data-mc-theme] {
     border: none;
     border-bottom: 1px solid var(--md-sys-color-surface-variant);
     border-radius: 0;
-    padding: 0;
+    /* inset the tabs so a hovered first tab never pokes past a rounded card corner */
+    padding: 8px 8px 0;
   }
-  & .ui-tabs .ui-tabs-nav li {
+  /* jQuery UI swaps ui-state-default / -hover / -focus / -active on the li; keep one shape for all. */
+  & .ui-tabs .ui-tabs-nav li,
+  & .ui-tabs .ui-tabs-nav li.ui-state-default,
+  & .ui-tabs .ui-tabs-nav li.ui-state-hover,
+  & .ui-tabs .ui-tabs-nav li.ui-state-focus,
+  & .ui-tabs .ui-tabs-nav li.ui-state-active {
     background: transparent;
     border: none;
     margin: 0;
     top: 0;
+    border-radius: var(--mc-shape-sm) var(--mc-shape-sm) 0 0;
+    /* ui-state-focus is also set on mouse clicks; only keyboard focus gets a ring */
+    outline: none;
+  }
+  & .ui-tabs .ui-tabs-nav li:focus-visible {
+    outline: 2px solid var(--md-sys-color-secondary);
+    outline-offset: -2px;
   }
   & .ui-tabs .ui-tabs-nav li a {
     color: var(--md-sys-color-on-surface-variant);
     padding: 14px 16px;
     font-weight: 500;
+    border-radius: var(--mc-shape-sm) var(--mc-shape-sm) 0 0;
+    transition: background-color var(--mc-dur) var(--mc-ease), color var(--mc-dur) var(--mc-ease);
+  }
+  & .ui-tabs .ui-tabs-nav li a:hover,
+  & .ui-tabs .ui-tabs-nav li.ui-state-hover a {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) var(--mc-hover), transparent);
   }
   & .ui-tabs .ui-tabs-nav li.ui-tabs-active a,
   & .ui-tabs .ui-tabs-nav li.ui-state-active a {
