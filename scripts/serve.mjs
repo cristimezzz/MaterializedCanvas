@@ -6,6 +6,8 @@ var GM_getValue=(k,d)=>{try{const v=localStorage.getItem('mc:'+k);return v===nul
 var GM_setValue=(k,v)=>{try{localStorage.setItem('mc:'+k,JSON.stringify(v))}catch{}};
 var GM_registerMenuCommand=()=>{};
 var unsafeWindow=window;
+var GM_deleteValue=(k)=>{try{localStorage.removeItem('mc:'+k)}catch{}};
+var GM_xmlhttpRequest=(o)=>{fetch(o.url,{credentials:'include'}).then(async r=>o.onload&&o.onload({status:r.status,response:await r.blob()})).catch(e=>o.onerror&&o.onerror(e))};
 `;
 createServer(async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');

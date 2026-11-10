@@ -7,35 +7,75 @@
  * bundle URLs), so on later page loads the overrides are injected at document-start
  * before the page paints.
  */
-import { GM_getValue, GM_setValue } from '$';
+import { GM_deleteValue, GM_getValue, GM_setValue } from '$';
 import { recolorSheet } from './recolor';
 
-const CACHE_KEY = 'recolorCache';
-const CACHE_VERSION = 4; // bump when recolor.ts output changes
+/*
+ * Cache layout: a small index plus one storage key per stylesheet, so document-start only
+ * deserializes the handful of entries the last page used (not every cached bundle).
+ */
+const INDEX_KEY = 'rcIndex';
+const ENTRY_PREFIX = 'rc:';
+const CACHE_VERSION = 5; // bump when recolor.ts output changes
 const CACHE_LIMIT = 40;
 
-interface CacheEntry { css: string; t: number }
-interface Cache { v: number; entries: Record<string, CacheEntry>; lastHrefs: string[] }
+interface Index { v: number; t: Record<string, number>; lastHrefs: string[] }
 
-let cache: Cache = { v: CACHE_VERSION, entries: {}, lastHrefs: [] };
-let cacheDirty = false;
+let index: Index = { v: CACHE_VERSION, t: {}, lastHrefs: [] };
+const loaded = new Map<string, string>();
+const dirtyEntries = new Set<string>();
+let indexDirty = false;
 
-function loadCache(): void {
-  const c = GM_getValue<Cache | null>(CACHE_KEY, null);
-  if (c && c.v === CACHE_VERSION) cache = c;
+function loadIndex(): void {
+  const i = GM_getValue<Index | null>(INDEX_KEY, null);
+  if (i && i.v === CACHE_VERSION) {
+    index = i;
+  } else {
+    if (i) for (const href of Object.keys(i.t ?? {})) GM_deleteValue(ENTRY_PREFIX + href);
+    GM_deleteValue('recolorCache'); // pre-0.3 single-blob cache
+  }
+}
+
+function getEntry(href: string): string | null {
+  if (loaded.has(href)) return loaded.get(href)!;
+  if (!(href in index.t)) return null;
+  const css = GM_getValue<string | null>(ENTRY_PREFIX + href, null);
+  if (css === null) {
+    delete index.t[href];
+    indexDirty = true;
+    return null;
+  }
+  loaded.set(href, css);
+  return css;
+}
+
+function putEntry(href: string, css: string): void {
+  loaded.set(href, css);
+  index.t[href] = Date.now();
+  dirtyEntries.add(href);
+  indexDirty = true;
+}
+
+function touch(href: string): void {
+  index.t[href] = Date.now();
 }
 
 function flushCache(): void {
-  if (!cacheDirty) return;
-  const keys = Object.keys(cache.entries);
+  for (const href of dirtyEntries) GM_setValue(ENTRY_PREFIX + href, loaded.get(href));
+  dirtyEntries.clear();
+  const keys = Object.keys(index.t);
   if (keys.length > CACHE_LIMIT) {
     keys
-      .sort((a, b) => cache.entries[a].t - cache.entries[b].t)
+      .sort((a, b) => index.t[a] - index.t[b])
       .slice(0, keys.length - CACHE_LIMIT)
-      .forEach((k) => delete cache.entries[k]);
+      .forEach((k) => {
+        delete index.t[k];
+        GM_deleteValue(ENTRY_PREFIX + k);
+      });
+    indexDirty = true;
   }
-  GM_setValue(CACHE_KEY, cache);
-  cacheDirty = false;
+  if (indexDirty) GM_setValue(INDEX_KEY, index);
+  indexDirty = false;
 }
 
 // ---------------------------------------------------------------------------
@@ -132,22 +172,20 @@ export function scan(): void {
     if (seen.get(sheet) === count) continue;
     seen.set(sheet, count);
 
-    if (sheet.href && cache.entries[sheet.href]) {
-      cache.entries[sheet.href].t = Date.now();
-      setOutput(key, cache.entries[sheet.href].css);
+    const cached = sheet.href ? getEntry(sheet.href) : null;
+    if (sheet.href && cached !== null) {
+      touch(sheet.href);
+      setOutput(key, cached);
       continue;
     }
     const css = recolorSheet(sheet);
     if (css === null) continue;
     setOutput(key, css);
-    if (sheet.href) {
-      cache.entries[sheet.href] = { css, t: Date.now() };
-      cacheDirty = true;
-    }
+    if (sheet.href) putEntry(sheet.href, css);
   }
-  if (hrefs.length && hrefs.join() !== cache.lastHrefs.join()) {
-    cache.lastHrefs = hrefs;
-    cacheDirty = true;
+  if (hrefs.length && hrefs.join() !== index.lastHrefs.join()) {
+    index.lastHrefs = hrefs;
+    indexDirty = true;
   }
   ensureOrder();
 }
@@ -164,10 +202,10 @@ export function scheduleScan(): void {
 
 /** Called at document-start: inject cached overrides for the sheets the last page used. */
 export function primeFromCache(): void {
-  loadCache();
-  for (const href of cache.lastHrefs) {
-    const e = cache.entries[href];
-    if (e) setOutput(href, e.css);
+  loadIndex();
+  for (const href of index.lastHrefs) {
+    const css = getEntry(href);
+    if (css !== null) setOutput(href, css);
   }
 }
 

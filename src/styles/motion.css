@@ -1,62 +1,65 @@
 /* Motion: M3 easing on interactive elements, entrance animations, and page transitions. */
 
 /* ------------------------------------------------------------------ Page transitions
- * Cross-document View Transitions: the nav rail, course menu and top bar stay put while
- * the content area fades through with a short upward slide (M3 "shared axis Y").
- * The rule lives in our injected stylesheet, so it is present on both the old and new page. */
-@view-transition {
-  navigation: auto;
-}
-
+ * Canvas pages take seconds to arrive, so we do not use cross-document View Transitions
+ * (they freeze the old page as a snapshot until the new one renders, which feels stuck).
+ * Instead: instant feedback on click (content recedes + progress bar, see motion.ts),
+ * then the new page's content slides in as soon as it paints. */
 html[data-mc-theme] {
-  & .ic-app-header { view-transition-name: mc-rail; }
-  & #left-side { view-transition-name: mc-course-nav; }
-  & .ic-app-nav-toggle-and-crumbs { view-transition-name: mc-topbar; }
-  & #content { view-transition-name: mc-content; }
-  & #right-side-wrapper { view-transition-name: mc-aside; }
+  & #content { animation: mc-enter-up 320ms var(--mc-ease-decel) backwards; }
+  & #right-side-wrapper { animation: mc-enter-up 320ms var(--mc-ease-decel) 60ms backwards; }
+
+  /* Leaving: the content area recedes while the next page loads */
+  &.mc-leaving #content,
+  &.mc-leaving #right-side-wrapper {
+    animation: none;
+    opacity: 0.45;
+    transform: translateY(-6px);
+    transition: opacity 180ms var(--mc-ease-accel), transform 180ms var(--mc-ease-accel);
+    pointer-events: none;
+  }
 }
 
-/* Chrome stays still: no cross-fade between identical rails. */
-::view-transition-group(mc-rail),
-::view-transition-group(mc-course-nav),
-::view-transition-group(mc-topbar) {
-  animation-duration: var(--mc-dur-medium, 300ms);
-  animation-timing-function: var(--mc-ease, ease);
+/* M3 indeterminate linear progress indicator along the top edge */
+.mc-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 4px;
+  z-index: 2147483000;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--md-sys-color-primary) 24%, transparent);
+  opacity: 0;
+  transition: opacity 150ms var(--mc-ease, ease);
+  pointer-events: none;
 }
-::view-transition-old(mc-rail),
-::view-transition-new(mc-rail) {
-  animation: none;
+html.mc-leaving .mc-progress { opacity: 1; }
+.mc-progress::before,
+.mc-progress::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--md-sys-color-primary);
+  border-radius: 2px;
 }
-
-/* Root (everything not named) fades quickly so nothing pops. */
-::view-transition-old(root) {
-  animation: mc-fade-out 120ms cubic-bezier(0.3, 0, 0.8, 0.15) both;
+html.mc-leaving .mc-progress::before {
+  animation: mc-progress-1 2s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
 }
-::view-transition-new(root) {
-  animation: mc-fade-in 240ms cubic-bezier(0.05, 0.7, 0.1, 1) 60ms both;
+html.mc-leaving .mc-progress::after {
+  animation: mc-progress-2 2s cubic-bezier(0.165, 0.84, 0.44, 1) 1.15s infinite;
 }
-
-/* Content: fade through + slide up */
-::view-transition-group(mc-content),
-::view-transition-group(mc-aside) {
-  animation-duration: 380ms;
-  animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+@keyframes mc-progress-1 {
+  0% { left: -35%; right: 100%; }
+  60%, 100% { left: 100%; right: -90%; }
 }
-::view-transition-old(mc-content),
-::view-transition-old(mc-aside) {
-  animation: mc-exit-up 140ms cubic-bezier(0.3, 0, 0.8, 0.15) both;
-}
-::view-transition-new(mc-content) {
-  animation: mc-enter-up 380ms cubic-bezier(0.05, 0.7, 0.1, 1) 80ms both;
-}
-::view-transition-new(mc-aside) {
-  animation: mc-enter-up 380ms cubic-bezier(0.05, 0.7, 0.1, 1) 140ms both;
+@keyframes mc-progress-2 {
+  0% { left: -200%; right: 100%; }
+  60%, 100% { left: 107%; right: -8%; }
 }
 
 @keyframes mc-fade-in { from { opacity: 0; } }
 @keyframes mc-fade-out { to { opacity: 0; } }
 @keyframes mc-enter-up {
-  from { opacity: 0; transform: translateY(24px); }
+  from { opacity: 0; transform: translateY(16px); }
 }
 @keyframes mc-exit-up {
   to { opacity: 0; transform: translateY(-8px); }
@@ -73,12 +76,6 @@ html[data-mc-theme] {
 }
 @keyframes mc-slide-in-left {
   from { opacity: 0; transform: translateX(-24px); }
-}
-
-/* Browsers without cross-document view transitions: animate the new page in. */
-html.mc-no-vt[data-mc-theme] {
-  & #content { animation: mc-enter-up 420ms var(--mc-ease-decel) both; }
-  & #right-side-wrapper { animation: mc-enter-up 420ms var(--mc-ease-decel) 80ms both; }
 }
 
 /* ------------------------------------------------------------------ Component motion */
@@ -141,23 +138,23 @@ html[data-mc-theme] {
   & #context_modules > .context_module,
   & #ag-list .item-group-condensed,
   & .planner-day {
-    animation: mc-enter-up var(--mc-dur-long) var(--mc-ease-decel) both;
+    animation: mc-enter-up 300ms var(--mc-ease-decel) backwards;
   }
   & .ic-DashboardCard__box > .ic-DashboardCard:nth-child(2),
   & #context_modules > .context_module:nth-child(2),
-  & .planner-day:nth-child(2) { animation-delay: 40ms; }
+  & .planner-day:nth-child(2) { animation-delay: 25ms; }
   & .ic-DashboardCard__box > .ic-DashboardCard:nth-child(3),
   & #context_modules > .context_module:nth-child(3),
-  & .planner-day:nth-child(3) { animation-delay: 80ms; }
+  & .planner-day:nth-child(3) { animation-delay: 50ms; }
   & .ic-DashboardCard__box > .ic-DashboardCard:nth-child(4),
   & #context_modules > .context_module:nth-child(4),
-  & .planner-day:nth-child(4) { animation-delay: 120ms; }
+  & .planner-day:nth-child(4) { animation-delay: 75ms; }
   & .ic-DashboardCard__box > .ic-DashboardCard:nth-child(5),
-  & #context_modules > .context_module:nth-child(5) { animation-delay: 160ms; }
+  & #context_modules > .context_module:nth-child(5) { animation-delay: 100ms; }
   & .ic-DashboardCard__box > .ic-DashboardCard:nth-child(6),
-  & #context_modules > .context_module:nth-child(6) { animation-delay: 200ms; }
+  & #context_modules > .context_module:nth-child(6) { animation-delay: 125ms; }
   & .ic-DashboardCard__box > .ic-DashboardCard:nth-child(n + 7),
-  & #context_modules > .context_module:nth-child(n + 7) { animation-delay: 240ms; }
+  & #context_modules > .context_module:nth-child(n + 7) { animation-delay: 150ms; }
 
   /* Menus, popovers, dialogs, trays */
   & .ui-menu,
@@ -193,9 +190,6 @@ html[data-mc-theme] {
 
 /* ------------------------------------------------------------------ Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  @view-transition {
-    navigation: none;
-  }
   html[data-mc-theme] *,
   html[data-mc-theme] *::before,
   html[data-mc-theme] *::after {

@@ -1,6 +1,6 @@
 /**
  * Runtime motion helpers:
- *  - flags browsers without cross-document View Transitions so CSS can fall back to entrance animations
+ *  - immediate "leaving" feedback (content recedes + progress bar) when navigating to another page
  *  - M3 ripple on buttons, nav items and course menu links
  *  - swaps jQuery's default "swing" easing (module collapse, slideDown, scroll …) for the M3 standard curve
  */
@@ -110,9 +110,59 @@ function patchJQueryEasing(): boolean {
   return true;
 }
 
-export function initMotion(): void {
+// ---------------------------------------------------------------------------- leaving state
+let leaveTimer = 0;
+
+function setLeaving(on: boolean): void {
   const html = document.documentElement;
-  if (!('onpagereveal' in window)) html.classList.add('mc-no-vt');
+  clearTimeout(leaveTimer);
+  if (!on) {
+    html.classList.remove('mc-leaving');
+    return;
+  }
+  if (!html.hasAttribute('data-mc-theme') || !document.body) return;
+  if (!document.querySelector('.mc-progress')) {
+    const bar = document.createElement('div');
+    bar.className = 'mc-progress';
+    bar.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(bar);
+  }
+  html.classList.add('mc-leaving');
+  // Safety net: downloads, cancelled or very slow navigations never leave the page.
+  leaveTimer = window.setTimeout(() => setLeaving(false), 12000);
+}
+
+/** Is this click going to replace the current document? */
+function isPageNavigation(e: MouseEvent): boolean {
+  if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return false;
+  const a = (e.target as Element | null)?.closest<HTMLAnchorElement>('a[href]');
+  if (!a || a.hasAttribute('download')) return false;
+  if (a.target && a.target !== '_self') return false;
+  const href = a.getAttribute('href') ?? '';
+  if (!href || href.startsWith('#') || href.startsWith('javascript:') || a.getAttribute('role') === 'button') return false;
+  let url: URL;
+  try {
+    url = new URL(a.href);
+  } catch {
+    return false;
+  }
+  if (url.origin !== location.origin) return false;
+  if (url.pathname === location.pathname && url.search === location.search) return false; // hash-only
+  if (/\/(download|preview)(\?|$)|\/files\/\d+\/download/.test(url.pathname + url.search)) return false;
+  return true;
+}
+
+function watchNavigation(): void {
+  // Bubble phase, so Canvas' own handlers (which preventDefault for in-page actions) run first.
+  document.addEventListener('click', (e) => {
+    if (isPageNavigation(e)) setLeaving(true);
+  });
+  // Back/forward cache restores the old page: clear the state.
+  window.addEventListener('pageshow', () => setLeaving(false));
+}
+
+export function initMotion(): void {
+  watchNavigation();
 
   document.addEventListener('pointerdown', ripple, { capture: true, passive: true });
 

@@ -13,6 +13,7 @@
 1. 安装脚本管理器：[Tampermonkey](https://www.tampermonkey.net/) 或 [Violentmonkey](https://violentmonkey.github.io/)。
 2. 把 `dist/materialized-canvas.user.js` 拖进浏览器（或在脚本管理器里"从文件安装"），确认安装。
 3. 打开 <https://oc.sjtu.edu.cn>。
+4. 第一次加载时 Tampermonkey 可能会询问是否允许脚本访问一个文件服务器域名：这是用来把校徽缓存到本地的（校徽链接每次都会跳转到一个不可缓存的签名地址，约 3 秒），选「总是允许」即可。
 
 ## 设置
 

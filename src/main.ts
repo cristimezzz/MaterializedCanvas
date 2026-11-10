@@ -5,6 +5,7 @@ import { addFixedStyle, primeFromCache, scheduleScan, setEnabled, startObserving
 import { openPanel } from './panel/panel';
 import { setDarkContent } from './darkContent';
 import { initMotion } from './motion';
+import { primeLogo, refreshLogo } from './logo';
 
 import tokens from './styles/tokens.css?inline';
 import base from './styles/base.css?inline';
@@ -57,6 +58,7 @@ function apply(s: Settings): void {
 applyTheme(settings);
 addFixedStyle('styles', [tokens, base, components, layout, dashboard, course, tools, dark, motion].join('\n'));
 if (settings.enabled) {
+  primeLogo();
   primeFromCache();
   startObserving();
   scheduleScan();
@@ -66,6 +68,7 @@ if (settings.enabled) {
 }
 
 initMotion();
+window.addEventListener('load', () => setTimeout(refreshLogo, 500));
 
 media.addEventListener('change', () => settings.mode === 'system' && applyTheme(settings));
 
