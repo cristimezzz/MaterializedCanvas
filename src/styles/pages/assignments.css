@@ -1,0 +1,212 @@
+/* Assignments: index toolbar (rows live in lists.css) and the assignment detail page. */
+html[data-mc-theme] body.assignments {
+  /* ------------------------------------------------------------------ Index toolbar */
+  & #content > .header-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0 20px;
+    border: none;
+    background: transparent;
+  }
+  & #content > .header-bar .header-bar-left {
+    flex: 0 1 420px;
+    margin: 0;
+  }
+  & #content > .header-bar .header-bar-right {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Search: pill with a leading glyph */
+  & .assignment-search .ic-Multi-input {
+    position: relative;
+    display: block;
+  }
+  & .assignment-search .ic-Multi-input::before {
+    content: "";
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    width: 24px;
+    height: 24px;
+    transform: translateY(-50%);
+    background: var(--md-sys-color-on-surface-variant);
+    -webkit-mask: var(--mc-icon-search) center / contain no-repeat;
+    mask: var(--mc-icon-search) center / contain no-repeat;
+    pointer-events: none;
+  }
+  & #search_term {
+    width: 100%;
+    height: 48px;
+    margin: 0;
+    padding: 0 20px 0 52px;
+    border: none;
+    border-radius: var(--mc-shape-full);
+    background: var(--md-sys-color-surface-container-high);
+    box-shadow: none;
+    font-size: 1rem;
+    color: var(--md-sys-color-on-surface);
+  }
+  & #search_term:hover {
+    background: color-mix(in srgb, var(--md-sys-color-surface-container-high), var(--md-sys-color-on-surface) var(--mc-hover));
+  }
+  & #search_term:focus {
+    background: var(--md-sys-color-surface-container-highest);
+    box-shadow: 0 0 0 2px var(--md-sys-color-primary);
+    outline: none;
+  }
+
+  /* "显示方式" (by date / by type): InstUI toggle radios → M3 segmented button */
+  & [data-view="showBy"] fieldset {
+    margin: 0;
+    padding: 0;
+    border: none;
+  }
+  /* the row holding both options, and each option */
+  & [data-view="showBy"] span:has(> span > div > input[type="radio"]) {
+    display: inline-flex;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--md-sys-color-outline);
+    border-radius: var(--mc-shape-full);
+    overflow: hidden;
+  }
+  & [data-view="showBy"] span:has(> div > input[type="radio"]) {
+    margin: 0;
+    padding: 0;
+  }
+  & [data-view="showBy"] span:has(> div > input[type="radio"]) + span label {
+    border-inline-start: 1px solid var(--md-sys-color-outline);
+  }
+  & [data-view="showBy"] div:has(> input[type="radio"]) {
+    margin: 0;
+    padding: 0;
+  }
+  & [data-view="showBy"] label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 40px;
+    margin: 0;
+    padding: 0 16px;
+    cursor: pointer;
+    transition: background-color var(--mc-dur) var(--mc-ease);
+  }
+  & [data-view="showBy"] label > span:first-child { display: none; } /* InstUI's own toggle facade */
+  & [data-view="showBy"] label > span:last-child {
+    padding: 0;
+    color: var(--md-sys-color-on-surface);
+    font-size: 0.875rem;
+    font-weight: 500;
+    background: none;
+    box-shadow: none;
+    border: none;
+  }
+  & [data-view="showBy"] label:hover {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) var(--mc-hover), transparent);
+  }
+  & [data-view="showBy"] input:checked + label {
+    background: var(--md-sys-color-secondary-container);
+  }
+  & [data-view="showBy"] input:checked + label > span:last-child {
+    color: var(--md-sys-color-on-secondary-container);
+  }
+  & [data-view="showBy"] input:checked + label > span:last-child::before {
+    content: "✓";
+    display: inline-block;
+    margin-inline-end: 6px;
+  }
+  & [data-view="showBy"] input:focus-visible + label {
+    outline: 2px solid var(--md-sys-color-secondary);
+    outline-offset: -2px;
+  }
+
+  /* ------------------------------------------------------------------ Detail page */
+  & #assignment_show .assignment-title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 16px;
+    margin-bottom: 16px;
+  }
+  & #assignment_show .assignment-title .title {
+    flex: 1 1 320px;
+    margin: 0;
+    font-size: 2rem;
+    line-height: 1.25;
+    font-weight: 400;
+    color: var(--md-sys-color-on-surface);
+  }
+  & #assignment_show .submit_assignment_link,
+  & #assignment_show .assignment-buttons .btn {
+    min-height: 48px;
+    padding: 0 24px;
+    font-size: 0.9375rem;
+  }
+
+  /* Overview (due / points / submission type …) → a grid of labelled tiles */
+  & #assignment_show .student-assignment-overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 8px;
+    margin: 0 0 24px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    border-radius: 0;
+  }
+  & #assignment_show .student-assignment-overview > li {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+    margin: 0;
+    padding: 12px 16px;
+    border-radius: var(--mc-shape-md);
+    background: var(--md-sys-color-surface-container-low);
+    animation: mc-enter-up 280ms var(--mc-ease-decel) backwards;
+  }
+  & #assignment_show .student-assignment-overview > li:nth-child(2) { animation-delay: 25ms; }
+  & #assignment_show .student-assignment-overview > li:nth-child(3) { animation-delay: 50ms; }
+  & #assignment_show .student-assignment-overview > li:nth-child(4) { animation-delay: 75ms; }
+  & #assignment_show .student-assignment-overview > li:nth-child(n + 5) { animation-delay: 100ms; }
+  & #assignment_show .student-assignment-overview .title {
+    margin: 0;
+    padding: 0;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  & #assignment_show .student-assignment-overview .value {
+    margin: 0;
+    padding: 0;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--md-sys-color-on-surface);
+    overflow-wrap: anywhere;
+  }
+
+  & #assignment_show .description {
+    padding: 20px 24px;
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-radius: var(--mc-shape-lg);
+  }
+  & #assignment_show .description:empty { display: none; }
+
+  /* Submission sidebar (after submitting) */
+  & .details .content > div,
+  & #sidebar_content .details {
+    color: var(--md-sys-color-on-surface);
+  }
+  & #sidebar_content .details .header {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+}

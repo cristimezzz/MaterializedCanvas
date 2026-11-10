@@ -1,0 +1,276 @@
+/* Item-group lists (assignments index, modules on the modules page and on module-style course
+   homes): outlined group cards with a tonal header, 72px rows, a type tile per item and a
+   staggered entrance. Same language as the files and people pages. */
+html[data-mc-theme] {
+  & #ag-list .item-group-condensed,
+  & #context_modules .context_module {
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-radius: var(--mc-shape-lg);
+    background: transparent;
+    overflow: clip;
+    margin-bottom: 16px;
+  }
+
+  /* ------------------------------------------------------------------ Group header */
+  & #ag-list .ig-header,
+  & #context_modules .ig-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 56px;
+    padding: 0 12px 0 8px;
+    background: var(--md-sys-color-surface-container);
+    border: none;
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  }
+  & #ag-list .ig-header .ig-header-title,
+  & #context_modules .ig-header .ig-header-title {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--md-sys-color-on-surface);
+  }
+  /* The toggler is the whole title: a full-height pill with the chevron leading */
+  /* Modules keep a collapse and an expand title and hide one via `display`: never set it there */
+  & #ag-list .ig-header .element_toggler {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  & #context_modules .ig-header .ig-header-title[role="button"] {
+    flex: 0 1 auto;
+    line-height: 40px;
+  }
+  & #ag-list .ig-header .element_toggler,
+  & #context_modules .ig-header .ig-header-title[role="button"] {
+    min-height: 40px;
+    padding: 0 16px 0 8px;
+    border: none;
+    border-radius: var(--mc-shape-full);
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
+  & #ag-list .ig-header .element_toggler:hover,
+  & #context_modules .ig-header .ig-header-title[role="button"]:hover {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) var(--mc-hover), transparent);
+  }
+  & #ag-list .ig-header .element_toggler i,
+  & #context_modules .ig-header .ig-header-title i {
+    display: inline-grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    margin: 0 4px 0 0;
+    vertical-align: middle;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  & #context_modules .ig-header .name { font-weight: 500; }
+  /* Module completion / prerequisites */
+  & #context_modules .ig-header .prerequisites,
+  & #context_modules .ig-header .completion_status,
+  & #context_modules .ig-header .requirements_message {
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 0.8125rem;
+  }
+
+  /* ------------------------------------------------------------------ Rows */
+  & #ag-list .ig-list,
+  & #context_modules .ig-list {
+    margin: 0;
+    padding: 0;
+  }
+  & #ag-list li.assignment,
+  & #context_modules .context_module_item {
+    border: none;
+    border-bottom: 1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 70%, transparent);
+  }
+  & #ag-list li.assignment:last-child,
+  & #context_modules .context_module_item:last-child { border-bottom: none; }
+
+  & #ag-list .ig-row,
+  & #context_modules .ig-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-height: 72px;
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    transition: background-color var(--mc-dur) var(--mc-ease);
+  }
+  & #ag-list .ig-row__layout {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1;
+    min-width: 0;
+  }
+  & #ag-list .ig-row:hover,
+  & #context_modules .ig-row:hover,
+  & #context_modules .context_module_item.context_module_item_hover .ig-row {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) 5%, transparent);
+  }
+  & #ag-list .ig-info,
+  & #context_modules .ig-info {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+  }
+  & #ag-list .ig-title,
+  & #context_modules .ig-title,
+  & #context_modules .item_name .title {
+    color: var(--md-sys-color-on-surface);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  & #ag-list .ig-title:hover,
+  & #context_modules a.ig-title:hover {
+    color: var(--md-sys-color-primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  & #ag-list .ig-details,
+  & #context_modules .ig-details {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2px 16px;
+    margin-top: 4px;
+    font-size: 0.8125rem;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  & #ag-list .ig-details__item,
+  & #context_modules .ig-details__item {
+    margin: 0;
+    padding: 0;
+    border: none;
+  }
+  & #ag-list .ig-details__item strong { font-weight: 500; margin-inline-end: 4px; }
+  & #ag-list .ig-details__item::before,
+  & #ag-list .ig-details__item::after { display: none; }
+  /* Score → small outlined chip */
+  & #ag-list .js-score .score-display {
+    display: inline-flex;
+    align-items: center;
+    height: 24px;
+    padding: 0 10px;
+    border-radius: var(--mc-shape-sm);
+    border: 1px solid var(--md-sys-color-outline-variant);
+    color: var(--md-sys-color-on-surface-variant);
+    font-weight: 500;
+  }
+
+  /* ------------------------------------------------------------------ Type tiles */
+  & #ag-list .ig-type-icon,
+  & #context_modules .ig-type-icon {
+    --tile: var(--md-sys-color-primary-container);
+    --ink: var(--md-sys-color-on-primary-container);
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    margin: 0;
+    border-radius: var(--mc-shape-md);
+    background: var(--tile);
+    transition: transform var(--mc-dur) var(--mc-ease-spring), border-radius var(--mc-dur) var(--mc-ease);
+  }
+  & #context_modules .type_icon { display: contents; }
+  & #ag-list .ig-type-icon i,
+  & #context_modules .ig-type-icon i {
+    margin: 0;
+    font-size: 1.25rem;
+    line-height: 1;
+  }
+  & #ag-list .ig-type-icon i::before,
+  & #context_modules .ig-type-icon i::before { color: var(--ink) !important; }
+  & #ag-list .ig-row:hover .ig-type-icon,
+  & #context_modules .ig-row:hover .ig-type-icon {
+    transform: scale(1.06);
+    border-radius: var(--mc-shape-lg);
+  }
+
+  & #ag-list .ig-type-icon:has(.icon-quiz),
+  & #context_modules .quiz .ig-type-icon,
+  & #context_modules .lti-quiz .ig-type-icon {
+    --tile: var(--md-sys-color-tertiary-container);
+    --ink: var(--md-sys-color-on-tertiary-container);
+  }
+  & #ag-list .ig-type-icon:has(.icon-discussion),
+  & #context_modules .discussion_topic .ig-type-icon {
+    --tile: var(--md-sys-color-secondary-container);
+    --ink: var(--md-sys-color-on-secondary-container);
+  }
+  & #context_modules .attachment .ig-type-icon {
+    --tile: var(--mc-info-container);
+    --ink: var(--mc-on-info-container);
+  }
+  & #context_modules .wiki_page .ig-type-icon {
+    --tile: var(--mc-success-container);
+    --ink: var(--mc-on-success-container);
+  }
+  & #context_modules .external_url .ig-type-icon,
+  & #context_modules .context_external_tool .ig-type-icon {
+    --tile: var(--mc-warning-container);
+    --ink: var(--mc-on-warning-container);
+  }
+
+  /* Module sub-headers: a label row, no tile */
+  & #context_modules .context_module_sub_header .ig-row {
+    min-height: 44px;
+    background: color-mix(in srgb, var(--md-sys-color-surface-container) 60%, transparent);
+  }
+  & #context_modules .context_module_sub_header .ig-type-icon { display: none; }
+  & #context_modules .context_module_sub_header .title {
+    font-size: 0.8125rem;
+    color: var(--md-sys-color-on-surface-variant);
+    letter-spacing: 0.02em;
+  }
+
+  /* Indented module items keep their nesting, measured in tile widths */
+  & #context_modules .indent_1 .ig-row { padding-inline-start: 40px; }
+  & #context_modules .indent_2 .ig-row { padding-inline-start: 64px; }
+  & #context_modules .indent_3 .ig-row { padding-inline-start: 88px; }
+
+  /* Completion requirement → chip; done = success tone */
+  & #context_modules .requirement-description {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  & #context_modules .requirement-description .requirement_type > span:not(.screenreader-only) {
+    border-radius: var(--mc-shape-sm);
+  }
+  & #context_modules .module-item-status-icon i::before,
+  & #context_modules .module-item-status-icon .icon-check::before {
+    color: var(--mc-success);
+  }
+
+  & #context_modules .context_module .footer {
+    border: none;
+    background: transparent;
+  }
+  & #context_modules .context_module .footer:has(.progression_container:empty) { display: none; }
+
+  /* ------------------------------------------------------------------ Motion */
+  & #ag-list li.assignment,
+  & #context_modules .context_module_item {
+    animation: mc-enter-up 280ms var(--mc-ease-decel) backwards;
+  }
+  & #ag-list li.assignment:nth-child(2),
+  & #context_modules .context_module_item:nth-child(2) { animation-delay: 25ms; }
+  & #ag-list li.assignment:nth-child(3),
+  & #context_modules .context_module_item:nth-child(3) { animation-delay: 50ms; }
+  & #ag-list li.assignment:nth-child(4),
+  & #context_modules .context_module_item:nth-child(4) { animation-delay: 75ms; }
+  & #ag-list li.assignment:nth-child(5),
+  & #context_modules .context_module_item:nth-child(5) { animation-delay: 100ms; }
+  & #ag-list li.assignment:nth-child(n + 6),
+  & #context_modules .context_module_item:nth-child(n + 6) { animation-delay: 125ms; }
+}

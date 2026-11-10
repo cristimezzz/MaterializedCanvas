@@ -1,0 +1,295 @@
+/* Discussions index: pill toolbar, outlined section cards with a tonal header, 72px rows with a
+   leading tile, reply-count chips, staggered entrance. */
+html[data-mc-theme] body.discussions {
+  /* ------------------------------------------------------------------ Toolbar */
+  & .discussions-v2__wrapper > span:nth-child(2) > span {
+    display: flex !important;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  & .discussions-v2__wrapper > span:nth-child(2) > span > span:has(#discussion-filter) {
+    flex: 0 0 auto;
+    margin: 0;
+  }
+  & .discussions-v2__wrapper > span:nth-child(2) > span > span:has(input[name="discussion_search"]) {
+    flex: 0 1 420px;
+    margin: 0;
+  }
+  & .discussions-v2__wrapper > span:nth-child(2) > span > span:last-child {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin: 0;
+  }
+
+  /* Filter: filled pill dropdown */
+  & #discussion-filter {
+    height: 48px;
+    min-width: 140px;
+    margin: 0;
+    padding: 0 40px 0 20px;
+    border: none;
+    border-radius: var(--mc-shape-full);
+    background-color: var(--md-sys-color-surface-container-high);
+    color: var(--md-sys-color-on-surface);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+      linear-gradient(135deg, currentColor 50%, transparent 50%);
+    background-position: right 22px center, right 17px center;
+    background-size: 5px 5px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+  }
+  & #discussion-filter:hover {
+    background-color: color-mix(in srgb, var(--md-sys-color-surface-container-high), var(--md-sys-color-on-surface) var(--mc-hover));
+  }
+  & #discussion-filter:focus {
+    box-shadow: 0 0 0 2px var(--md-sys-color-primary);
+    outline: none;
+  }
+
+  /* Search: InstUI TextInput facade → pill */
+  & label:has(input[name="discussion_search"]) > span > span > span:last-child > span {
+    display: flex;
+    align-items: center;
+    height: 48px;
+    border: none !important;
+    border-radius: var(--mc-shape-full) !important;
+    background: var(--md-sys-color-surface-container-high) !important;
+    transition: background-color var(--mc-dur) var(--mc-ease), box-shadow var(--mc-dur) var(--mc-ease);
+  }
+  & label:has(input[name="discussion_search"]) > span > span > span:last-child > span::before { display: none; }
+  & label:has(input[name="discussion_search"]) > span > span > span:last-child > span:hover {
+    background: color-mix(in srgb, var(--md-sys-color-surface-container-high), var(--md-sys-color-on-surface) var(--mc-hover)) !important;
+  }
+  & label:has(input[name="discussion_search"]) > span > span > span:last-child > span:focus-within {
+    background: var(--md-sys-color-surface-container-highest) !important;
+    box-shadow: 0 0 0 2px var(--md-sys-color-primary);
+  }
+  & input[name="discussion_search"] {
+    height: 48px;
+    padding-inline: 20px 8px;
+    font-size: 1rem;
+    color: var(--md-sys-color-on-surface);
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+  & label:has(input[name="discussion_search"]) svg {
+    margin-inline-end: 12px;
+    color: var(--md-sys-color-on-surface-variant);
+    fill: currentColor;
+  }
+
+  /* ------------------------------------------------------------------ Section cards */
+  & .discussions-container__wrapper {
+    margin-bottom: 16px;
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-radius: var(--mc-shape-lg);
+    background: transparent;
+    overflow: clip;
+  }
+  /* Section header (InstUI ToggleDetails) */
+  & .discussions-container__wrapper button[aria-expanded] {
+    width: 100%;
+    min-height: 56px;
+    padding: 0 16px 0 12px;
+    border: none;
+    border-radius: 0;
+    background: var(--md-sys-color-surface-container);
+    color: var(--md-sys-color-on-surface);
+    transition: background-color var(--mc-dur) var(--mc-ease);
+  }
+  & .discussions-container__wrapper button[aria-expanded="true"] {
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  }
+  & .discussions-container__wrapper button[aria-expanded]:hover {
+    background: color-mix(in srgb, var(--md-sys-color-surface-container), var(--md-sys-color-on-surface) var(--mc-hover));
+  }
+  & .discussions-container__wrapper button[aria-expanded] > span > span:first-child {
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  & .discussions-container__wrapper button[aria-expanded] span {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+  & .discussions-container__wrapper .recent-activity-text-container,
+  & .discussions-container__wrapper .recent-activity-text-container * {
+    font-size: 0.8125rem;
+    font-weight: 400;
+    font-style: normal;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  /* ToggleDetails' own content padding */
+  & .discussions-container__wrapper button[aria-expanded] + div > div {
+    padding: 0;
+  }
+
+  /* ------------------------------------------------------------------ Rows */
+  & .ic-discussion-row {
+    position: relative;
+    min-height: 72px;
+    padding: 12px 16px 12px 0;
+    border: none;
+    box-shadow: none; /* Canvas outlines each row with box-shadows; the dividers do that job */
+    background: transparent;
+    transition: background-color var(--mc-dur) var(--mc-ease);
+  }
+  /* Each row sits in an InstUI grid with the unread dot in a leading column: the divider and
+     hover state go on that whole line */
+  & .discussions-container__wrapper div:has(> span > span > span > .ic-discussion-row) {
+    border-bottom: 1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 70%, transparent);
+    transition: background-color var(--mc-dur) var(--mc-ease);
+    animation: mc-enter-up 280ms var(--mc-ease-decel) backwards;
+  }
+  & .discussions-container__wrapper div:has(> span > span > span > .ic-discussion-row):last-child { border-bottom: none; }
+  & .discussions-container__wrapper div:has(> span > span > span > .ic-discussion-row):hover {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) 5%, transparent);
+  }
+  & .discussions-container__wrapper div:has(> span > span > span > .ic-discussion-row):nth-child(2) { animation-delay: 25ms; }
+  & .discussions-container__wrapper div:has(> span > span > span > .ic-discussion-row):nth-child(3) { animation-delay: 50ms; }
+  & .discussions-container__wrapper div:has(> span > span > span > .ic-discussion-row):nth-child(4) { animation-delay: 75ms; }
+  & .discussions-container__wrapper div:has(> span > span > span > .ic-discussion-row):nth-child(5) { animation-delay: 100ms; }
+  & .discussions-container__wrapper div:has(> span > span > span > .ic-discussion-row):nth-child(n + 6) { animation-delay: 125ms; }
+
+  & .ic-discussion-row-container {
+    display: flex;
+    align-items: center;
+  }
+  & .ic-discussion-row .ic-drag-handle-container:empty { display: none; }
+
+  /* Leading tile with a forum glyph */
+  & .ic-discussion-content-container {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    padding-inline-start: 56px;
+  }
+  & .ic-discussion-content-container::before,
+  & .ic-discussion-content-container::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    pointer-events: none;
+    transition: transform var(--mc-dur) var(--mc-ease-spring), border-radius var(--mc-dur) var(--mc-ease);
+  }
+  & .ic-discussion-content-container::before {
+    left: 0;
+    width: 40px;
+    height: 40px;
+    margin-top: -20px;
+    border-radius: var(--mc-shape-md);
+    background: var(--md-sys-color-secondary-container);
+  }
+  & .ic-discussion-content-container::after {
+    left: 9px;
+    width: 22px;
+    height: 22px;
+    margin-top: -11px;
+    background: var(--md-sys-color-on-secondary-container);
+    -webkit-mask: var(--mc-icon-forum) center / contain no-repeat;
+    mask: var(--mc-icon-forum) center / contain no-repeat;
+  }
+  & .ic-discussion-row:hover .ic-discussion-content-container::before {
+    transform: scale(1.06);
+    border-radius: var(--mc-shape-lg);
+  }
+  & .ic-discussion-row:hover .ic-discussion-content-container::after { transform: scale(1.06); }
+
+  /* Title */
+  & .ic-discussion-row h3,
+  & .ic-discussion-row h3 a {
+    margin: 0;
+    color: var(--md-sys-color-on-surface);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1.4;
+    text-decoration: none;
+  }
+  & .ic-discussion-row h3 a:hover {
+    color: var(--md-sys-color-primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  /* Sections → small outlined chip */
+  & .ic-discussion-row .ic-section-tooltip span span span {
+    display: inline-flex;
+    align-items: center;
+    height: 22px;
+    margin-top: 4px;
+    padding: 0 8px;
+    border-radius: var(--mc-shape-xs);
+    border: 1px solid var(--md-sys-color-outline-variant);
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+  /* "Last post at …" and other meta */
+  & .ic-discussion-content-container > span > span:nth-child(2) span {
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 0.8125rem;
+  }
+
+  /* Reply counts: unread filled, total outlined */
+  & .ic-unread-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+  }
+  & .ic-unread-badge__count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 24px;
+    padding: 0 8px;
+    border-radius: var(--mc-shape-full);
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1;
+  }
+  & .ic-unread-badge__unread-count {
+    background: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+    border: none;
+  }
+  & .ic-unread-badge__total-count {
+    background: transparent;
+    color: var(--md-sys-color-on-surface-variant);
+    border: 1px solid var(--md-sys-color-outline-variant);
+  }
+  & .ic-discussion-row .subscribe-button .toggle-button {
+    display: inline-grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--mc-shape-full);
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  & .ic-discussion-row .subscribe-button .toggle-button:hover {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) var(--mc-hover), transparent);
+  }
+
+  /* Empty sections */
+  & .discussions-v2__container-image {
+    margin: 0;
+    padding: 32px 16px;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  & .discussions-v2__container-image img {
+    max-height: 96px;
+    opacity: 0.9;
+  }
+}

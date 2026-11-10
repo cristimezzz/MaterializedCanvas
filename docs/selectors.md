@@ -24,3 +24,22 @@
   `ul > li > a` links and `button[aria-expanded]` ToggleDetails). Course nav renders into
   `nav#mobileContextNavContainer[aria-expanded]` with no current-page marker; `main.ts` sets
   `data-mc-active` (an attribute, because React rewrites `className`).
+- Assignments index (`body.assignments`): `#ag-list` › `li.item-group-condensed` (the outer `ul`
+  is also `.ig-list`, so target rows as `li.assignment`) › `.ig-row` › `.ig-row__layout`.
+  "显示方式" is an InstUI toggle radio group under `[data-view="showBy"]`. Detail page:
+  `#assignment_show`; Canvas styles `#assignment_show .student-assignment-overview` by ID.
+- Modules: each `.ig-header` holds both `.collapse_module_link` and `.expand_module_link` and
+  hides one with `display` — never set `display` on them. Item type = class on
+  `li.context_module_item` (`attachment`, `assignment`, `quiz`, `discussion_topic`, `wiki_page`,
+  `external_url`, `context_external_tool`, `context_module_sub_header`).
+- Grades (`body.grades`): `table#grades_summary` uses auto layout; `th.title .context` is
+  `visibility: hidden` until hover in Canvas. Group/total rows: `tr.hard_coded.group_total` /
+  `.final_grade`. Course/sort pickers are InstUI Selects in `#GradeSummarySelectMenuGroup`.
+- Discussions index (`body.discussions`): `.discussions-container__wrapper` per section, header is
+  an InstUI ToggleDetails `button[aria-expanded]`; each `.ic-discussion-row` sits in an InstUI
+  grid whose leading column holds the unread dot (hashed classes only). Search is
+  `input[name="discussion_search"]`, filter is a native `select#discussion-filter`.
+- Course home: `#course_home_content`; default view is syllabus (`body.syllabus`,
+  `table#syllabus` with `table-layout: fixed`, size it via `thead th`), modules, feed
+  (`.recent_activity`), or assignments. Sidebar: `#course_show_secondary`, InstUI to-do
+  `.ToDoSidebarItem` (its SVG icon is sized 1em by InstUI), `.events_list`, `.mini_month`.

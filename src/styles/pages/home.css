@@ -1,0 +1,432 @@
+/* Course home (all default views) and the syllabus page: header, syllabus card, activity feed,
+   and the right sidebar as M3 cards (course actions, to-do, recent feedback, mini calendar). */
+html[data-mc-theme] {
+  /* ------------------------------------------------------------------ Header */
+  & #course_home_content > .ic-Action-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 8px 0 16px;
+    border: none;
+  }
+  & #course_home_content > .ic-Action-header .ic-Action-header__Heading {
+    margin: 0;
+    font-size: 2rem;
+    line-height: 1.25;
+    font-weight: 400;
+    color: var(--md-sys-color-on-surface);
+  }
+  & #course_home_content .jump_to_today_link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 16px;
+    border-radius: var(--mc-shape-full);
+    color: var(--md-sys-color-primary);
+    font-weight: 500;
+    text-decoration: none;
+  }
+  & #course_home_content .jump_to_today_link:hover {
+    background: color-mix(in srgb, var(--md-sys-color-primary) var(--mc-hover), transparent);
+  }
+  & #course_home_content > .header-bar {
+    border: none;
+    background: transparent;
+    padding: 0 0 12px;
+  }
+  & #course_syllabus_details:not(:empty) {
+    padding: 12px 16px;
+    border-radius: var(--mc-shape-md);
+    background: var(--md-sys-color-surface-container-low);
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 0.875rem;
+  }
+  & #course_home_content > h2,
+  & body.syllabus #content h2 {
+    margin: 24px 0 12px;
+    font-size: 1.375rem;
+    font-weight: 400;
+    color: var(--md-sys-color-on-surface);
+  }
+
+  /* ------------------------------------------------------------------ Syllabus summary card */
+  & table#syllabus {
+    width: 100%;
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-radius: var(--mc-shape-lg);
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: clip;
+    background: transparent;
+  }
+  & table#syllabus thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    height: 48px;
+    padding: 0 16px;
+    border: none;
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+    background: var(--md-sys-color-surface-container);
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  /* Canvas lays this table out `fixed` (three equal columns): size it from the header row */
+  & table#syllabus thead th:first-child { width: 190px; }
+  & table#syllabus thead th.due { width: 130px; text-align: end; }
+  & table#syllabus tbody td {
+    height: 40px; /* content box: 56px with the padding */
+    padding: 8px 16px;
+    border: none;
+    border-bottom: 1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 70%, transparent);
+    background: transparent !important;
+    vertical-align: middle;
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 0.875rem;
+  }
+  & table#syllabus tbody tr:last-child td { border-bottom: none; }
+  /* Rows sharing a date: only the last item of the day draws the divider */
+  & table#syllabus tbody td.not_last {
+    border-bottom-color: transparent;
+  }
+  & table#syllabus tbody tr {
+    transition: background-color var(--mc-dur) var(--mc-ease);
+    animation: mc-enter-up 280ms var(--mc-ease-decel) backwards;
+  }
+  & table#syllabus tbody tr:hover { background: color-mix(in srgb, var(--md-sys-color-on-surface) 5%, transparent); }
+  & table#syllabus tbody tr:nth-child(n + 4) { animation-delay: 25ms; }
+  & table#syllabus tbody tr:nth-child(n + 8) { animation-delay: 50ms; }
+  & table#syllabus tbody tr:nth-child(n + 12) { animation-delay: 75ms; }
+  & table#syllabus tbody tr:nth-child(n + 16) { animation-delay: 100ms; }
+
+  & table#syllabus td.day_date {
+    border-bottom-color: color-mix(in srgb, var(--md-sys-color-outline-variant) 70%, transparent) !important;
+    color: var(--md-sys-color-on-surface);
+    font-weight: 500;
+    font-size: 0.8125rem;
+    vertical-align: top;
+    padding-top: 18px;
+  }
+  /* Past days fade back; upcoming ones read first */
+  & table#syllabus tr.date_passed td.day_date,
+  & table#syllabus tr.date_passed td.dates {
+    color: var(--md-sys-color-on-surface-variant);
+    font-weight: 400;
+  }
+  & table#syllabus tr.date_passed td.name a { color: var(--md-sys-color-on-surface-variant); }
+
+  /* Icon tile pinned in the cell's leading padding, so long names wrap beside it, not under it */
+  & table#syllabus td.name {
+    position: relative;
+    padding-inline-start: 60px;
+  }
+  & table#syllabus td.name i {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    margin: -16px 0 0;
+    border-radius: var(--mc-shape-sm);
+    background: var(--md-sys-color-primary-container);
+    font-size: 1rem;
+  }
+  & table#syllabus td.name i::before { color: var(--md-sys-color-on-primary-container) !important; }
+  & table#syllabus td.name i.icon-quiz { background: var(--md-sys-color-tertiary-container); }
+  & table#syllabus td.name i.icon-quiz::before { color: var(--md-sys-color-on-tertiary-container) !important; }
+  & table#syllabus td.name i.icon-discussion { background: var(--md-sys-color-secondary-container); }
+  & table#syllabus td.name i.icon-discussion::before { color: var(--md-sys-color-on-secondary-container) !important; }
+  & table#syllabus td.name i.icon-calendar-month,
+  & table#syllabus td.name i.icon-calendar-day { background: var(--mc-info-container); }
+  & table#syllabus td.name i.icon-calendar-month::before,
+  & table#syllabus td.name i.icon-calendar-day::before { color: var(--mc-on-info-container) !important; }
+  & table#syllabus td.name a {
+    color: var(--md-sys-color-on-surface);
+    font-weight: 500;
+    text-decoration: none;
+  }
+  & table#syllabus td.name a:hover {
+    color: var(--md-sys-color-primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  & table#syllabus td.dates {
+    padding-inline-end: 16px !important;
+    text-align: end;
+    white-space: nowrap;
+  }
+  /* "Jump to today" highlights the row */
+  & table#syllabus tr.selected td,
+  & table#syllabus tr.related td {
+    background: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent) !important;
+  }
+
+  /* ------------------------------------------------------------------ Activity feed home */
+  & #course_home_content .recent-activity-header {
+    margin: 0 0 12px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    font-size: 1.375rem;
+    font-weight: 400;
+    color: var(--md-sys-color-on-surface);
+  }
+  & #course_home_content .ic-notification {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px 20px;
+    border: none;
+    border-radius: var(--mc-shape-lg);
+    background: var(--md-sys-color-surface-container-low);
+    box-shadow: none;
+  }
+  & #course_home_content .ic-notification__icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--mc-shape-md);
+    background: var(--mc-info-container);
+    color: var(--mc-on-info-container);
+  }
+  & #course_home_content .ic-notification__icon i::before { color: inherit; }
+  & #course_home_content .ic-notification__title {
+    font-weight: 500;
+    color: var(--md-sys-color-on-surface);
+  }
+  & #course_home_content .notification_message { color: var(--md-sys-color-on-surface-variant); }
+
+  /* ------------------------------------------------------------------ Right sidebar */
+  /* Course actions: a stack of list items in one tonal card */
+  & #course_show_secondary {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  & #course_show_secondary .course-options {
+    display: contents;
+  }
+  & #course_show_secondary > .button-sidebar-wide,
+  & #course_show_secondary .course-options > .button-sidebar-wide {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 48px;
+    margin: 0 0 4px;
+    padding: 0 16px;
+    border: none;
+    border-radius: var(--mc-shape-full);
+    background: var(--md-sys-color-surface-container-low);
+    color: var(--md-sys-color-on-surface);
+    font-weight: 500;
+    box-shadow: none;
+    text-align: start;
+  }
+  & #course_show_secondary > .button-sidebar-wide:hover,
+  & #course_show_secondary .course-options > .button-sidebar-wide:hover {
+    background: color-mix(in srgb, var(--md-sys-color-surface-container-low), var(--md-sys-color-on-surface) var(--mc-hover));
+  }
+  & #course_show_secondary .button-sidebar-wide i::before { color: var(--md-sys-color-primary); }
+
+  /* To-do / recent feedback / coming up → outlined cards */
+  & #right-side .todo-list,
+  & #right-side .events_list {
+    margin: 16px 0;
+    padding: 8px;
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-radius: var(--mc-shape-lg);
+    background: transparent;
+  }
+  & #right-side .todo-list-header,
+  & #right-side .events_list .h2,
+  & #right-side .events_list h2 {
+    margin: 4px 8px 8px;
+    padding: 0;
+    border: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  & #right-side .events_list .h2 { margin: 0; display: flex; align-items: center; justify-content: space-between; }
+  & #right-side #planner-todosidebar-item-list,
+  & #right-side .events_list ul.events {
+    margin: 0;
+    padding: 0;
+  }
+  & #right-side #planner-todosidebar-item-list > li,
+  & #right-side .events_list li.event {
+    margin: 0;
+    padding: 0;
+    border: none;
+    animation: mc-enter-up 280ms var(--mc-ease-decel) backwards;
+  }
+  & #right-side #planner-todosidebar-item-list > li:nth-child(2) { animation-delay: 30ms; }
+  & #right-side #planner-todosidebar-item-list > li:nth-child(3) { animation-delay: 60ms; }
+  & #right-side #planner-todosidebar-item-list > li:nth-child(n + 4) { animation-delay: 90ms; }
+
+  & #right-side .ToDoSidebarItem,
+  & #right-side .events_list li.event > a {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin: 0;
+    padding: 10px 8px 10px 12px;
+    border-radius: var(--mc-shape-md);
+    transition: background-color var(--mc-dur) var(--mc-ease);
+  }
+  & #right-side .ToDoSidebarItem:hover,
+  & #right-side .events_list li.event > a:hover {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) 5%, transparent);
+  }
+  & #right-side .ToDoSidebarItem > svg,
+  & #right-side .ToDoSidebarItem > [class*="icon"],
+  & #right-side .events_list li.event > a > i {
+    flex: none;
+    width: 32px !important; /* InstUI sizes its SVG icons to 1em */
+    height: 32px !important;
+    padding: 8px;
+    margin: 0;
+    border-radius: var(--mc-shape-sm);
+    background: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+    fill: currentColor;
+    box-sizing: border-box;
+  }
+  & #right-side .events_list li.event > a > i {
+    display: grid;
+    place-items: center;
+    padding: 0;
+  }
+  & #right-side .events_list li.event > a > i::before { color: inherit; }
+  & #right-side .events_list li.event > a.recent_feedback_icon > i {
+    background: var(--mc-success-container);
+    color: var(--mc-on-success-container);
+  }
+  & #right-side .ToDoSidebarItem__Info,
+  & #right-side .events_list .event-details {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    background: transparent;
+    font-size: 0.8125rem;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  & #right-side .ToDoSidebarItem__Title a,
+  & #right-side .ToDoSidebarItem__Title a span,
+  & #right-side .events_list .event-details__title {
+    color: var(--md-sys-color-on-surface);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  & #right-side .ToDoSidebarItem__Title a:hover span { color: var(--md-sys-color-primary); }
+  & #right-side .ToDoSidebarItem__Info ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 8px;
+    margin: 2px 0 0;
+    padding: 0;
+  }
+  & #right-side .ToDoSidebarItem__Close button {
+    border-radius: var(--mc-shape-full);
+  }
+  & #right-side .events_list .event a { text-decoration: none; }
+  & #right-side .events_list .event-details p { margin: 2px 0 0; }
+  & #right-side .events_list li.event .clear { display: none; }
+
+  /* Mini calendar → tonal card with round day cells */
+  & #sidebar_content .mini_month {
+    margin: 16px 0;
+    padding: 12px;
+    border-radius: var(--mc-shape-lg);
+    background: var(--md-sys-color-surface-container-low);
+  }
+  & #sidebar_content .mini-cal-header {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 8px;
+  }
+  & #sidebar_content .mini-cal-header .mini-cal-month-and-year {
+    order: -1;
+    flex: 1;
+    padding-inline-start: 8px;
+    font-weight: 500;
+    color: var(--md-sys-color-on-surface);
+  }
+  & #sidebar_content .mini-cal-header .Button--icon-action {
+    width: 40px;
+    height: 40px;
+    min-height: 40px;
+    padding: 0;
+    border-radius: var(--mc-shape-full);
+    background: transparent;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  & #sidebar_content .mini-cal-header .Button--icon-action:hover {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) var(--mc-hover), transparent);
+  }
+  & #sidebar_content table.mini_calendar {
+    width: 100%;
+    border: none;
+    border-collapse: separate;
+    border-spacing: 2px;
+    background: transparent;
+  }
+  & #sidebar_content table.mini_calendar th {
+    padding: 4px 0;
+    border: none;
+    background: transparent;
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+  & #sidebar_content table.mini_calendar td {
+    height: 32px;
+    padding: 0;
+    border: none;
+    border-radius: var(--mc-shape-full);
+    background: transparent;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 0.8125rem;
+    color: var(--md-sys-color-on-surface);
+    transition: background-color var(--mc-dur) var(--mc-ease);
+  }
+  & #sidebar_content table.mini_calendar td.other_month { color: var(--md-sys-color-outline); }
+  & #sidebar_content table.mini_calendar td:hover {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) var(--mc-hover), transparent);
+  }
+  & #sidebar_content table.mini_calendar td.has_event {
+    background: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+    font-weight: 500;
+  }
+  & #sidebar_content table.mini_calendar td.today {
+    background: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+    font-weight: 500;
+  }
+  & #sidebar_content table.mini_calendar td * { color: inherit; background: transparent; }
+
+  /* Group list */
+  & #course_show_secondary .group_list li a {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 12px;
+    border-radius: var(--mc-shape-full);
+    color: var(--md-sys-color-on-surface);
+    font-weight: 500;
+    text-decoration: none;
+  }
+  & #course_show_secondary .group_list li a:hover {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) var(--mc-hover), transparent);
+  }
+}

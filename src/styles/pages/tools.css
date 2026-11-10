@@ -1,53 +1,6 @@
-/* Grades, files, calendar, inbox, people, profile/settings, login. */
+/* Calendar, inbox, people, profile/settings, login. (Grades: grades.css, files: files.css) */
 html[data-mc-theme] {
-  /* ---- Grades (student) */
-  & #grades_summary {
-    border: 1px solid var(--md-sys-color-outline-variant);
-    border-radius: var(--mc-shape-md);
-    overflow: hidden;
-    border-collapse: separate;
-    border-spacing: 0;
-  }
-  & #grades_summary th {
-    background: var(--md-sys-color-surface-container);
-    color: var(--md-sys-color-on-surface-variant);
-    font-weight: 500;
-  }
-  & #grades_summary tr.student_assignment td,
-  & #grades_summary tr.student_assignment th {
-    border-color: var(--md-sys-color-outline-variant);
-    background: transparent;
-  }
-  & #grades_summary tr.student_assignment:hover td,
-  & #grades_summary tr.student_assignment:hover th {
-    background: color-mix(in srgb, var(--md-sys-color-on-surface) 4%, transparent);
-  }
-  & #grades_summary tr.group_total td,
-  & #grades_summary tr.group_total th,
-  & #grades_summary tr.final_grade td,
-  & #grades_summary tr.final_grade th {
-    background: var(--md-sys-color-surface-container-low);
-    font-weight: 500;
-  }
-  & #grades_summary .assignment_score .grade { color: var(--md-sys-color-on-surface); }
-  & .student_grades .comments,
-  & #grades_summary tr.comments td,
-  & #grades_summary tr.rubric_assessments td {
-    background: var(--md-sys-color-surface-container-low);
-  }
-  & #student-grades-right-content,
-  & #student-grades-final,
-  & .student_assignment.editable .grade {
-    color: var(--md-sys-color-on-surface);
-  }
-  & #student-grades-right-content .student_assignment,
-  & #assignments-not-weighted table,
-  & #assignments-weighted table,
-  & .summary {
-    border-radius: var(--mc-shape-md);
-  }
-
-  /* ---- Files: see files.css */
+  /* ---- Files: see files.css; grades: see grades.css */
 
   /* ---- Calendar (FullCalendar) */
   & #calendar-app,

@@ -1,0 +1,314 @@
+/* Grades (student summary): M3 toolbar, outlined grade card with sticky header, score emphasis,
+   tonal group totals, a hero card for the course total, row entrance. */
+html[data-mc-theme] body.grades {
+  /* ------------------------------------------------------------------ Header */
+  & #print-grades-container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 8px 0 12px;
+    border: none;
+  }
+  & #print-grades-container .ic-Action-header__Heading {
+    font-size: 2rem;
+    font-weight: 400;
+    color: var(--md-sys-color-on-surface);
+  }
+  & #print-grades-button {
+    min-height: 40px;
+    padding: 0 20px;
+    border: none;
+    border-radius: var(--mc-shape-full);
+    background: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+    font-weight: 500;
+    box-shadow: none;
+  }
+  & #print-grades-button:hover {
+    background: color-mix(in srgb, var(--md-sys-color-secondary-container), var(--md-sys-color-on-secondary-container) var(--mc-hover));
+  }
+
+  /* Course / sort pickers (InstUI Select) → filled pill fields */
+  & #GradeSummarySelectMenuGroup {
+    margin-bottom: 20px;
+  }
+  & #GradeSummarySelectMenuGroup label > span > span > span:first-child {
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 0.8125rem;
+    font-weight: 500;
+  }
+  & #GradeSummarySelectMenuGroup span:has(> span > span > span > input) {
+    min-height: 48px;
+    border: none !important;
+    border-radius: var(--mc-shape-full) !important;
+    background: var(--md-sys-color-surface-container-high) !important;
+    transition: background-color var(--mc-dur) var(--mc-ease), box-shadow var(--mc-dur) var(--mc-ease);
+  }
+  & #GradeSummarySelectMenuGroup span:has(> span > span > span > input)::before { display: none; }
+  & #GradeSummarySelectMenuGroup span:has(> span > span > span > input):hover {
+    background: color-mix(in srgb, var(--md-sys-color-surface-container-high), var(--md-sys-color-on-surface) var(--mc-hover)) !important;
+  }
+  & #GradeSummarySelectMenuGroup span:has(> span > span > span > input:focus) {
+    box-shadow: 0 0 0 2px var(--md-sys-color-primary);
+  }
+  & #GradeSummarySelectMenuGroup input {
+    min-height: 48px;
+    padding-inline: 20px 8px;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--md-sys-color-on-surface);
+  }
+  & #apply_select_menus {
+    min-height: 48px;
+    border-radius: var(--mc-shape-full);
+  }
+
+  /* ------------------------------------------------------------------ Grade card */
+  & #grades_summary {
+    width: 100%;
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-radius: var(--mc-shape-lg);
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: clip;
+    background: transparent;
+  }
+  & #grades_summary thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    height: 48px;
+    padding: 0 16px;
+    border: none;
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+    background: var(--md-sys-color-surface-container);
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  /* The name gets the room; the narrow columns hug their content */
+  & #grades_summary thead th:first-child,
+  & #grades_summary th.title { width: 42%; }
+  & #grades_summary td.status:empty { padding-inline: 4px; }
+  /* Auto table layout: every px the narrow columns give back goes to the name */
+  & #grades_summary td.due,
+  & #grades_summary td.assignment_score,
+  & #grades_summary td.possible,
+  & #grades_summary td.details,
+  & #grades_summary thead th:not(:first-child) { padding-inline: 8px; }
+  & #grades_summary tbody th,
+  & #grades_summary tbody td {
+    padding: 12px 16px;
+    border: none;
+    border-bottom: 1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 70%, transparent);
+    background: transparent;
+    vertical-align: middle;
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 0.875rem;
+  }
+  & #grades_summary tbody tr:last-child > * { border-bottom: none; }
+  & #grades_summary tr.student_assignment {
+    transition: background-color var(--mc-dur) var(--mc-ease);
+  }
+  & #grades_summary tr.student_assignment:not(.hard_coded):hover > * {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) 5%, transparent);
+  }
+
+  /* Title + assignment group under it */
+  & #grades_summary th.title {
+    min-height: 64px;
+  }
+  & #grades_summary th.title a {
+    color: var(--md-sys-color-on-surface);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  & #grades_summary th.title a:hover {
+    color: var(--md-sys-color-primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  /* Canvas reserves this line but only reveals it on hover; as a subtitle it is always useful */
+  & #grades_summary th.title .context {
+    visibility: visible;
+    margin-top: 2px;
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 0.8125rem;
+    font-weight: 400;
+  }
+
+  /* Score: the number reads first; "out of" stays quiet */
+  & #grades_summary td.assignment_score,
+  & #grades_summary td.possible {
+    text-align: center;
+    white-space: nowrap;
+  }
+  & #grades_summary td.assignment_score .grade {
+    color: var(--md-sys-color-on-surface);
+    font-size: 1rem;
+    font-weight: 500;
+  }
+  & #grades_summary tr.assignment_graded td.assignment_score .grade {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 32px;
+    padding: 0 10px;
+    border-radius: var(--mc-shape-sm);
+    background: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+  }
+  & #grades_summary td.assignment_score .grade i::before { color: var(--md-sys-color-on-surface-variant); }
+  & #grades_summary td.possible { color: var(--md-sys-color-on-surface-variant); }
+  & #grades_summary td.due { white-space: nowrap; }
+
+  /* What-if editing */
+  & #grades_summary .grade input,
+  & #grades_summary input.score_value {
+    height: 36px;
+    width: 72px;
+    padding: 0 8px;
+    border: none;
+    border-radius: var(--mc-shape-sm);
+    background: var(--md-sys-color-surface-container-highest);
+    box-shadow: inset 0 -2px 0 var(--md-sys-color-primary);
+    text-align: center;
+  }
+  & #grades_summary .what_if_score:not(:empty) + .student_entered_score,
+  & #grades_summary tr.dont_count td,
+  & #grades_summary tr.excused td { opacity: 0.7; }
+
+  /* Row actions → 40px round icon buttons */
+  & #grades_summary td.details {
+    white-space: nowrap;
+    text-align: end;
+  }
+  & #grades_summary td.details a {
+    display: inline-grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    margin: 0;
+    border-radius: var(--mc-shape-full);
+    color: var(--md-sys-color-on-surface-variant);
+    text-decoration: none;
+    vertical-align: middle;
+  }
+  & #grades_summary td.details a:hover {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) var(--mc-hover), transparent);
+    color: var(--md-sys-color-on-surface);
+  }
+  & #grades_summary td.details a i::before { color: inherit; }
+
+  /* Expanded details / comments / rubric rows */
+  & #grades_summary tr.comments > td,
+  & #grades_summary tr.rubric_assessments > td {
+    padding: 0;
+    border: none;
+  }
+  & #grades_summary tr.comments:not([style*="none"]) > td:not(:empty),
+  & #grades_summary tr.rubric_assessments:not([style*="none"]) > td:not(:empty) {
+    padding: 12px 16px;
+    background: var(--md-sys-color-surface-container-low);
+    border-bottom: 1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 70%, transparent);
+  }
+  & #grades_summary .comment_thread .comment {
+    padding: 8px 12px;
+    border-radius: var(--mc-shape-md);
+    background: var(--md-sys-color-surface-container);
+  }
+
+  /* Group totals & final grade: tonal summary rows */
+  & #grades_summary tr.group_total > *,
+  & #grades_summary tr.final_grade > * {
+    font-weight: 500;
+    color: var(--md-sys-color-on-surface);
+  }
+  & #grades_summary tr.group_total > * {
+    background: color-mix(in srgb, var(--md-sys-color-secondary-container) 45%, transparent);
+  }
+  & #grades_summary tr.final_grade > * {
+    background: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+  }
+  & #grades_summary tr.group_total .grade,
+  & #grades_summary tr.final_grade .grade {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  /* Row entrance */
+  & #grades_summary tr.student_assignment {
+    animation: mc-enter-up 280ms var(--mc-ease-decel) backwards;
+  }
+  & #grades_summary tr.student_assignment:nth-child(n + 5) { animation-delay: 25ms; }
+  & #grades_summary tr.student_assignment:nth-child(n + 9) { animation-delay: 50ms; }
+  & #grades_summary tr.student_assignment:nth-child(n + 13) { animation-delay: 75ms; }
+  & #grades_summary tr.student_assignment:nth-child(n + 17) { animation-delay: 100ms; }
+  & #grades_summary tr.student_assignment:nth-child(n + 21) { animation-delay: 125ms; }
+
+  /* ------------------------------------------------------------------ Sidebar */
+  /* Course total → hero card */
+  & #student-grades-right-content .final_grade {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 16px;
+    padding: 20px;
+    border-radius: var(--mc-shape-lg);
+    background: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+    font-size: 0.875rem;
+    font-weight: 500;
+    animation: mc-enter-up 360ms var(--mc-ease-decel) backwards;
+  }
+  & #student-grades-right-content .final_grade .grade {
+    font-size: 2.75rem;
+    line-height: 1.1;
+    font-weight: 400;
+    color: inherit;
+  }
+  & #student-grades-right-content .final_grade .possible { opacity: 0.8; }
+  & #student-grades-right-content .btn,
+  & #student-grades-right-content .Button {
+    width: 100%;
+    min-height: 40px;
+    margin-bottom: 8px;
+    justify-content: center;
+  }
+  & #student-grades-revert br { display: none; }
+  & #assignments-not-weighted h2,
+  & #assignments-weighted h2 {
+    margin: 16px 0 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  & #assignments-not-weighted table,
+  & #assignments-weighted table {
+    width: 100%;
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-radius: var(--mc-shape-md);
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: clip;
+  }
+  & #whatif-score-description {
+    margin-top: 12px;
+    padding: 12px 16px;
+    border-radius: var(--mc-shape-md);
+    background: var(--md-sys-color-surface-container-low);
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+}
+
+@media (max-width: 900px) {
+  html[data-mc-theme] body.grades #grades_summary .status { display: none; }
+}
