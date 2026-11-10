@@ -1,0 +1,206 @@
+/* Motion: M3 easing on interactive elements, entrance animations, and page transitions. */
+
+/* ------------------------------------------------------------------ Page transitions
+ * Cross-document View Transitions: the nav rail, course menu and top bar stay put while
+ * the content area fades through with a short upward slide (M3 "shared axis Y").
+ * The rule lives in our injected stylesheet, so it is present on both the old and new page. */
+@view-transition {
+  navigation: auto;
+}
+
+html[data-mc-theme] {
+  & .ic-app-header { view-transition-name: mc-rail; }
+  & #left-side { view-transition-name: mc-course-nav; }
+  & .ic-app-nav-toggle-and-crumbs { view-transition-name: mc-topbar; }
+  & #content { view-transition-name: mc-content; }
+  & #right-side-wrapper { view-transition-name: mc-aside; }
+}
+
+/* Chrome stays still: no cross-fade between identical rails. */
+::view-transition-group(mc-rail),
+::view-transition-group(mc-course-nav),
+::view-transition-group(mc-topbar) {
+  animation-duration: var(--mc-dur-medium, 300ms);
+  animation-timing-function: var(--mc-ease, ease);
+}
+::view-transition-old(mc-rail),
+::view-transition-new(mc-rail) {
+  animation: none;
+}
+
+/* Root (everything not named) fades quickly so nothing pops. */
+::view-transition-old(root) {
+  animation: mc-fade-out 120ms cubic-bezier(0.3, 0, 0.8, 0.15) both;
+}
+::view-transition-new(root) {
+  animation: mc-fade-in 240ms cubic-bezier(0.05, 0.7, 0.1, 1) 60ms both;
+}
+
+/* Content: fade through + slide up */
+::view-transition-group(mc-content),
+::view-transition-group(mc-aside) {
+  animation-duration: 380ms;
+  animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+::view-transition-old(mc-content),
+::view-transition-old(mc-aside) {
+  animation: mc-exit-up 140ms cubic-bezier(0.3, 0, 0.8, 0.15) both;
+}
+::view-transition-new(mc-content) {
+  animation: mc-enter-up 380ms cubic-bezier(0.05, 0.7, 0.1, 1) 80ms both;
+}
+::view-transition-new(mc-aside) {
+  animation: mc-enter-up 380ms cubic-bezier(0.05, 0.7, 0.1, 1) 140ms both;
+}
+
+@keyframes mc-fade-in { from { opacity: 0; } }
+@keyframes mc-fade-out { to { opacity: 0; } }
+@keyframes mc-enter-up {
+  from { opacity: 0; transform: translateY(24px); }
+}
+@keyframes mc-exit-up {
+  to { opacity: 0; transform: translateY(-8px); }
+}
+@keyframes mc-pop-in {
+  from { opacity: 0; transform: scale(0.92); }
+}
+@keyframes mc-drop-in {
+  from { opacity: 0; transform: translateY(-8px) scaleY(0.9); }
+}
+/* Indicators are painted as a background-image layer so only the pill grows, not the icon/text. */
+@keyframes mc-pill-grow {
+  from { background-size: 30% 100%; }
+}
+@keyframes mc-slide-in-left {
+  from { opacity: 0; transform: translateX(-24px); }
+}
+
+/* Browsers without cross-document view transitions: animate the new page in. */
+html.mc-no-vt[data-mc-theme] {
+  & #content { animation: mc-enter-up 420ms var(--mc-ease-decel) both; }
+  & #right-side-wrapper { animation: mc-enter-up 420ms var(--mc-ease-decel) 80ms both; }
+}
+
+/* ------------------------------------------------------------------ Component motion */
+html[data-mc-theme] {
+  /* Interactive state changes */
+  & a,
+  & button,
+  & .btn,
+  & .Button,
+  & .ig-row,
+  & .ef-item-row,
+  & #section-tabs li.section a,
+  & .ic-app-header__menu-list-link,
+  & .ic-app-header__menu-list-link .menu-item-icon-container,
+  & .ic-app-header__menu-list-link svg,
+  & .ic-app-header__menu-list-link .menu-item__text,
+  & input,
+  & select,
+  & textarea {
+    transition-property: background-color, color, border-color, box-shadow, transform, fill, opacity;
+    transition-duration: var(--mc-dur);
+    transition-timing-function: var(--mc-ease);
+  }
+
+  /* Press feedback: a subtle squish that springs back */
+  & .btn:active,
+  & .Button:active,
+  & .button-sidebar-wide:active {
+    transform: scale(0.97);
+    transition-duration: 80ms;
+  }
+
+  /* Nav rail: the active pill grows in from the center with a little overshoot */
+  & .ic-app-header__menu-list-item--active .menu-item-icon-container {
+    animation: mc-pill-grow var(--mc-dur-long) var(--mc-ease-spring) both;
+  }
+  & .ic-app-header__menu-list-link:active .menu-item-icon-container {
+    transform: scale(0.92);
+  }
+  & .ic-app-header__menu-list-link:hover svg,
+  & .ic-app-header__menu-list-link:hover .mc-nav-img-icon {
+    transform: translateY(-1px);
+  }
+
+  /* Course menu: active item indicator */
+  & #section-tabs li.section a.active {
+    animation: mc-pill-grow var(--mc-dur-long) var(--mc-ease-decel) both;
+  }
+
+  /* Cards lift on hover */
+  & .ic-DashboardCard {
+    transition: box-shadow var(--mc-dur-medium) var(--mc-ease), transform var(--mc-dur-medium) var(--mc-ease);
+  }
+  & .ic-DashboardCard:hover {
+    transform: translateY(-3px);
+  }
+
+  /* Staggered entrance for dashboard cards and list groups */
+  & .ic-DashboardCard__box > .ic-DashboardCard,
+  & #context_modules > .context_module,
+  & #ag-list .item-group-condensed,
+  & .planner-day {
+    animation: mc-enter-up var(--mc-dur-long) var(--mc-ease-decel) both;
+  }
+  & .ic-DashboardCard__box > .ic-DashboardCard:nth-child(2),
+  & #context_modules > .context_module:nth-child(2),
+  & .planner-day:nth-child(2) { animation-delay: 40ms; }
+  & .ic-DashboardCard__box > .ic-DashboardCard:nth-child(3),
+  & #context_modules > .context_module:nth-child(3),
+  & .planner-day:nth-child(3) { animation-delay: 80ms; }
+  & .ic-DashboardCard__box > .ic-DashboardCard:nth-child(4),
+  & #context_modules > .context_module:nth-child(4),
+  & .planner-day:nth-child(4) { animation-delay: 120ms; }
+  & .ic-DashboardCard__box > .ic-DashboardCard:nth-child(5),
+  & #context_modules > .context_module:nth-child(5) { animation-delay: 160ms; }
+  & .ic-DashboardCard__box > .ic-DashboardCard:nth-child(6),
+  & #context_modules > .context_module:nth-child(6) { animation-delay: 200ms; }
+  & .ic-DashboardCard__box > .ic-DashboardCard:nth-child(n + 7),
+  & #context_modules > .context_module:nth-child(n + 7) { animation-delay: 240ms; }
+
+  /* Menus, popovers, dialogs, trays */
+  & .ui-menu,
+  & .al-options,
+  & .dropdown-menu,
+  & .ui-autocomplete,
+  & .ui-kyle-menu {
+    transform-origin: top center;
+    animation: mc-drop-in var(--mc-dur-medium) var(--mc-ease-decel);
+  }
+  & .ui-dialog {
+    animation: mc-pop-in var(--mc-dur-medium) var(--mc-ease-decel);
+  }
+  & .ui-widget-overlay {
+    animation: mc-fade-in var(--mc-dur-medium) var(--mc-ease);
+  }
+  & #nav-tray-portal [role="dialog"] {
+    animation: mc-slide-in-left var(--mc-dur-long) var(--mc-ease-decel);
+  }
+  & #flash_message_holder li {
+    animation: mc-drop-in var(--mc-dur-medium) var(--mc-ease-decel);
+  }
+
+  /* Ripple (spawned and animated by motion.ts) */
+  & .mc-ripple {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    background: currentColor;
+    transform: scale(0);
+  }
+}
+
+/* ------------------------------------------------------------------ Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+  html[data-mc-theme] *,
+  html[data-mc-theme] *::before,
+  html[data-mc-theme] *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 1ms !important;
+  }
+}

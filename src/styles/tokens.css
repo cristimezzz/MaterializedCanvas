@@ -22,9 +22,15 @@ html[data-mc-theme] {
   --mc-focus: 10%;
   --mc-press: 10%;
 
-  /* Motion */
-  --mc-ease: cubic-bezier(0.2, 0, 0, 1);
+  /* Motion (M3 easing + duration tokens) */
+  --mc-ease: cubic-bezier(0.2, 0, 0, 1); /* standard */
+  --mc-ease-decel: cubic-bezier(0.05, 0.7, 0.1, 1); /* emphasized decelerate: things entering */
+  --mc-ease-accel: cubic-bezier(0.3, 0, 0.8, 0.15); /* emphasized accelerate: things leaving */
+  --mc-ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1); /* slight overshoot for indicators */
   --mc-dur: 200ms;
+  --mc-dur-short: 150ms;
+  --mc-dur-medium: 300ms;
+  --mc-dur-long: 450ms;
 
   /* ---- Canvas brand variables → M3 roles ---- */
   --ic-brand-primary: var(--md-sys-color-primary);

@@ -4,6 +4,7 @@ import { buildThemeCss } from './theme';
 import { addFixedStyle, primeFromCache, scheduleScan, setEnabled, startObserving } from './injector';
 import { openPanel } from './panel/panel';
 import { setDarkContent } from './darkContent';
+import { initMotion } from './motion';
 
 import tokens from './styles/tokens.css?inline';
 import base from './styles/base.css?inline';
@@ -13,6 +14,7 @@ import dashboard from './styles/pages/dashboard.css?inline';
 import course from './styles/pages/course.css?inline';
 import tools from './styles/pages/tools.css?inline';
 import dark from './styles/dark.css?inline';
+import motion from './styles/motion.css?inline';
 
 const isTop = window.top === window.self;
 let settings: Settings = loadSettings();
@@ -53,7 +55,7 @@ function apply(s: Settings): void {
 
 // Order matters: theme vars first, then hand-written styles (they must beat recolor output).
 applyTheme(settings);
-addFixedStyle('styles', [tokens, base, components, layout, dashboard, course, tools, dark].join('\n'));
+addFixedStyle('styles', [tokens, base, components, layout, dashboard, course, tools, dark, motion].join('\n'));
 if (settings.enabled) {
   primeFromCache();
   startObserving();
@@ -62,6 +64,8 @@ if (settings.enabled) {
   setEnabled(false);
   startObserving();
 }
+
+initMotion();
 
 media.addEventListener('change', () => settings.mode === 'system' && applyTheme(settings));
 

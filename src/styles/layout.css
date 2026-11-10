@@ -63,7 +63,12 @@ html[data-mc-theme] {
     background: transparent !important;
   }
   & .ic-app-header__menu-list-item--active .menu-item-icon-container {
-    background: var(--md-sys-color-secondary-container) !important;
+    /* Painted as an image layer so motion.css can grow it from the center (background-size). */
+    background-color: transparent !important;
+    background-image: linear-gradient(var(--md-sys-color-secondary-container), var(--md-sys-color-secondary-container)) !important;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
   }
   & .ic-app-header__menu-list-item--active .ic-icon-svg,
   & .ic-app-header__menu-list-item--active svg {
@@ -233,7 +238,8 @@ html[data-mc-theme] {
   }
   & #section-tabs li.section a.active,
   & #section-tabs li.section a[aria-current="page"] {
-    background: var(--md-sys-color-secondary-container);
+    background: linear-gradient(var(--md-sys-color-secondary-container), var(--md-sys-color-secondary-container))
+      left center / 100% 100% no-repeat;
     color: var(--md-sys-color-on-secondary-container);
     border: none;
     font-weight: 700;

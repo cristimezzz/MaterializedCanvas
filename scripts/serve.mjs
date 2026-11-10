@@ -5,6 +5,7 @@ const shim = `
 var GM_getValue=(k,d)=>{try{const v=localStorage.getItem('mc:'+k);return v===null?d:JSON.parse(v)}catch{return d}};
 var GM_setValue=(k,v)=>{try{localStorage.setItem('mc:'+k,JSON.stringify(v))}catch{}};
 var GM_registerMenuCommand=()=>{};
+var unsafeWindow=window;
 `;
 createServer(async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
