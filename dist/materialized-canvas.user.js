@@ -6790,7 +6790,16 @@ html[data-mc-theme] #calendar-app .fc-day-number {
 }
 html[data-mc-theme] #calendar-app .fc-day-number.fc-other-month,
 html[data-mc-theme] #calendar-app .fc-other-month .fc-day-number {
-  color:var(--md-sys-color-outline)
+  color:var(--md-sys-color-on-surface-variant)
+}
+html[data-mc-theme] #minical .fc-bg .fc-state-highlight,
+html[data-mc-theme] #minical .fc-bg .fc-today {
+  background:var(--md-sys-color-primary)
+}
+html[data-mc-theme] #minical .fc-content-skeleton .fc-state-highlight,
+html[data-mc-theme] #minical td.fc-day-number.fc-today {
+  background:var(--md-sys-color-primary);
+  color:var(--md-sys-color-on-primary)
 }
 html[data-mc-theme] #calendar-app .fc-month-view .fc-day-number.fc-today {
   color:var(--md-sys-color-primary);
@@ -6860,7 +6869,13 @@ html[data-mc-theme] .event-details-footer {
 }
 html[data-mc-theme] #content.ic-Layout-contentMain .conversations,
 html[data-mc-theme] .messages,
-html[data-mc-theme] .message-detail,
+html[data-mc-theme] .message-detail {
+  border-color:var(--md-sys-color-outline-variant)
+}
+html[data-mc-theme] a.open-message,
+html[data-mc-theme] a.open-message:focus {
+  color:var(--md-sys-color-on-primary)
+}
 html[data-mc-theme] [data-testid=conversation],
 html[data-mc-theme] [data-testid=conversationListItem-Item] {
   border-color:var(--md-sys-color-outline-variant)

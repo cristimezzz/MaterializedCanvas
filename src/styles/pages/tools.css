@@ -94,7 +94,18 @@ html[data-mc-theme] {
   }
   & #calendar-app .fc-day-number.fc-other-month,
   & #calendar-app .fc-other-month .fc-day-number {
-    color: var(--md-sys-color-outline);
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  /* Mini calendar today: Canvas paints on-primary text over a filled highlight cell,
+     so keep that cell filled instead of the 10% tint used in the big grid. */
+  & #minical .fc-bg .fc-state-highlight,
+  & #minical .fc-bg .fc-today {
+    background: var(--md-sys-color-primary);
+  }
+  & #minical .fc-content-skeleton .fc-state-highlight,
+  & #minical td.fc-day-number.fc-today {
+    background: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
   }
   & #calendar-app .fc-month-view .fc-day-number.fc-today {
     background: transparent;
@@ -171,6 +182,11 @@ html[data-mc-theme] {
   & .messages,
   & .message-detail {
     border-color: var(--md-sys-color-outline-variant);
+  }
+  /* Keyboard-only "open message" button: Canvas gives it a brand (→ primary) fill */
+  & a.open-message,
+  & a.open-message:focus {
+    color: var(--md-sys-color-on-primary);
   }
   & [data-testid="conversation"],
   & [data-testid="conversationListItem-Item"] {
