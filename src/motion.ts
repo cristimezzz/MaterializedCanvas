@@ -161,8 +161,27 @@ function watchNavigation(): void {
   window.addEventListener('pageshow', () => setLeaving(false));
 }
 
+function watchCourseMenuToggle(): void {
+  let t = 0;
+  document.addEventListener(
+    'click',
+    (e) => {
+      if (!(e.target as Element | null)?.closest('#courseMenuToggle')) return;
+      const html = document.documentElement;
+      // Restart the animation even on rapid repeated toggles.
+      html.classList.remove('mc-menu-toggling');
+      void html.offsetWidth;
+      html.classList.add('mc-menu-toggling');
+      clearTimeout(t);
+      t = window.setTimeout(() => html.classList.remove('mc-menu-toggling'), 450);
+    },
+    true,
+  );
+}
+
 export function initMotion(): void {
   watchNavigation();
+  watchCourseMenuToggle();
 
   document.addEventListener('pointerdown', ripple, { capture: true, passive: true });
 

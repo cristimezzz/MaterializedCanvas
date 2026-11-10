@@ -158,6 +158,11 @@ function rewrite(prop: string, value: string): string | null {
     return FONT_RE.test(value) && !/monospace/.test(value) ? 'var(--mc-font)' : null;
   }
   if (/^--[a-zA-Z]{5}-.*[rR]adius$/.test(prop)) return mapRadius(value);
+  // InstUI Transition (trays, modals, popovers) eases with `ease-in-out`; use the M3 emphasized
+  // curve instead. Duration is left alone: InstUI's JS times its enter/exit states off it.
+  if (/^--[a-zA-Z]{5}-timing$/.test(prop)) {
+    return /^(ease|ease-in-out|ease-in|ease-out|linear)$/.test(value.trim()) ? 'cubic-bezier(0.2, 0, 0, 1)' : null;
+  }
 
   const kind = kindOfProp(prop);
   if (!kind) return null;

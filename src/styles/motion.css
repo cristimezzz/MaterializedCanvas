@@ -77,6 +77,12 @@ html.mc-leaving .mc-progress::after {
 @keyframes mc-slide-in-left {
   from { opacity: 0; transform: translateX(-24px); }
 }
+@keyframes mc-tray-content-in {
+  from { opacity: 0; transform: translateX(-12px); }
+}
+@keyframes mc-content-shift {
+  from { opacity: 0.6; }
+}
 
 /* ------------------------------------------------------------------ Component motion */
 html[data-mc-theme] {
@@ -171,8 +177,20 @@ html[data-mc-theme] {
   & .ui-widget-overlay {
     animation: mc-fade-in var(--mc-dur-medium) var(--mc-ease);
   }
-  & #nav-tray-portal [role="dialog"] {
-    animation: mc-slide-in-left var(--mc-dur-long) var(--mc-ease-decel);
+  /* Nav trays slide via InstUI's own transition (timing remapped to M3 in recolor.ts);
+     their contents follow slightly behind for a layered feel. */
+  & #nav-tray-portal .navigation-tray-container > * {
+    animation: mc-tray-content-in var(--mc-dur-long) var(--mc-ease-decel) 60ms backwards;
+  }
+
+  /* Course menu (hamburger): expanding slides it in; motion.ts flags the toggle so ordinary
+     page loads don't animate it. */
+  &.mc-menu-toggling body.course-menu-expanded #left-side {
+    animation: mc-slide-in-left 350ms var(--mc-ease-decel) backwards;
+  }
+  &.mc-menu-toggling body.course-menu-expanded #content-wrapper,
+  &.mc-menu-toggling body:not(.course-menu-expanded) #content-wrapper {
+    animation: mc-content-shift 350ms var(--mc-ease) backwards;
   }
   & #flash_message_holder li {
     animation: mc-drop-in var(--mc-dur-medium) var(--mc-ease-decel);

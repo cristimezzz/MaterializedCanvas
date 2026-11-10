@@ -16,7 +16,7 @@ import { recolorSheet } from './recolor';
  */
 const INDEX_KEY = 'rcIndex';
 const ENTRY_PREFIX = 'rc:';
-const CACHE_VERSION = 5; // bump when recolor.ts output changes
+const CACHE_VERSION = 6; // bump when recolor.ts output changes
 const CACHE_LIMIT = 40;
 
 interface Index { v: number; t: Record<string, number>; lastHrefs: string[] }
