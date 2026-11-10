@@ -6,6 +6,11 @@ html[data-mc-theme="dark"] {
 
   /* Elevated surfaces read via tone in dark mode */
   & .ic-DashboardCard { background: var(--md-sys-color-surface-container); }
+  /* Planner course chip: lift it off the dimmed course block */
+  & .planner-grouping a[class*="hero"] span[class*="title"] {
+    background: var(--md-sys-color-surface-container-highest);
+  }
+
   /* Tone down saturated course colors so they don't glare on dark surfaces */
   & .ic-DashboardCard__header_hero,
   & .planner-grouping a[class*="hero"] {

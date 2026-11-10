@@ -68,24 +68,50 @@ html[data-mc-theme] {
   & .planner-empty-days {
     border-color: var(--md-sys-color-outline-variant);
   }
+  /* Each course group = colored course block + item list. The group itself also contains Canvas'
+     left gutter (badges), so the card is drawn on the block and the list, not on the group. */
   & .planner-grouping {
     background: transparent;
-    border: 1px solid var(--md-sys-color-outline-variant) !important;
-    border-radius: var(--mc-shape-md);
-    overflow: hidden;
+    border: none !important;
     margin-bottom: 12px;
   }
-  & .planner-grouping > a:first-child {
-    border-radius: 0;
-    background: var(--md-sys-color-surface-container);
+  & .planner-grouping > a[class*="hero"] {
+    border-radius: var(--mc-shape-md) 0 0 var(--mc-shape-md);
+    overflow: hidden;
   }
-  & .planner-grouping a[class*="hero"] span[class*="title"] {
+  & .planner-grouping > ol {
+    border: 1px solid var(--md-sys-color-outline-variant) !important;
+    border-left: none !important;
+    border-radius: 0 var(--mc-shape-md) var(--mc-shape-md) 0;
     background: transparent;
+  }
+  /* Course name: a surface chip on the course color, readable whatever color the course has */
+  & .planner-grouping a[class*="hero"] span[class*="title"] {
+    display: inline-block;
+    max-width: calc(100% - 20px);
+    margin: 10px;
+    padding: 4px 12px;
+    border-radius: var(--mc-shape-full);
+    background: var(--md-sys-color-surface-container-lowest);
     color: var(--md-sys-color-on-surface);
+    box-shadow: var(--mc-elev-1);
     text-transform: none;
     letter-spacing: 0;
     font-size: 0.875rem;
     font-weight: 500;
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  /* Canvas' fade-out strip under the title (drew a stray light bar across the block) */
+  & .planner-grouping a[class*="hero"] span[class*="title"]::after,
+  & .planner-grouping a[class*="hero"] span[class*="title"]::before {
+    display: none;
+  }
+  & .planner-grouping a[class*="hero"]:hover span[class*="title"] {
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
   & .planner-item {
     border-color: var(--md-sys-color-outline-variant);
