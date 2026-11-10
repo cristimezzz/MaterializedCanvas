@@ -80,4 +80,5 @@
 
 - 配色算法：[Material Color Utilities](https://github.com/material-foundation/material-color-utilities)（Apache-2.0），已打包进脚本
 - 设计规范：[Material Design 3](https://m3.material.io/)
+- 本脚本以 **MIT 许可证**发布。
 - 本脚本与上海交通大学、Instructure 无关，为非官方美化脚本。

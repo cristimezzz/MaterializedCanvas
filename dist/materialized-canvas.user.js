@@ -1,8 +1,9 @@
 // ==UserScript==
 // @name         Materialized Canvas
 // @namespace    https://github.com/materialized-canvas
-// @version      0.7.0
+// @version      0.7.1
 // @description  为上海交通大学 Canvas (oc.sjtu.edu.cn) 换上 Material Design 3 外观，支持自选主色与深色模式
+// @license      MIT
 // @icon         https://oc.sjtu.edu.cn/favicon.ico
 // @match        https://oc.sjtu.edu.cn/*
 // @connect      self

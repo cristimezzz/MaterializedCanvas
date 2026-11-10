@@ -1,6 +1,7 @@
 {
   "name": "materialized-canvas",
-  "version": "0.7.0",
+  "version": "0.7.1",
+  "license": "MIT",
   "private": true,
   "type": "module",
   "description": "Material Design 3 userscript for SJTU Canvas (oc.sjtu.edu.cn)",
