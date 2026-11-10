@@ -57,6 +57,7 @@ export function openPanel(current: Settings, apply: Apply): void {
   function render() {
     const active = shadow.activeElement as HTMLElement | null;
     const focusKey = active?.textContent ?? null;
+    const scrollTop = dialog.scrollTop; // the bottom sheet scrolls on phones; keep the place
     dialog.replaceChildren();
 
     // Header
@@ -148,6 +149,7 @@ export function openPanel(current: Settings, apply: Apply): void {
       ? [...dialog.querySelectorAll<HTMLElement>('button, label')].find((b) => b.textContent === focusKey)
       : dialog.querySelector<HTMLElement>('[aria-pressed="true"]');
     target?.focus({ preventScroll: true });
+    dialog.scrollTop = scrollTop;
   }
 
   render();

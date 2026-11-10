@@ -15,7 +15,13 @@ const RIPPLE_TARGETS = [
   '.ic-DashboardCard__action',
   '.ef-item-row',
   '.ig-header .ig-header-title',
+  '#mobile-header .Button',
+  '#mobileContextNavContainer a',
+  '.mc-mobile-nav-link',
 ].join(',');
+
+/** Touch: wait this long before rippling, so a finger that starts scrolling never flashes the list. */
+const TOUCH_DELAY = 80;
 
 const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -41,11 +47,39 @@ export function bezier(x1: number, y1: number, x2: number, y2: number): (t: numb
   };
 }
 
-function ripple(e: PointerEvent): void {
+function onPointerDown(e: PointerEvent): void {
   if (e.button !== 0 || reduceMotion()) return;
   if (!document.documentElement.hasAttribute('data-mc-theme')) return;
   const host = (e.target as Element | null)?.closest<HTMLElement>(RIPPLE_TARGETS);
   if (!host || (host as HTMLButtonElement).disabled) return;
+  if (e.pointerType !== 'touch') {
+    ripple(host, e.clientX, e.clientY);
+    return;
+  }
+  // The browser fires pointercancel once it decides the gesture is a scroll.
+  const timer = window.setTimeout(() => {
+    stop();
+    ripple(host, e.clientX, e.clientY);
+  }, TOUCH_DELAY);
+  const cancel = () => {
+    clearTimeout(timer);
+    stop();
+  };
+  // A quick tap lifts before the delay: still show the ripple, it just starts on release.
+  const tapUp = () => {
+    clearTimeout(timer);
+    stop();
+    ripple(host, e.clientX, e.clientY, true);
+  };
+  const stop = () => {
+    window.removeEventListener('pointercancel', cancel);
+    window.removeEventListener('pointerup', tapUp);
+  };
+  window.addEventListener('pointercancel', cancel);
+  window.addEventListener('pointerup', tapUp);
+}
+
+function ripple(host: HTMLElement, x: number, y: number, released = false): void {
   // Nav rail items ripple inside their pill, not across the whole column.
   const surface = host.matches('.ic-app-header__menu-list-link')
     ? host.querySelector<HTMLElement>('.menu-item-icon-container') ?? host
@@ -61,12 +95,12 @@ function ripple(e: PointerEvent): void {
   clip.style.cssText =
     'position:absolute;inset:0;border-radius:inherit;overflow:hidden;pointer-events:none;z-index:-1;';
   const r = surface.getBoundingClientRect();
-  const size = Math.hypot(Math.max(e.clientX - r.left, r.right - e.clientX), Math.max(e.clientY - r.top, r.bottom - e.clientY)) * 2;
+  const size = Math.hypot(Math.max(x - r.left, r.right - x), Math.max(y - r.top, r.bottom - y)) * 2;
   const dot = document.createElement('span');
   dot.className = 'mc-ripple';
   dot.style.width = dot.style.height = `${size}px`;
-  dot.style.left = `${e.clientX - r.left - size / 2}px`;
-  dot.style.top = `${e.clientY - r.top - size / 2}px`;
+  dot.style.left = `${x - r.left - size / 2}px`;
+  dot.style.top = `${y - r.top - size / 2}px`;
   clip.append(dot);
   surface.append(clip);
 
@@ -85,6 +119,10 @@ function ripple(e: PointerEvent): void {
       }).finished.then(() => clip.remove(), () => clip.remove());
     });
   };
+  if (released) {
+    release();
+    return;
+  }
   window.addEventListener('pointerup', release);
   window.addEventListener('pointercancel', release);
 }
@@ -248,7 +286,7 @@ export function initMotion(): void {
   watchNavigation();
   watchCourseMenuToggle();
 
-  document.addEventListener('pointerdown', ripple, { capture: true, passive: true });
+  document.addEventListener('pointerdown', onPointerDown, { capture: true, passive: true });
 
   if (!patchJQueryEasing()) {
     const retry = () => patchJQueryEasing();

@@ -151,15 +151,7 @@ html[data-mc-theme] {
     text-decoration: none;
   }
 
-  /* ------------------------------------------------------------------ Mobile header */
-  & .mobile-header {
-    background: var(--md-sys-color-surface-container);
-    color: var(--md-sys-color-on-surface);
-    box-shadow: none;
-  }
-  & .mobile-header .mobile-header-title,
-  & .mobile-header button { color: var(--md-sys-color-on-surface); }
-  & .mobile-header-hamburger .icon-hamburger::before { color: var(--md-sys-color-on-surface); }
+  /* Narrow-window chrome (#mobile-header, the global nav tray, course nav) lives in mobile.css. */
 
   /* ------------------------------------------------------------------ Breadcrumb bar → Top app bar */
   & .ic-app-nav-toggle-and-crumbs {

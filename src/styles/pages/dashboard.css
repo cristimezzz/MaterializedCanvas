@@ -22,8 +22,10 @@ html[data-mc-theme] {
     overflow: hidden;
     transition: box-shadow var(--mc-dur) var(--mc-ease);
   }
-  & .ic-DashboardCard:hover {
-    box-shadow: var(--mc-elev-2);
+  @media (hover: hover) {
+    & .ic-DashboardCard:hover {
+      box-shadow: var(--mc-elev-2);
+    }
   }
   & .ic-DashboardCard__header_hero {
     border-radius: 0;

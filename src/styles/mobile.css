@@ -1,0 +1,316 @@
+/* Phone layout (< 768px). Canvas swaps its chrome at this width:
+ *   #header → hidden, replaced by header#mobile-header (hamburger + two-line title + course-nav arrow)
+ *   hamburger → InstUI Tray [role="dialog"][aria-label="全局导航"]
+ *   course menu → nav#mobileContextNavContainer, filled when the title is tapped
+ * Those elements only render on narrow windows, so their rules need no media query. */
+html[data-mc-theme] {
+  /* ------------------------------------------------------------------ Top app bar */
+  /* No `display` here: Canvas shows it (flex) only below 768px and hides it otherwise. */
+  & #mobile-header {
+    align-items: center;
+    gap: 4px;
+    min-height: 64px;
+    padding: 8px 4px;
+    background: var(--md-sys-color-surface-container);
+    color: var(--md-sys-color-on-surface);
+    box-shadow: none;
+    border: none;
+  }
+  & #mobile-header .Button {
+    flex: none;
+    position: relative;
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    border: none;
+    border-radius: var(--mc-shape-full);
+    background: transparent;
+    box-shadow: none;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  & #mobile-header .Button:active {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) var(--mc-press), transparent);
+  }
+  & #mobile-header .Button i::before {
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 1.25rem;
+  }
+  & #mobile-header .mobile-header-space { flex: 0 0 4px; }
+  & #mobile-header .mobile-header-title {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    padding: 4px 8px;
+    border-radius: var(--mc-shape-md);
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 1.5rem;
+    color: var(--md-sys-color-on-surface);
+    text-align: start;
+    text-decoration: none;
+  }
+  & #mobile-header .mobile-header-title > div {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  /* Course pages: first line is the (long) course name, second the current page */
+  & #mobile-header .mobile-header-title.expandable > div:first-child {
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1rem;
+    letter-spacing: 0.03em;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+  & #mobile-header .mobile-header-title.expandable:active {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) var(--mc-press), transparent);
+  }
+  /* Canvas swaps the arrow for an × while the course nav is open; give the swap a small turn */
+  & #mobileHeaderArrowIcon::before {
+    display: inline-block;
+    animation: mc-pop-in var(--mc-dur-medium) var(--mc-ease-decel);
+  }
+  & #mobileHeaderInboxUnreadBadge {
+    background: var(--md-sys-color-error);
+    color: var(--md-sys-color-on-error);
+  }
+
+  /* ------------------------------------------------------------------ Course nav (under the bar) */
+  & #mobileContextNavContainer[aria-expanded="true"] {
+    padding: 8px 12px 16px;
+    background: var(--md-sys-color-surface-container);
+    border-radius: 0 0 var(--mc-shape-xl) var(--mc-shape-xl);
+    animation: mc-drop-in var(--mc-dur-medium) var(--mc-ease-decel);
+    transform-origin: top center;
+  }
+  /* InstUI List: drop its dividers and spacing, keep one pill per row */
+  & #mobileContextNavContainer > span > span {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+  }
+  & #mobileContextNavContainer > span > span > span {
+    display: block;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+  }
+  & #mobileContextNavContainer > span > span > span:empty { display: none; }
+  & #mobileContextNavContainer a {
+    display: flex !important;
+    width: 100%;
+    box-sizing: border-box;
+    align-items: center;
+    gap: 12px;
+    min-height: 48px;
+    padding: 0 16px;
+    border-radius: var(--mc-shape-full);
+    color: var(--md-sys-color-on-surface-variant) !important;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none !important;
+  }
+  & #mobileContextNavContainer a svg {
+    font-size: 1.25rem;
+    fill: currentColor;
+  }
+  & #mobileContextNavContainer a:active {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) var(--mc-press), transparent);
+  }
+  /* Current page (marked by main.ts: Canvas does not flag it here) */
+  & #mobileContextNavContainer a[data-mc-active] {
+    /* Image layer so mc-pill-grow can widen it from the start edge */
+    background: linear-gradient(var(--md-sys-color-secondary-container), var(--md-sys-color-secondary-container))
+      left center / 100% 100% no-repeat;
+    color: var(--md-sys-color-on-secondary-container) !important;
+    font-weight: 700;
+    animation: mc-pill-grow var(--mc-dur-long) var(--mc-ease-decel) both;
+  }
+
+  /* ------------------------------------------------------------------ Global nav tray → modal drawer */
+  & span:has(> [role="dialog"][aria-label="全局导航"]) {
+    width: min(360px, calc(100vw - 56px)) !important;
+    max-width: 360px;
+    background: var(--md-sys-color-surface-container-low) !important;
+    border-radius: 0 var(--mc-shape-lg) var(--mc-shape-lg) 0;
+    box-shadow: var(--mc-elev-1) !important;
+  }
+  & [role="dialog"][aria-label="全局导航"] {
+    color: var(--md-sys-color-on-surface);
+  }
+  & [role="dialog"][aria-label="全局导航"] > div > span {
+    padding: 12px 12px 24px !important;
+  }
+  & [role="dialog"][aria-label="全局导航"] .ic-brand-mobile-global-nav-logo {
+    padding-inline-start: 16px;
+  }
+  & [role="dialog"][aria-label="全局导航"] ul { margin: 0; padding: 0; }
+  & [role="dialog"][aria-label="全局导航"] li {
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none;
+  }
+  /* Rows: plain links and the expandable ToggleDetails buttons share one 56px pill */
+  & [role="dialog"][aria-label="全局导航"] li > a,
+  & [role="dialog"][aria-label="全局导航"] li > .mc-mobile-nav-link,
+  & [role="dialog"][aria-label="全局导航"] li button[aria-expanded] {
+    font-family: inherit;
+    cursor: pointer;
+    display: flex !important;
+    align-items: center;
+    width: 100%;
+    min-height: 56px;
+    padding: 0 16px !important;
+    margin: 0;
+    border: none;
+    border-radius: var(--mc-shape-full);
+    background: transparent;
+    color: var(--md-sys-color-on-surface-variant) !important;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none !important;
+    text-align: start;
+  }
+  & [role="dialog"][aria-label="全局导航"] li > a *,
+  & [role="dialog"][aria-label="全局导航"] li button[aria-expanded] * {
+    color: inherit !important;
+  }
+  /* ToggleDetails: [summary (icon slot + label)] [chevron]; the summary takes the room */
+  & [role="dialog"][aria-label="全局导航"] li button[aria-expanded] > span {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+  & [role="dialog"][aria-label="全局导航"] li button[aria-expanded] > span > span:first-child {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  & [role="dialog"][aria-label="全局导航"] li button[aria-expanded] > span > span:last-child:not(:first-child) {
+    flex: none;
+    width: auto;
+  }
+  & [role="dialog"][aria-label="全局导航"] li button[aria-expanded] > span > span:first-child > span {
+    padding: 0 !important;
+    align-items: center;
+  }
+  & [role="dialog"][aria-label="全局导航"] li button[aria-expanded] > span > span:first-child > span > span:first-child {
+    width: 36px !important;
+    flex: none;
+  }
+  & [role="dialog"][aria-label="全局导航"] li > .mc-mobile-nav-link:active,
+  & [role="dialog"][aria-label="全局导航"] li > a:active,
+  & [role="dialog"][aria-label="全局导航"] li button[aria-expanded]:active {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) var(--mc-press), transparent);
+  }
+  & [role="dialog"][aria-label="全局导航"] li button[aria-expanded="true"] {
+    background: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container) !important;
+  }
+  & [role="dialog"][aria-label="全局导航"] li a[data-mc-active] {
+    background: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container) !important;
+    font-weight: 700;
+  }
+  & [role="dialog"][aria-label="全局导航"] svg {
+    fill: currentColor;
+    color: inherit;
+  }
+  /* Leading icons sit in a fixed 24px slot, so labels line up */
+  & [role="dialog"][aria-label="全局导航"] li > a > span:first-child:has(svg, img, .mc-nav-img-icon) {
+    flex: 0 0 24px;
+    margin-inline-end: 12px;
+    font-size: 1.5rem;
+  }
+  /* Expanded sections (course list, account …) */
+  & [role="dialog"][aria-label="全局导航"] li [id] a {
+    color: var(--md-sys-color-primary) !important;
+    min-height: 40px;
+  }
+  & [role="dialog"][aria-label="全局导航"] .mc-nav-img-icon {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    flex: 0 0 24px;
+    margin-inline-end: 12px;
+    background: currentColor;
+    -webkit-mask: var(--mc-icon) center / contain no-repeat;
+    mask: var(--mc-icon) center / contain no-repeat;
+  }
+  & [role="dialog"][aria-label="全局导航"] img:has(+ .mc-nav-img-icon) { display: none; }
+  & .mc-mobile-nav-link .mc-mobile-nav-icon {
+    flex: 0 0 24px;
+    width: 24px;
+    height: 24px;
+    margin-inline-end: 12px;
+  }
+  & [role="dialog"][aria-label="全局导航"] > div > span > * {
+    animation: mc-tray-content-in 500ms var(--mc-ease-decel) 100ms backwards;
+  }
+}
+
+/* ------------------------------------------------------------------ Page content on phones */
+@media (max-width: 767px) {
+  html[data-mc-theme] {
+    & #content { padding-inline: 16px; }
+    & .ic-app-main-content { overflow-x: clip; }
+
+    /* Wide tables scroll inside their own box instead of the page */
+    & #content table:not(.roster) { display: block; max-width: 100%; overflow-x: auto; }
+    & #content .user_content table { display: table; }
+    & #content .user_content { overflow-x: auto; }
+
+    /* Dialogs fill the width with a gutter */
+    & .ui-dialog {
+      width: calc(100vw - 32px) !important;
+      max-width: calc(100vw - 32px);
+      left: 16px !important;
+    }
+    & .ui-dialog .ui-dialog-titlebar { padding: 20px 16px 8px; }
+    & .ui-dialog .ui-dialog-content { padding: 8px 16px; }
+    & .ui-dialog .ui-dialog-buttonpane { padding: 12px 16px 16px; }
+
+    /* Dashboard */
+    & .ic-Dashboard-header__title { font-size: 1.5rem; }
+    & .ic-DashboardCard__box { gap: 12px; }
+    & .ic-DashboardCard { width: 100%; margin: 0; }
+
+    /* Modules / assignments: titles may wrap, metadata drops below */
+    & .ig-row { flex-wrap: wrap; row-gap: 4px; }
+    & .ig-row .ig-info { min-width: 0; flex: 1 1 0; }
+    & .ig-row .ig-title { white-space: normal; overflow-wrap: anywhere; }
+    & .ig-header { flex-wrap: wrap; }
+    & .ig-header .ig-header-title { min-width: 0; overflow-wrap: anywhere; }
+
+    /* Right sidebar content that Canvas stacks under the page */
+    & #right-side .button-sidebar-wide { min-height: 48px; }
+  }
+
+  /* Files: no folder tree (Canvas hides it too), just name + actions */
+  html[data-mc-theme] body.files {
+    & .ef-folder-content { display: none; }
+    & .ef-date-modified-col,
+    & .ef-size-col,
+    & .ef-date-created-col,
+    & .ef-modified-by-col,
+    & .ef-usage-rights-col { display: none; }
+    & .ef-item-row { min-height: 56px; }
+    & .ef-header { flex-wrap: wrap; gap: 8px; }
+  }
+
+  /* People: full-width search, filter beside it */
+  html[data-mc-theme] body.people {
+    & #search_input_container { flex: 1 1 100%; }
+    & .roster-tab select,
+    & .roster-tab [class*="select"] { min-width: 0; flex: 1 1 auto; }
+    /* people.css already drops 班级 below 900px; 角色 stays (short chips) */
+    & table.roster td,
+    & table.roster th { padding-inline: 8px; }
+  }
+}

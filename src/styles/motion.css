@@ -119,9 +119,11 @@ html[data-mc-theme] {
   & .ic-app-header__menu-list-link:active .menu-item-icon-container {
     transform: scale(0.92);
   }
-  & .ic-app-header__menu-list-link:hover svg,
-  & .ic-app-header__menu-list-link:hover .mc-nav-img-icon {
-    transform: translateY(-1px);
+  @media (hover: hover) {
+    & .ic-app-header__menu-list-link:hover svg,
+    & .ic-app-header__menu-list-link:hover .mc-nav-img-icon {
+      transform: translateY(-1px);
+    }
   }
 
   /* Course menu: active item indicator */
@@ -133,8 +135,11 @@ html[data-mc-theme] {
   & .ic-DashboardCard {
     transition: box-shadow var(--mc-dur-medium) var(--mc-ease), transform var(--mc-dur-medium) var(--mc-ease);
   }
-  & .ic-DashboardCard:hover {
-    transform: translateY(-3px);
+  /* Only with a real pointer: on touch, :hover sticks after a tap */
+  @media (hover: hover) {
+    & .ic-DashboardCard:hover {
+      transform: translateY(-3px);
+    }
   }
 
   /* Staggered entrance for dashboard cards and list groups */
@@ -191,6 +196,13 @@ html[data-mc-theme] {
 
   & #flash_message_holder li {
     animation: mc-drop-in var(--mc-dur-medium) var(--mc-ease-decel);
+  }
+
+  /* The ripple replaces the browser's own grey tap flash */
+  & :is(.btn, .Button, .ui-button, #section-tabs li.section a, .ic-app-header__menu-list-link,
+      .ic-DashboardCard__action, .ef-item-row, .ig-header .ig-header-title, #mobile-header .Button,
+      #mobileContextNavContainer a, .mc-mobile-nav-link) {
+    -webkit-tap-highlight-color: transparent;
   }
 
   /* Ripple (spawned and animated by motion.ts) */
