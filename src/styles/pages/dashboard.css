@@ -78,6 +78,10 @@ html[data-mc-theme] {
   & .planner-grouping > a[class*="hero"] {
     border-radius: var(--mc-shape-md) 0 0 var(--mc-shape-md);
     overflow: hidden;
+    /* center the course chip in the block */
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   & .planner-grouping > ol {
     border: 1px solid var(--md-sys-color-outline-variant) !important;
